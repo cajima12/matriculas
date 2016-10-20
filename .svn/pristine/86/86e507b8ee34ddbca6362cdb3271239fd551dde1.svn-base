@@ -1,0 +1,47 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.ayuncordoba.eseg.modelo.Documento;
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface ActuacionRepositorio extends JpaRepository<Actuacion, String>, PaginacionTabla<Actuacion>{
+
+	@Query("SELECT DISTINCT(u) FROM Actuacion u LEFT JOIN FETCH u.fases ORDER BY u.situacion")
+	List<Actuacion> findAllFetchFase();
+	
+	@Query("select a from Actuacion a where a.clave like concat(?1,'%')")
+	List<Actuacion> findActuacionLikeId(String id);
+	
+	@Query("SELECT DISTINCT(u) FROM Actuacion u LEFT JOIN FETCH u.padres ORDER BY u.situacion")
+	List<Actuacion> findAllFetchPadres();
+
+	@Query("SELECT DISTINCT(u) FROM Actuacion u LEFT JOIN FETCH u.hijos ORDER BY u.situacion")
+	List<Actuacion> findAllFetchHijos();
+	
+	List<Actuacion> findByFases(Fase fase);
+	
+	List<Actuacion> findByDocumentos(Documento documento);
+	
+	@Query("SELECT a FROM Actuacion a JOIN a.fases fase WHERE fase.nombreFase = ?1 AND a.masivo = ?2 ")
+	List<Actuacion> findByFases(String fase, boolean masivo);
+
+	@Query("SELECT a FROM Actuacion a JOIN a.fases fase WHERE fase.nombreFase = ?1 ")
+	List<Actuacion> findByFases(String fase);
+	
+	@Query("SELECT a.padres FROM Actuacion a  where a.clave = ?1")
+	List<Actuacion> findPadresByActuacion(String clave);
+	
+	@Query("SELECT a.hijos FROM Actuacion a  where a.clave = ?1")
+	List<Actuacion> findHijosByActuacion(String clave);
+
+}

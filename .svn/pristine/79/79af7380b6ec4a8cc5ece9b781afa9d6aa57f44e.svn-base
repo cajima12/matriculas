@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:sec="http://www.springframework.org/security/tags">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/javax.faces.resource/theme.css?ln=primefaces-cupertino" />
+	<link rel="stylesheet" type="text/css" media="all" href="#{request.contextPath}/styles/style.css" />
+	<h:outputStylesheet name="style.css" library="css" />
+	<link rel="stylesheet" type="text/css" media="all" href="#{request.contextPath}/styles/ayunCordoba.css" />
+
+	<!-- Core CSS File. The CSS code needed to make eventCalendar works -->
+	<link rel="stylesheet" href="#{request.contextPath}/resources/css/eventCalendar.css" />
+
+	<!-- Theme CSS file: it makes eventCalendar nicer -->
+	<link rel="stylesheet" href="#{request.contextPath}/resources/css/eventCalendar_theme_responsive.css" />
+
+	<script type="text/javascript" src="#{request.contextPath}/scripts/script.js" />
+	<script type="text/javascript" src="#{request.contextPath}/scripts/html2canvas.js" />
+
+
+</h:head>
+
+<h:body>
+	<p:layout fullPage="true" resizeTitle="resize" style="background-color:#FFFFFF;">
+
+		<p:layoutUnit id="top" position="north" resizable="false" size="80" styleClass="ui-widget ui-widget-header ui-corner-all" style="min-width:700px;">
+			<ui:include src="/pages/secure/templates/cabecera.xhtml"/>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" id="mainContainer">
+			
+			<h:form id="formMenu">
+			
+				<p:growl id="messages" showDetail="true" />
+
+			    <p:menubar>
+			    	<p:menuitem action="#{menuBean.goToDashboard}" icon="ui-icon-home"/>
+			        <p:submenu label="Mantenimientos" styleClass="subMan">
+				        <p:submenu label="Tablas Generales" >
+				        	<p:menuitem value="Firmantes" action="#{menuBean.goToMantenimientoFirmantes}" />
+				        	<p:separator />	
+				        	<p:submenu label="Accesos" >
+					        	<p:menuitem value="Roles" action="#{menuBean.goToMantenimientoRoles}" />
+					        	<p:menuitem value="Usuarios" action="#{menuBean.goToMantenimientoUsuarios}" />
+					        	<p:menuitem value="Aplicaciones" action="#{menuBean.goToMantenimientoAplicaciones}" />
+					        </p:submenu>				        	
+				        </p:submenu>
+			        	<p:separator />
+			        	<p:submenu label="Estructura Orgánica">
+				        	<p:menuitem value="Niveles Dir3" action="#{menuBean.goToMantenimientoNivelesDir3}" />
+				        	<p:menuitem value="Jerarquía Dir3" action="#{menuBean.goToMantenimientoDir3}" />
+				        	<p:menuitem value="Organigrama" action="#{menuBean.goToMantenimientoUnidades}" />
+				        </p:submenu>
+			        	<p:separator />
+			        	<p:submenu label="Documentos" >
+			        		<p:menuitem value="Tipo Documentos" action="#{menuBean.goToMantenimientoTiposDocumentos}" />
+				        	<p:menuitem value="Documentos" action="#{menuBean.goToMantenimientoDocumentos}" />
+			        	</p:submenu>
+			        	<p:separator />
+			        	<p:submenu label="Seguimiento" >
+			        		<p:menuitem value="Procedimientos" action="#{menuBean.goToMantenimientoProcedimientos}" />
+				        	<p:menuitem value="Metafases" action="#{menuBean.goToMantenimientoMetaFases}" />
+				        	<p:menuitem value="Fases" action="#{menuBean.goToMantenimientoFases}" />
+				        	<p:menuitem value="Actuaciones" action="#{menuBean.goToMantenimientoActuaciones}" />
+				        	<p:menuitem value="Jerarquía Actuaciones" action="#{menuBean.goToMantenimientoJerarquiaPadresHijos}" />
+			        	</p:submenu>			            
+			        </p:submenu>
+			 
+			        <p:submenu label="Informes" >
+			            <p:menuitem value="Niveles Dir3" url="#" />
+			            <p:menuitem value="Jerarquía Dir3" url="#" />
+			            <p:menuitem value="Actuaciones" url="#" />
+			            <p:menuitem value="Procedimientos" url="#" />
+			        </p:submenu>
+
+			        <p:submenu label="Auditorías" >
+			            <p:menuitem value="Peticiones" url="#" />
+			        </p:submenu>
+			 
+			        <p:submenu label="Ayuda" >
+			            <p:menuitem value="Ayuda en Línea" url="#" />
+			            <p:menuitem value="Descargar Manual PDF" url="#" />
+			        </p:submenu>
+			        
+			    </p:menubar>
+		
+			</h:form>
+
+			<h:panelGroup id="container" layout="block">
+
+				<h:panelGroup id="content" layout="block">
+					<ui:insert name="content">
+					</ui:insert>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+					<p:dialog widgetVar="statusDialog" header="Espere, por favor..." draggable="false" closable="false" resizable="false">
+						<img src="#{request.contextPath}/images/ajaxloadingbar.gif" />
+					</p:dialog>
+				</h:panelGroup>
+
+			</h:panelGroup>
+
+		</p:layoutUnit>
+		
+		<div id="notifybottom"></div>
+		
+	</p:layout>
+	
+</h:body>
+</html>

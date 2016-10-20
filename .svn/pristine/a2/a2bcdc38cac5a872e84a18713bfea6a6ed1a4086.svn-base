@@ -1,0 +1,43 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface UnidadRepositorio extends JpaRepository<Unidad, Long>, PaginacionTabla<Unidad>{
+
+	@Query("SELECT DISTINCT(u) FROM Unidad u LEFT JOIN FETCH u.procedimientos ORDER BY u.nombre ")
+	List<Unidad> findAllFetchProcedimientos();
+	
+	Unidad findByCodigo(String codigo);
+	
+	Unidad findByRefCodigo(String refCodigo);
+	
+	Unidad findByNombre(String nombre);
+	
+	@Query("SELECT u FROM Unidad u LEFT JOIN FETCH u.documentos docu where docu.id=?1 ORDER BY u.nombre")
+	List<Unidad> findAllFetchDocumento(String idDocumento);
+	
+	@Query("SELECT u FROM Unidad u LEFT JOIN FETCH u.documentos docu where u.id like ?1 ORDER BY u.nombre")
+	List<Unidad> findUnidadLikeId(Long id);
+
+	@Query("SELECT DISTINCT(u) FROM Unidad u LEFT JOIN FETCH u.documentos docu where UPPER(u.nombre) like concat('%',?1,'%') ORDER BY u.nombre")
+	List<Unidad> findUnidadLikeNombre(String nombre);
+	
+	@Query("SELECT u.padre FROM Unidad u where u.id=?1")
+	Unidad findPadreById(Long codigo);
+
+	@Query("SELECT u.padre FROM Unidad u where u.refCodigo=?1")
+	Unidad findPadreByCodigo(String codigo);
+	
+	public List<Unidad> findByProcedimientos(Procedimiento proc);
+}

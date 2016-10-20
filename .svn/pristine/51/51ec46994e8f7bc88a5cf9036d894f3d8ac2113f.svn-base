@@ -1,0 +1,70 @@
+package org.ayuncordoba.eseg.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+
+public class Constantes {
+	public static final String NOMBRE_APLICACION =  "correo";
+	public static final String SUFIJO_REPOSITORIO = "Repositorio";
+	
+	public static final String ROL_ADMIN = "ROLE_ADMIN";
+	public static final String ROL_ADMIN_CORREO = "ROLE_ADMIN_CORREO";
+	public static final String ROL_ADMIN_UNIDAD = "ROLE_ADMIN_UNIDAD_CORREO";
+	public static final String ROL_CONSULTA = "ROL_CONSULTA_CORREO";
+	public static final GrantedAuthority ROL_ADMIN_AUTHORITY = new SimpleGrantedAuthority(ROL_ADMIN);
+	public static final GrantedAuthority ROL_ADMIN_CORREO_AUTHORITY = new SimpleGrantedAuthority(ROL_ADMIN_CORREO);
+	public static final GrantedAuthority ROL_ADMIN_UNIDAD_AUTHORITY = new SimpleGrantedAuthority(ROL_ADMIN_UNIDAD);
+    public static final GrantedAuthority ROL_CONSULTA_AUTHORITY = new SimpleGrantedAuthority(ROL_CONSULTA);
+    public static final String USUARIO_ANONIMO = "anonymousUser";
+
+    public static final String R_EJECUTIVA = "RE";
+    public static final String R_VOLUNTARIA = "RV";
+    
+    public static final String NIVEL_OK = "OK";
+    public static final String NIVEL_KO = "ERROR";
+    public static final String NIVEL_WARN = "WARNING";
+    
+    public static List<String> NIVELES_OK = new ArrayList<String>(2);
+	public static List<String> NIVELES_KO = new ArrayList<String>(1);
+	static {
+		NIVELES_OK.add(Constantes.NIVEL_OK);
+		NIVELES_OK.add(Constantes.NIVEL_WARN);
+		NIVELES_KO.add(Constantes.NIVEL_KO);
+	}
+	
+	public static final String TIPO_CARGA_REMESA = "Envío";
+	public static final String NOMBRE_FICHERO_CARGA = "CARGA REMESA Num. ";
+	public static final String MENSAJE_CARGA_REMESAS = "AÑADIDO DESDE CORREO";
+	
+	//Para la generación de XML para Boe Edictal
+	public static final String VERSION_BOE_EDICTAL = "1.0.0";
+	public static final String CONTENT_TYPE_XML = "application/xml";
+		
+	public static final String CABECERA_BOLETIN_REFERENCIA = "REFERENCIA";
+	public static final String CABECERA_BOLETIN_EXPEDIENTE = "EXPEDIENTE";
+	public static final String CABECERA_BOLETIN_DEPARTAMENTO = "DEPARTAMENTO";
+	public static final String CABECERA_BOLETIN_UNIDAD = "UNIDAD";
+	public static final String CABECERA_BOLETIN_PERS = "PERS";
+	public static final String CABECERA_BOLETIN_INTERESADO = "INTERESADO";
+	public static final String CABECERA_BOLETIN_NIF = "NIF";
+	public static final String CABECERA_BOLETIN_RELACION_EXPEDIENTE = "RELACION CON EL EXPEDIENTE";
+	public static final String CABECERA_BOLETIN_DOCUMENTO = "ACTUACION A NOTIFICAR";
+	
+	public static final String MANTENIMIENTO_OPERACION_ANADIR = "Añadir";
+	public static final String MANTENIMIENTO_OPERACION_EDITAR = "Editar";
+	public static final String MANTENIMIENTO_OPERACION_ELIMINAR = "Eliminar";
+	public static final String MANTENIMIENTO_OPERACION_VER = "Ver";
+	
+	public static final String RUTA_LOGIN_ACUSES_PARAM = "/login.xhtml?authToken="; 
+	
+	public static final String ACTUACION_VENCIMIENTO_DIAS_NATURALES = "DIAS NATURALES";
+	public static final String ACTUACION_VENCIMIENTO_DIAS_HABILES 	= "DIAS HABILES";
+	public static final String ACTUACION_VENCIMIENTO_MESES 			= "MESES";
+	public static final String ACTUACION_VENCIMIENTO_ANYOS 			= "AÑOS";
+	
+}
+

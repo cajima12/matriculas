@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="Nombre" styleClass="" sortBy="#{registro.nombre}" filterBy="#{registro.nombre}" filterMatchMode="contains" >
+		<h:outputText value="#{registro.nombre}" />
+	</p:column>
+	<p:column headerText="Apellido 1" styleClass="" sortBy="#{registro.apellido1}" filterBy="#{registro.apellido1}" filterMatchMode="contains" >
+		<h:outputText value="#{registro.apellido1}" />
+	</p:column>
+	<p:column headerText="Apellido 2" styleClass="" sortBy="#{registro.apellido2}" filterBy="#{registro.apellido2}" filterMatchMode="contains" >
+		<h:outputText value="#{registro.apellido2}" />
+	</p:column>
+	<p:column headerText="Tipo" styleClass="" sortBy="#{registro.tipoPersona}" filterBy="#{registro.tipoPersona}" filterMatchMode="contains" >
+		<h:outputText value="#{registro.tipoPersona}" />
+	</p:column>
+</ui:composition>

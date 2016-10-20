@@ -1,0 +1,24 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface ProcedimientoRepositorio extends JpaRepository<Procedimiento, Long>, PaginacionTabla<Procedimiento>{
+
+	public List<Procedimiento> findByUnidades(Unidad unidad);
+	
+	public List<Procedimiento> findByMetafases(Metafase metafase);
+	
+	public Procedimiento findByNombre(String nombre);
+	
+}

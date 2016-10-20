@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+ 
+    <h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/javax.faces.resource/theme.css?ln=primefaces-cupertino" />
+	 	<link rel="stylesheet" type="text/css" media="all" href="styles/style.css" />
+	 	<link rel="stylesheet" type="text/css" media="all" href="styles/ayuncordobaLogin.css" />
+	    <script type="text/javascript" src="scripts/script.js" />
+    </h:head>
+ 
+    <h:body>
+ 
+		<p:layout fullPage="true" resizeTitle="resize" style="background-color:#FFFFFF;">
+
+			<p:layoutUnit id="top" position="north" resizable="false" size="80" styleClass="ui-widget ui-widget-header ui-corner-all" style="min-width:700px;">
+				<div  >
+					<div id="h1Ayun" style="margin-left: -34px!important;">
+						<h:outputText value="Plataforma" styleClass="h1PpalAyun"/>
+						<h:outputText value="eSEG" styleClass="h1SecondAyun" style="font-size: 1.5em;color: #881436!important;"/>		
+					</div>
+				</div>
+			</p:layoutUnit>   
+ 
+		    <p:layoutUnit position="center" id="contentPrincipal">
+				<h:panelGroup id="container" layout="block" style="margin-top: 75px;">
+							
+					<h:panelGroup id="content" layout="block">
+						<ui:insert name="content">Contenido Principal</ui:insert>
+					</h:panelGroup>
+					
+				</h:panelGroup>
+		    </p:layoutUnit>
+
+		</p:layout>
+    </h:body>
+</html>

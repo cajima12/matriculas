@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="ID"  styleClass="anchoFijo_80 centrado" filterMatchMode="contains" sortBy="#{registro.id}" filterBy="#{registro.id}">
+		<h:outputText value="#{registro.id}" title="#{registro.id}" />
+	</p:column>
+	<p:column headerText="Denominación"  styleClass="" filterMatchMode="contains" sortBy="#{registro.denominacion}" filterBy="#{registro.denominacion}">
+		<h:outputText value="#{registro.denominacion}" title="#{registro.denominacion}" />
+	</p:column>
+	<p:column headerText="Nivel jerárquico"  styleClass="anchoFijo_90 centrado" filterMatchMode="contains" sortBy="#{registro.nivelJerarquico}" filterBy="#{registro.nivelJerarquico}">
+		<h:outputText value="#{registro.nivelJerarquico}" title="#{registro.nivelJerarquico}" />
+	</p:column>
+	<p:column headerText="Unidad superior"  styleClass="anchoFijo_80 centrado" filterMatchMode="contains" sortBy="#{registro.unidadSuperior}" filterBy="#{registro.unidadSuperior}">
+		<h:outputText value="#{registro.unidadSuperior}" title="#{registro.unidadSuperior}" />
+	</p:column>
+	<p:column headerText="Unidad principal"  styleClass="anchoFijo_80 centrado" filterMatchMode="contains" sortBy="#{registro.unidadPrincipal}" filterBy="#{registro.unidadPrincipal}">
+		<h:outputText value="#{registro.unidadPrincipal}" title="#{registro.unidadPrincipal}" />
+	</p:column>
+	<p:column headerText="Nivel Dir3" styleClass="anchoFijo_140 centrado" filterMatchMode="contains" sortBy="#{registro.nivel.tipoEntidad}" filterBy="#{registro.nivel.tipoEntidad}">
+		<h:outputText value="#{registro.nivel.tipoEntidad}" title="#{registro.nivel.tipoEntidad}" />
+	</p:column>
+	<p:column headerText="Provincia" styleClass="anchoFijo_80 centrado" filterMatchMode="contains" sortBy="#{registro.provincia.nombre}" filterBy="#{registro.provincia.nombre}">
+		<h:outputText value="#{registro.provincia.nombre}" title="#{registro.provincia.nombre}" />
+	</p:column>
+	<p:column headerText="Unidad publicadora" styleClass="anchoFijo_150 centrado" filterMatchMode="equals" filterBy="#{registro.publicador}">
+		<f:facet name="filter">
+            <p:selectOneButton widgetVar="filtroMantenimientoDocumentos" onchange="PF('mantenimientoTable').filter()">
+                <f:converter converterId="javax.faces.Boolean" />
+                <f:selectItem itemLabel="Todos" itemValue="" />
+                <f:selectItem itemLabel="Sí" itemValue="true" />
+                <f:selectItem itemLabel="No" itemValue="false" />
+            </p:selectOneButton>
+        </f:facet>
+		<h:outputText value="Sí" title="Sí" rendered="#{registro.publicador}" />
+		<h:outputText value="No" title="No" rendered="#{!registro.publicador}" />
+	</p:column>	
+</ui:composition>

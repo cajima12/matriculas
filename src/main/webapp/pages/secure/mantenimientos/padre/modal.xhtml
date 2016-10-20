@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<h:inputHidden value="#{mantenimiento.bean.instancia.id}" />
+	<o:importConstants type="org.ksoft.matriculas.modelo.Persona.Estado" var="estadoPersona" />
+	<o:importConstants type="org.ksoft.matriculas.modelo.Persona.TipoPersona" var="tipoPersona" />
+
+	<h:panelGrid columns="2" cellpadding="4" style="width: 100%;" columnClasses="colWidth10_100_derecha,colWidth100_100"
+		id="modal_usuario_acceso">
+		<h:outputLabel value="Nombre: " for="nombre" />
+		<p:inputText id="nombre" value="#{mantenimiento.bean.instancia.nombre}" readonly="#{mantenimiento.bean.soloLectura}"
+			required="true" requiredMessage="El nombre es obligatorio" />
+		<h:outputLabel value="Apellido 1: " for="apellido1" />
+		<p:inputText id="apellido1" value="#{mantenimiento.bean.instancia.apellido1}" readonly="#{mantenimiento.bean.soloLectura}"
+			required="true" requiredMessage="El primer apellido es obligatorio" />
+		<h:outputLabel value="Apellido 2: " for="apellido2" />
+		<p:inputText id="apellido2" value="#{mantenimiento.bean.instancia.apellido2}" readonly="#{mantenimiento.bean.soloLectura}"/>
+	</h:panelGrid>
+	
+	<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth10_100_derecha,colWidth35_100,colWidth20_100_derecha,colWidth40_100_calendar">
+		<h:outputLabel value="Nif: " for="nif" />
+		<p:inputText id="nif" value="#{mantenimiento.bean.instancia.nif}" readonly="#{mantenimiento.bean.soloLectura}"
+			required="true" requiredMessage="El nombre es obligatorio" />
+		<h:outputLabel value="Fecha Nacimiento: " for="fecha" />
+		<p:calendar id="fecha" value="#{mantenimiento.bean.instancia.fechaNacimiento}" navigator="true" styleClass="fecha92p"
+						pattern="dd/MM/yyyy" immediate="true" required="true" locale="es" rendered="#{!mantenimiento.bean.soloLectura}"
+						requiredMessage="El campo fecha de nacimiento no puede estar vacío" />	
+		<p:inputText id="fecha_texto" value="#{mantenimiento.bean.instancia.fechaNacimiento}" readonly="true" rendered="#{mantenimiento.bean.soloLectura}" >
+			<f:convertDateTime pattern="dd/MM/yyyy" locale="es"/>
+		</p:inputText>
+	</h:panelGrid>
+
+	<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth10_100_derecha,colWidth35_100,colWidth20_100_derecha,colWidth40_100">
+		<h:outputLabel value="Nacido en: " for="lugar" />
+		<p:inputText id="lugar" value="#{mantenimiento.bean.instancia.lugarNacimiento}" readonly="#{mantenimiento.bean.soloLectura}" />
+		<h:outputLabel value="Nacionalidad: " for="nacionalidad" />
+		<p:inputText id="nacionalidad" value="#{mantenimiento.bean.instancia.nacionalidad}" readonly="#{mantenimiento.bean.soloLectura}" style="width: 92%!important"/>	
+	</h:panelGrid>
+	
+	<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth10_100_derecha,colWidth35_100,colWidth20_100_derecha,colWidth40_100">
+		<h:outputLabel value="Relación: " for="relacion" />
+		<p:selectOneMenu id="relacion" value="#{mantenimiento.bean.instancia.tipoPersona}" required="true" 
+			requiredMessage="Debe indicar la relación con los alumnos" style="width: 92%!important;" rendered="#{!mantenimiento.bean.soloLectura}" >
+			<f:selectItem itemLabel="Seleccione un Tipo" noSelectionOption="true" />
+			<f:selectItems value="#{tipoPersona}"/>
+		</p:selectOneMenu>
+		<p:inputText id="relacion_texto" value="#{mantenimiento.bean.instancia.tipoPersona}" readonly="true" rendered="#{mantenimiento.bean.soloLectura}" />
+		<h:outputLabel value="Estado: " for="estado" />
+		<p:selectOneMenu id="estado" value="#{mantenimiento.bean.instancia.estado}" rendered="#{!mantenimiento.bean.soloLectura}"
+			required="true" requiredMessage="Debe indicar una fecha de nacimiento" style="width: 93%!important;">
+			<f:selectItem itemLabel="Seleccione un Estado Civil" noSelectionOption="true"/>
+			<f:selectItems value="#{estadoPersona}"/>
+		</p:selectOneMenu>
+		<p:inputText id="estado_texto" value="#{mantenimiento.bean.instancia.estado}" readonly="true" rendered="#{mantenimiento.bean.soloLectura}" style="width: 92%!important" />
+	</h:panelGrid>
+
+	<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth10_100_derecha,colWidth35_100,colWidth20_100_derecha,colWidth40_100">
+		<h:outputLabel value="Profesión: " for="profesion" />
+		<p:inputText id="profesion" value="#{mantenimiento.bean.instancia.profesion}" readonly="#{mantenimiento.bean.soloLectura}"/>
+		<h:outputLabel value="Empresa: " for="empresa" />
+		<p:inputText id="empresa" value="#{mantenimiento.bean.instancia.empresa}" readonly="#{mantenimiento.bean.soloLectura}" style="width: 92%!important"/>
+	</h:panelGrid>
+	
+	<h:panelGrid columns="1" cellpadding="4" style="width: 100%;"> 
+		<p:dataTable 
+			value="#{mantenimiento.bean.lstDirecciones}" var="direccion"
+			paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
+			paginator="true" rows="10" rowsPerPageTemplate="5,10,15" paginatorPosition="bottom" 
+			emptyMessage="No se han indicado direcciones para esta persona">
+			
+			<f:facet name="header">
+				<p:commandButton value="Añadir Dirección" icon="fa fa-plus" actionListener="#{mantenimiento.bean.crearDireccion}"
+					process="@this" partialSubmit="true" disabled="#{mantenimiento.bean.soloLectura}"/>
+			</f:facet>
+			
+			<p:column headerText="Dirección" style="width: 20%;">
+				<h:outputText value="#{direccion.direccion}"/>
+			</p:column>
+
+			<p:column headerText="Complemento" style="width: 20%;">
+				<h:outputText value="#{direccion.complemento}"/>
+			</p:column>
+
+			<p:column headerText="Provincia" style="width: 10%;">
+				<h:outputText value="#{direccion.localidad.provincia.nombre}"/>
+			</p:column>
+			
+			<p:column headerText="Localidad" style="width: 10%;">
+				<h:outputText value="#{direccion.localidad.nombre}"/>
+			</p:column>
+
+			<p:column headerText="Teléfono" style="width: 7%;">
+				<h:outputText value="#{direccion.telefono}"/>
+			</p:column>
+
+			<p:column headerText="Tipo" style="width: 20%;">
+				<h:outputText value="#{direccion.tipoDireccion}"/>
+			</p:column>
+
+			<p:column headerText="Acciones" style="width: 6%!important;">
+				<p:commandButton icon="fa fa-pencil" title="Editar Dirección" disabled="#{mantenimiento.bean.soloLectura}" />
+				<p:commandButton icon="fa fa-trash" title="Borrar Dirección" disabled="#{mantenimiento.bean.soloLectura}" />
+			</p:column>
+			
+		</p:dataTable>
+	</h:panelGrid>
+	
+
+	
+</ui:composition>

@@ -1,0 +1,106 @@
+package org.ayuncordoba.eseg.ws;
+
+import java.util.List;
+
+import javax.jws.WebService;
+
+import org.ayuncordoba.eseg.modelo.dto.ActuacionDto;
+import org.ayuncordoba.eseg.modelo.dto.Dir3Dto;
+import org.ayuncordoba.eseg.modelo.dto.DocumentoDto;
+import org.ayuncordoba.eseg.modelo.dto.FaseDto;
+import org.ayuncordoba.eseg.modelo.dto.FirmanteDto;
+import org.ayuncordoba.eseg.modelo.dto.MetafaseDto;
+import org.ayuncordoba.eseg.modelo.dto.ProcedimientoDto;
+import org.ayuncordoba.eseg.modelo.dto.UnidadDto;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionActuaciones;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionDocumentos;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionFases;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionFirmantes;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionMetafases;
+
+@WebService
+public interface SeguimientoServices {
+
+	/**
+	 * Obtiene una unidad DIR3 con los siguiente informacion: -
+	 * METADATOS(id,denominacion,nivelJerarquico) - Dir3 Padre si lo tuviese -
+	 * Dir3 Principal - Listado de Dir3 con la estructuraJerarquica - Dir3
+	 * unidadPublicadora
+	 * 
+	 * @param Identificador
+	 *            de unidad Dir3
+	 * @return Dir3Dto
+	 */
+	public Dir3Dto getDir3(String idDir3);
+
+	/**
+	 * Obtiene una Unidad con los siguiente informacion: - metadatos Unidad -
+	 * Dir3 de la Unidad publicadora si la tiene. - Unidad padre - Dir3
+	 * principal - List<Dir3> nivelJerarquico - List<Procedimiento>
+	 * procedimientos
+	 * 
+	 * @param codigo
+	 *            unidad
+	 * @return UnidadDto con toda la informacion.
+	 */
+	public UnidadDto getUnidad(String codigo);
+
+	/**
+	 * Obtiene un procedimiento con la siguiente informacion: - Metadatos -
+	 * List<MetafaseDto> metafases del procedimiento - List<UnidadDto> unidades
+	 * a las que pertenece el procedimiento
+	 * 
+	 * @param nombre
+	 *            del procedimiento
+	 * @param id
+	 *            del procedimiento
+	 * @return ProcedimientoDto con la informacion relacionada
+	 */
+	public ProcedimientoDto getProcedimiento(String nombre, Long id);
+	
+	/**
+	 * Obtiene el listado de actuaciones que se corresponden con las condiciones
+	 * indicadas en el DTO de petición
+	 * 
+	 * @param peticion
+	 * @return
+	 */
+	public List<ActuacionDto> getActuaciones(PeticionActuaciones peticion) throws ExcepcionSeguimiento;
+
+	/**
+	 * Obtiene el listado de actuaciones que se corresponden con las condiciones
+	 * indicadas en el DTO de petición
+	 * 
+	 * @param peticion
+	 * @return
+	 */
+	public List<DocumentoDto> getDocumentos( PeticionDocumentos peticion ) throws ExcepcionSeguimiento;
+	
+	/**
+	 * Obtiene el listado de Metafases que se corresponden con las condiciones
+	 * indicadas en el DTO de petición
+	 * 
+	 * @param peticion
+	 * @return
+	 */	
+	public List<MetafaseDto> getMetafases( PeticionMetafases peticion) throws ExcepcionSeguimiento;
+	
+	/**
+	 * Obtiene el listado de Metafases que se corresponden con las condiciones
+	 * indicadas en el DTO de petición
+	 * 
+	 * @param peticion
+	 * @return
+	 */		
+	public List<FaseDto> getFases( PeticionFases peticion) throws ExcepcionSeguimiento;
+	
+	/**
+	 * Obtiene el listado de Firmantes que se conrresponden con las condiciones 
+	 * indicadas en el DTO de petición 
+	 * 
+	 * @param peticion
+	 * @return
+	 */
+	public List<FirmanteDto> getFirmantes( PeticionFirmantes peticion ) throws ExcepcionSeguimiento;
+
+}

@@ -1,0 +1,118 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.ayuncordoba.eseg.repositorio.FaseRepositorio;
+import org.ayuncordoba.eseg.repositorio.MetafaseRepositorio;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoFasesBean extends MantenimientoGenericoBean<Fase, Long> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoFasesBean.class);
+
+	@ManagedProperty("#{faseRepositorio}")
+	private FaseRepositorio faseRepo;
+
+	@ManagedProperty("#{metafaseRepositorio}")
+	private MetafaseRepositorio metaFaseRepo;
+	
+	private List<Metafase> lstMetaFases = new ArrayList<Metafase>();
+	private Metafase metaFaseSeleccionada;
+	
+	@Override
+	protected void cargarListado(List<Fase> listado) {
+		listado.addAll(faseRepo.findAll());
+	}
+
+	public Metafase getMetafase(Fase fase) {
+		if ( fase != null )	return fase.getMetafase(); 		
+		return null;
+	}
+	
+	public String getNombreMetafase(Fase fase) {
+		if ( fase != null )	return fase.getMetafase().getNombreMetafase(); 		
+		return "NO ASIGNADA";
+	}
+	
+	@Override
+	public void guardar() {
+		try {	
+			if ( metaFaseSeleccionada != null ) {
+				getInstancia().setMetafase(metaFaseSeleccionada);
+			}
+			
+			super.guardar();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ocurrió un error intentando almacenar el registro"));
+		}
+	}
+	
+	@Override
+	public void setInstancia(Fase instancia) {
+		if (instancia != null) {
+			Metafase metafase = instancia.getMetafase();
+			if ( metafase != null ) {
+				metaFaseSeleccionada = getMetafase(instancia);
+			} else {
+				metaFaseSeleccionada = null;
+			}
+		} else {
+			metaFaseSeleccionada = null;
+		}
+		super.setInstancia(instancia);
+	}
+	
+	public static Logger getLog() {
+		return log;
+	}
+
+	public FaseRepositorio getFaseRepo() {
+		return faseRepo;
+	}
+
+	public void setFaseRepo(FaseRepositorio faseRepo) {
+		this.faseRepo = faseRepo;
+	}
+
+	public MetafaseRepositorio getMetaFaseRepo() {
+		return metaFaseRepo;
+	}
+
+	public void setMetaFaseRepo(MetafaseRepositorio metaFaseRepo) {
+		this.metaFaseRepo = metaFaseRepo;
+	}
+
+	public List<Metafase> getLstMetaFases() {
+		lstMetaFases = metaFaseRepo.findAll();
+		return lstMetaFases;
+	}
+
+	public void setLstMetaFases(List<Metafase> lstMetaFases) {
+		this.lstMetaFases = lstMetaFases;
+	}
+
+	public Metafase getMetaFaseSeleccionada() {
+		return metaFaseSeleccionada;
+	}
+
+	public void setMetaFaseSeleccionada(Metafase metaFaseSeleccionada) {
+		this.metaFaseSeleccionada = metaFaseSeleccionada;
+	}
+
+	
+	
+}

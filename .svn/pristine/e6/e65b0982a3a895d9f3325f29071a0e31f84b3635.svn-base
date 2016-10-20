@@ -1,0 +1,71 @@
+package org.ayuncordoba.eseg.modelo;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="aplicaciones")
+public class Aplicacion implements Serializable {
+	private static final long serialVersionUID = 5163016144945618848L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+
+	@Column(name="nombre")
+	private String aplicacion;
+
+	public Aplicacion() {
+
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getAplicacion() {
+		return aplicacion;
+	}
+
+	public void setAplicacion(String aplicacion) {
+		this.aplicacion = aplicacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Aplicacion [id=" + id + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Aplicacion other = (Aplicacion) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+}

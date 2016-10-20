@@ -1,0 +1,89 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.ayuncordoba.eseg.repositorio.ActuacionRepositorio;
+import org.primefaces.component.datatable.DataTable;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoPadresHijosBean extends MantenimientoGenericoBean<Actuacion, String> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoPadresHijosBean.class);
+	
+	private List<Actuacion> listadoPadres = new ArrayList<Actuacion>();
+	private List<Actuacion> listadoHijos = new ArrayList<Actuacion>();
+	
+	@ManagedProperty("#{actuacionRepositorio}")
+	private ActuacionRepositorio actuacionRepo;
+	
+	private DataTable tablaPadre = new DataTable();
+	private DataTable tablaHijo = new DataTable();
+	
+	
+	protected void cargarListado(List<Actuacion> listado ) {
+		listado.addAll(actuacionRepo.findAll());
+		listadoPadres = actuacionRepo.findAll();
+		listadoHijos = actuacionRepo.findAll();
+		
+	}
+
+	public ActuacionRepositorio getActuacionRepo() {
+		return actuacionRepo;
+	}
+
+	public void setActuacionRepo(ActuacionRepositorio actuacionRepo) {
+		this.actuacionRepo = actuacionRepo;
+	}
+
+	public static Logger getLog() {
+		return log;
+	}
+
+	public List<Actuacion> getListadoPadres() {
+		return listadoPadres;
+	}
+
+	public void setListadoPadres(List<Actuacion> listadoPadres) {
+		this.listadoPadres = listadoPadres;
+	}
+
+	public List<Actuacion> getListadoHijos() {
+		return listadoHijos;
+	}
+
+	public void setListadoHijos(List<Actuacion> listadoHijos) {
+		this.listadoHijos = listadoHijos;
+	}
+
+
+	public DataTable getTablaPadre() {
+		return tablaPadre;
+	}
+
+
+	public void setTablaPadre(DataTable tablaPadre) {
+		this.tablaPadre = tablaPadre;
+	}
+
+
+	public DataTable getTablaHijo() {
+		return tablaHijo;
+	}
+
+
+	public void setTablaHijo(DataTable tablaHijo) {
+		this.tablaHijo = tablaHijo;
+	}
+
+	
+}

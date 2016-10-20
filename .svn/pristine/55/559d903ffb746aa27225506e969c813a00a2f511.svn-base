@@ -1,0 +1,47 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Rol;
+import org.ayuncordoba.eseg.repositorio.RolRepositorio;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoRolesBean extends MantenimientoGenericoBean<Rol, Long> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoRolesBean.class);
+
+	@ManagedProperty("#{rolRepositorio}")
+	private RolRepositorio rolRepo;
+
+	public MantenimientoRolesBean() {
+		setPuedeEliminar(false);
+	}
+
+	@Override
+	protected void cargarListado(List<Rol> listado) {
+		listado.addAll(rolRepo.findAll());
+	}
+	
+	public RolRepositorio getRolRepo() {
+		return rolRepo;
+	}
+
+	public void setRolRepo(RolRepositorio rolRepo) {
+		this.rolRepo = rolRepo;
+	}
+
+	public static Logger getLog() {
+		return log;
+	}
+	
+	
+	
+}

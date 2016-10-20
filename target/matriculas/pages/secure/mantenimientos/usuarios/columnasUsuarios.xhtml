@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="Nif" style="width:80px;" styleClass="centrado " sortBy="#{registro.nif}" filterBy="#{registro.nif}" filterMatchMode="contains">
+		<h:outputText value="#{registro.nif}" title="#{registro.nif}" />
+	</p:column>
+	<p:column headerText="Nombre" styleClass="" sortBy="#{registro.nombreCompleto}" filterBy="#{registro.nombreCompleto}" filterMatchMode="contains" >
+		<h:outputText value="#{registro.nombreCompleto}" />
+	</p:column>
+	<p:column headerText="Siglas" style="width:90px;" styleClass="centrado" sortBy="#{registro.siglas}" filterBy="#{registro.siglas}" filterMatchMode="contains">
+		<h:outputText value="#{registro.siglas}" title="#{registro.siglas}"/>
+	</p:column>
+	<p:column headerText="Login" style="width:100px;" styleClass="centrado " sortBy="#{registro.username}" filterBy="#{registro.username}" filterMatchMode="contains">
+		<h:outputText value="#{registro.username}" title="#{registro.username}" />
+	</p:column>
+	<p:column headerText="Rol" style="width:125px;" styleClass="centrado" sortBy="#{mantenimiento.bean.getNombreRolAcuses(registro)}" filterBy="#{mantenimiento.bean.getNombreRolAcuses(registro)}" filterMatchMode="contains">
+		<h:outputText value="#{mantenimiento.bean.getNombreRolAcuses(registro)}" title="#{mantenimiento.bean.getNombreRolAcuses(registro)}" />
+	</p:column>
+</ui:composition>

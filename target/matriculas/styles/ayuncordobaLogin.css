@@ -1,0 +1,132 @@
+
+/* 
+	Página de login 			-- login.xhtml --
+	Página principal del login 	-- main_login.xhtml -- 
+*/
+.h1_titulo_login {
+  text-shadow: 5px 5px 5px #aaa;
+}
+
+.celda_centrada {
+	vertical-align: middle;
+}
+
+#menu_derecha {
+	margin-left: 3px!important;
+}
+
+#mPrincipal .ui-menu {
+	width: 99%!important;
+}
+
+
+#form_login #titulo_ventana {
+	margin-left: -21px !important;
+    text-align: center;
+    width: 100%;
+}
+
+#mPrincipal h3 a {
+	text-decoration: none!important;
+	color: black!important;
+	font-size: 13px!important;
+}
+
+.botonInicio {
+	background-color: #9c9c9c;
+}
+
+#top, #formPpal {
+	margin-top: 5px !important;
+/* 	height: 75px !important;
+	background: none repeat scroll 0 0 #222222 !important;
+ */	border: none !important;
+}
+
+#top .ui-corner-all, #formPpal .ui-corner-all {
+	border-radius: 0px !important;
+}
+
+/* #top .ui-widget-content, #formPpal .ui-widget-content {
+	background: none repeat scroll 0 0 #222222 !important;
+} */
+
+#top #h1Ayun {
+	margin-top: 21px;
+	margin-left: 15px;
+	font-size: 20px;
+	text-align: center;
+}
+
+#top .h1PpalAyun {
+	color: #EF8C08 !important;
+}
+
+#top .h1SecondAyun {
+	margin-left: 20px;
+	color: black !important;
+}
+
+#contentPrincipal,
+#contentPrincipal #loginFormId,
+#contentPrincipal .ui-layout-unit-content, #contentPrincipal .ui-widget-content,
+#contentPrincipal #container  {
+	background: #F2F2F2;
+}
+
+#loginFormId {
+	width: 345px !important;
+}
+
+#tablePanel .loginBox {
+	width: 90%!important;
+	background: white!important;
+}
+
+#loginPanel #loginPanel_header {
+	background: none repeat scroll 0 0 #f6d7a1 !important;
+}
+
+#loginPanel .logo {
+	margin: 0 auto!important;
+}
+
+.loginBox {
+	width: 345px !important;
+	/* margin-left: 65px !important; */
+}
+
+.loginBox #panel2_header {
+	text-align:center!important;
+	margin:0!important;
+}
+
+
+#loginBotonera {
+	margin-top: 20px;	
+}
+
+#loginBotonera #btnLoginId,
+#loginBotonera #btnCancelId {
+	width: 132px!important;
+	height: 40px;
+	padding: 0!important;
+}
+
+#bottom {
+	background: none repeat scroll 0 0 #222222 !important;
+	border: none !important;
+	color: white !important;
+	text-align: center;
+}
+
+#bottom .ui-widget-content, #bottom .ui-widget-content a {
+	background: none repeat scroll 0 0 #222222 !important;
+	color: white !important;
+	text-decoration: none !important;
+}
+
+#bottom .ui-widget-content a {
+	color: #EF8C08 !important;
+}
+

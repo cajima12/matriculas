@@ -1,0 +1,113 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+
+
+public class BoeTipoTextoDto implements Serializable {
+
+	private static final long serialVersionUID = -6157465538888297733L;
+
+	private long id;
+	
+	private Dir3Dto dir3;
+
+	private String cabecera;
+
+	private String pie;
+	
+	private String tipo;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Dir3Dto getDir3() {
+		return dir3;
+	}
+
+	public void setDir3(Dir3Dto dir3) {
+		this.dir3 = dir3;
+	}
+
+	public String getCabecera() {
+		return cabecera;
+	}
+
+	public void setCabecera(String cabecera) {
+		this.cabecera = cabecera;
+	}
+
+	public String getPie() {
+		return pie;
+	}
+
+	public void setPie(String pie) {
+		this.pie = pie;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	@Override
+	public String toString() {
+		return "BoeTipoTextoDto [id=" + id + ", " + (dir3 != null ? "dir3=" + dir3 + ", " : "") + (cabecera != null ? "cabecera=" + cabecera + ", " : "")
+				+ (pie != null ? "pie=" + pie + ", " : "") + (tipo != null ? "tipo=" + tipo : "") + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cabecera == null) ? 0 : cabecera.hashCode());
+		result = prime * result + ((dir3 == null) ? 0 : dir3.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((pie == null) ? 0 : pie.hashCode());
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof BoeTipoTextoDto))
+			return false;
+		BoeTipoTextoDto other = (BoeTipoTextoDto) obj;
+		if (cabecera == null) {
+			if (other.cabecera != null)
+				return false;
+		} else if (!cabecera.equals(other.cabecera))
+			return false;
+		if (dir3 == null) {
+			if (other.dir3 != null)
+				return false;
+		} else if (!dir3.equals(other.dir3))
+			return false;
+		if (id != other.id)
+			return false;
+		if (pie == null) {
+			if (other.pie != null)
+				return false;
+		} else if (!pie.equals(other.pie))
+			return false;
+		if (tipo == null) {
+			if (other.tipo != null)
+				return false;
+		} else if (!tipo.equals(other.tipo))
+			return false;
+		return true;
+	}
+	
+
+}

@@ -1,0 +1,5 @@
+package org.ayuncordoba.eseg.util;
+
+public enum Ordenacion {
+	ASC, DESC, NO
+}

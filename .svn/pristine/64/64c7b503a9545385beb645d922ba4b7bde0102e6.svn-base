@@ -1,0 +1,75 @@
+package org.ayuncordoba.eseg.util;
+
+import org.ayuncordoba.eseg.modelo.Dir3;
+import org.ayuncordoba.eseg.modelo.Dir3Nivel;
+import org.ayuncordoba.eseg.modelo.dto.EstructuraNivelDir3Dto;
+import org.ayuncordoba.eseg.modelo.dto.EstructuraUnidadDir3Dto;
+import org.ayuncordoba.eseg.repositorio.Dir3Repositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ConversorModelMapper {
+
+	@Autowired
+	private static ApplicationContext context;
+	
+	public static EstructuraUnidadDir3Dto converEstructuraDir3(String id){
+		Dir3 dir3 = new Dir3();
+		EstructuraUnidadDir3Dto unidad = new EstructuraUnidadDir3Dto();
+		
+		dir3 = ((Dir3Repositorio) context.getBean(Dir3.class)).findOne(id);
+		
+		if ( dir3 != null ) {
+			unidad.setId(dir3.getId());
+			unidad.setDenominacion(dir3.getDenominacion());
+		}
+		
+		return unidad;
+		 
+	}
+	
+	public static EstructuraNivelDir3Dto converEstructuraNivelDir3(Dir3Nivel nivel){
+		EstructuraNivelDir3Dto unidad = new EstructuraNivelDir3Dto();
+		
+		unidad.setId(nivel.getId());
+		unidad.setTipoEntidad(nivel.getTipoEntidad());
+		
+		return unidad;
+		 
+	}
+	
+	
+	public static EstructuraUnidadDir3Dto converObtenerUnidadPublicadoraDir3(String id){
+
+		EstructuraUnidadDir3Dto unidad = new EstructuraUnidadDir3Dto();
+		
+		Integer indice = (((Dir3Repositorio) context.getBean(Dir3.class)).findNivelJerarquicoById(id))+1;
+		Dir3 dir3Temp = new Dir3();
+		
+		for ( int i = indice; i > 0; i--) {
+			Dir3 dir3 = ((Dir3Repositorio) context.getBean(Dir3.class)).findById(id);
+			if ( dir3.getPublicador() ) dir3Temp = dir3;
+			if ( !id.equals(dir3.getUnidadSuperior() ) ) id = dir3.getUnidadSuperior();
+		}
+
+		if ( dir3Temp != null ) {
+			unidad.setId(dir3Temp.getId());
+			unidad.setDenominacion(dir3Temp.getDenominacion());
+		}
+		
+		return unidad;
+		 
+	}
+
+	public static ApplicationContext getContext() {
+		return context;
+	}
+
+	public static void setContext(ApplicationContext context) {
+		ConversorModelMapper.context = context;
+	}
+
+	
+}

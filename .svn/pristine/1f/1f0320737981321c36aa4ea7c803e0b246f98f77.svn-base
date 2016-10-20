@@ -1,0 +1,11 @@
+package org.ayuncordoba.eseg.servicio;
+
+import org.ayuncordoba.eseg.modelo.Usuario;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface UsuarioServicio {
+	 
+    public Usuario getUsuario(String username);
+
+}

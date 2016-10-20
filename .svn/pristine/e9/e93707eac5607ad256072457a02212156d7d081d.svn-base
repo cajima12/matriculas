@@ -1,0 +1,43 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Aplicacion;
+import org.ayuncordoba.eseg.repositorio.AplicacionRepositorio;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoAplicacionesBean extends MantenimientoGenericoBean<Aplicacion, Long> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoAplicacionesBean.class);
+
+	@ManagedProperty("#{aplicacionRepositorio}")
+	private AplicacionRepositorio aplicacionRepo;
+
+	@Override
+	protected void cargarListado(List<Aplicacion> listado) {
+		listado.addAll(aplicacionRepo.findAll());
+	}
+
+	public AplicacionRepositorio getAplicacionRepo() {
+		return aplicacionRepo;
+	}
+
+	public void setAplicacionRepo(AplicacionRepositorio aplicacionRepo) {
+		this.aplicacionRepo = aplicacionRepo;
+	}
+
+	public static Logger getLog() {
+		return log;
+	}
+	
+
+	
+}

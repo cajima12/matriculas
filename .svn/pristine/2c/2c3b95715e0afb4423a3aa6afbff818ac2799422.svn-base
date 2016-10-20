@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Localidades;
+
+public class LocalidadRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Localidades> {
+
+	private static final long serialVersionUID = 3855089066694773439L;
+
+	public LocalidadRepositorioImpl() throws InstantiationException,	IllegalAccessException {
+		super();
+	}
+	
+}

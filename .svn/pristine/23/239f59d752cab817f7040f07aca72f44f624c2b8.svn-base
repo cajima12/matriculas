@@ -1,0 +1,119 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Dir3;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class Dir3Dto implements Serializable {
+
+	private static final long serialVersionUID = 2680990949686047917L;
+
+	private String id;
+	private String denominacion;
+	private Integer nivelJerarquico;
+	private Dir3Dto padre;
+	private Dir3Dto principal;
+	private List<Dir3Dto> estructuraJerarquica;
+	private Dir3Dto unidadPublicadora;
+	private String provincia;
+	private Boolean publicador;
+	private List<BoeTipoTextoDto> boeTipoTextos;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDenominacion() {
+		return denominacion;
+	}
+
+	public void setDenominacion(String denominacion) {
+		this.denominacion = denominacion;
+	}
+
+	public Integer getNivelJerarquico() {
+		return nivelJerarquico;
+	}
+
+	public void setNivelJerarquico(Integer nivelJerarquico) {
+		this.nivelJerarquico = nivelJerarquico;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+
+	public Boolean getPublicador() {
+		return publicador;
+	}
+
+	public void setPublicador(Boolean publicador) {
+		this.publicador = publicador;
+	}
+
+	public Dir3Dto getPadre() {
+		return padre;
+	}
+
+	public void setPadre(Dir3Dto padre) {
+		this.padre = padre;
+	}
+
+	public Dir3Dto getPrincipal() {
+		return principal;
+	}
+
+	public void setPrincipal(Dir3Dto principal) {
+		this.principal = principal;
+	}
+
+	public List<Dir3Dto> getEstructuraJerarquica() {
+		return estructuraJerarquica;
+	}
+
+	public void setEstructuraJerarquica(List<Dir3Dto> estructuraJerarquica) {
+		this.estructuraJerarquica = estructuraJerarquica;
+	}
+	public Dir3Dto getUnidadPublicadora() {
+		return unidadPublicadora;
+	}
+
+	public void setUnidadPublicadora(Dir3Dto unidadPublicadora) {
+		this.unidadPublicadora = unidadPublicadora;
+	}
+	
+	public static Dir3Dto toDto(Dir3 pojo){
+		ModelMapper modelMapper = new ModelMapper();
+		PropertyMap<Dir3, Dir3Dto> mapper = new PropertyMap<Dir3, Dir3Dto>() {
+			protected void configure() {
+				map().setId(source.getId());
+				map().setDenominacion(source.getDenominacion());
+				map().setNivelJerarquico(source.getNivelJerarquico());				
+				map().setProvincia(source.getProvincia().getNombre());				
+			}
+		};
+		modelMapper.addMappings(mapper);
+		return modelMapper.map(pojo, Dir3Dto.class);
+	}
+
+	public List<BoeTipoTextoDto> getBoeTipoTextos() {
+		return boeTipoTextos;
+	}
+
+	public void setBoeTipoTextos(List<BoeTipoTextoDto> boeTipoTextos) {
+		this.boeTipoTextos = boeTipoTextos;
+	}
+
+	
+}

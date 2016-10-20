@@ -1,0 +1,21 @@
+package org.ayuncordoba.eseg.servicio.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.ayuncordoba.eseg.modelo.Rol;
+import org.ayuncordoba.eseg.repositorio.RolRepositorio;
+import org.ayuncordoba.eseg.servicio.RolServicio;
+
+@Service
+@Transactional
+public class RolServicioImpl implements RolServicio {
+   
+    @Autowired
+    private RolRepositorio roleRepo;
+
+    public Rol getRol(int id) {
+    	return roleRepo.findOne((long) id);
+    }
+
+}

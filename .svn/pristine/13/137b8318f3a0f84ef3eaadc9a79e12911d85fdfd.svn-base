@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:c="http://java.sun.com/jstl/core">
+	
+	<h:inputHidden value="#{mantenimiento.bean.instancia.clave}" />
+	
+		<p:panel header="Padres" style="width: 49%!important;float:left;">
+	
+			<p:dataTable styleClass="mantenimientoTable"
+				value="#{mantenimiento.bean.listadoPadres}" var="registro" id="mantenimientoTablePadres" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
+				rowsPerPageTemplate="5,10,15" rowKey="#{registro.clave}" selection="#{mantenimiento.bean.instancia.padres}" 
+				paginatorPosition="bottom" lazy="false" binding="#{mantenimiento.bean.tablaPadre}" widgetVar="mantenimientoTablePadre" >
+					
+					<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+					
+					<p:column headerText="Clave" style="width:150px;" styleClass="centrado" 
+					filterMatchMode="contains" sortBy="#{registro.clave}" filterBy="#{registro.clave}" >
+						<h:outputText value="#{registro.clave}" title="#{registro.clave}" />
+					</p:column>
+					<p:column headerText="Situación" styleClass="centrado" filterMatchMode="contains" 
+					sortBy="#{registro.situacion}" filterBy="#{registro.situacion}">
+						<h:outputText value="#{registro.situacion}" title="#{registro.situacion}" />
+					</p:column>
+					<p:column headerText="Siglas" style="width:240px;" filterMatchMode="contains" 
+					sortBy="#{registro.siglas}" filterBy="#{registro.siglas}">
+						<h:outputText value="#{registro.siglas}" title="#{registro.siglas}" />
+					</p:column>
+					
+			</p:dataTable>
+			
+		</p:panel>
+
+		<p:panel header="Hijos" style="width: 49%!important;float:left;">
+	
+			<p:dataTable styleClass="mantenimientoTable"
+				value="#{mantenimiento.bean.listadoHijos}" var="registro" id="mantenimientoTableHijos" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
+				rowsPerPageTemplate="5,10,15" rowKey="#{registro.clave}" selection="#{mantenimiento.bean.instancia.hijos}" 
+				paginatorPosition="bottom" lazy="false" binding="#{mantenimiento.bean.tablaHijo}" widgetVar="mantenimientoTableHijo" >
+					
+					<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+					
+					<p:column headerText="Clave" style="width:150px;" styleClass="centrado" 
+					filterMatchMode="contains" sortBy="#{registro.clave}" filterBy="#{registro.clave}" >
+						<h:outputText value="#{registro.clave}" title="#{registro.clave}" />
+					</p:column>
+					<p:column headerText="Situación" styleClass="centrado" filterMatchMode="contains" 
+					sortBy="#{registro.situacion}" filterBy="#{registro.situacion}">
+						<h:outputText value="#{registro.situacion}" title="#{registro.situacion}" />
+					</p:column>
+					<p:column headerText="Siglas" style="width:240px;" filterMatchMode="contains" 
+					sortBy="#{registro.siglas}" filterBy="#{registro.siglas}">
+						<h:outputText value="#{registro.siglas}" title="#{registro.siglas}" />
+					</p:column>
+					
+			</p:dataTable>
+			
+		</p:panel>
+		
+		<div class="clearfix"></div>
+		
+		<p:accordionPanel activeIndex="-1">
+			<p:tab title="Diagráma de Jerarquía">
+			
+			</p:tab>
+		</p:accordionPanel>
+	
+</ui:composition>

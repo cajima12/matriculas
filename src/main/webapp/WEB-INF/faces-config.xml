@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
+           
+    <!-- Enable Spring -->
+     <application>
+      <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	  <resource-bundle>
+		<base-name>properties.aplicacion</base-name>
+		<var>msg</var>
+	   </resource-bundle>
+	  <resource-bundle>
+		<base-name>properties.matriculas</base-name>
+		<var>msgs</var>
+	   </resource-bundle>
+     </application>
+  
+    <!-- navigation-rule for login.xhtml -->
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <!-- navigation-case for method login() -->
+        <navigation-case>
+            <from-action>#{loginMgmtBean.login}</from-action>
+            <from-outcome>correct</from-outcome>
+            <to-view-id>/pages/secure/principal/index.xhtml</to-view-id>
+        </navigation-case>
+        <!-- navigation-case for method login() -->
+        <navigation-case>
+            <from-action>#{loginMgmtBean.login}</from-action>
+            <from-outcome>incorrect</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+  
+    <!-- navigation-rule for list.xhtml -->
+    <navigation-rule>
+         <!-- navigation case for method logout() -->
+         <from-view-id>/pages/secure/templates/dashboard.xhtml</from-view-id>
+         <navigation-case>
+              <from-outcome>loggedout</from-outcome>
+              <to-view-id>/login.xhtml</to-view-id>
+              <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>  
+</faces-config>

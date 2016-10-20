@@ -1,0 +1,21 @@
+#############################################################################################################################
+## ECLIPSE -POR DEFECTO-
+#############################################################################################################################
+bd.oracle.driver=oracle.jdbc.OracleDriver
+bd.oracle.dialect=org.hibernate.dialect.Oracle10gDialect
+bd.persistence=org.hibernate.ejb.HibernatePersistence     
+bd.hibernate.show_sql=false
+hibernate.format_sql=false
+hibernate.log=error
+root.log=error
+
+bd.eseg.packageScan=org.ayuncordoba.eseg.modelo
+bd.eseg.url=jdbc:oracle:thin:@10.129.5.231:2521:des
+bd.eseg.user=SGEXPEDIENTES
+bd.eseg.pass=zFsfd4GM
+bd.eseg.maxPoolSize=20
+bd.eseg.minPoolSize=5
+bd.eseg.maxStatementsPerConnection=50
+bd.eseg.maxIdleTimeExcessConnections=600
+bd.eseg.preferredTestQuery=SELECT COUNT(*) FROM USUARIOS
+bd.eseg.idleConnectionTestPeriod=120

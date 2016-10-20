@@ -1,0 +1,72 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class MetafaseDto implements Serializable {
+
+	private static final long serialVersionUID = -3410850977324765636L;
+
+	private Long id;
+	private String nombreMetafase;
+
+	private List<FaseDto> fases;
+	private List<ProcedimientoDto> procedimientos;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNombreMetafase() {
+		return nombreMetafase;
+	}
+
+	public void setNombreMetafase(String nombreMetafase) {
+		this.nombreMetafase = nombreMetafase;
+	}
+
+	public List<FaseDto> getFases() {
+		return fases;
+	}
+
+	public void setFases(List<FaseDto> fases) {
+		this.fases = fases;
+	}
+
+	public List<ProcedimientoDto> getProcedimientos() {
+		return procedimientos;
+	}
+
+	public void setProcedimientos(List<ProcedimientoDto> procedimientos) {
+		this.procedimientos = procedimientos;
+	}
+
+	public static MetafaseDto toDto(Metafase metafase) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true);
+
+		PropertyMap<Metafase, MetafaseDto> map = new PropertyMap<Metafase, MetafaseDto>() {
+			protected void configure() {
+				skip().setFases(null);
+				skip().setProcedimientos(null);
+			}
+		};
+
+		modelMapper.addMappings(map);
+
+		MetafaseDto dto = modelMapper.map(metafase, MetafaseDto.class);
+
+		return dto;
+
+	}
+
+}

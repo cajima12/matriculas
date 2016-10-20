@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:o="http://omnifaces.org/ui">
+
+	<p:dialog header="Direcciones" widgetVar="dialogoDirecciones" modal="true" 
+		showEffect="fade" resizable="false" width="800"
+		style="font-size: 12px!important;" position="center middle" appendTo="@(body)" 
+		styleClass="sin-borde miDialog" closeOnEscape="true">
+		
+		<h:form>
+		
+			<o:importConstants type="org.ksoft.matriculas.modelo.Direccion.TipoDireccion" var="tipoDireccion" />
+			<p:growl id="msg" showDetail="true" />
+			
+			<p:panelGrid cellpadding="4" style="width: 100%;" styleClass="tamano100p tablaSinBordes">
+				<p:row>
+					<p:column styleClass="derecha">
+						<h:outputLabel value="Tipo Via: " />
+					</p:column>
+					<p:column colspan="3">
+						<p:autoComplete id="tipoViaSelect" value="#{mantenimiento.bean.tipoViaSelect}" 
+							completeMethod="#{mantenimiento.bean.metodoAutocompletarTipoVia}"
+							var="tipoVia" itemLabel="#{tipoVia.nombreCorto}" itemValue="#{tipoVia}" 
+							forceSelection="true" dropdown="true" maxResults="10" placeholder="--Seleccione Tipo Via--"
+							styleClass="autocomplete75p"> 
+							<o:converter converterId="omnifaces.ListConverter" list="#{mantenimiento.bean.lstTipoVia}" />
+						
+				            <p:column>
+				                <h:outputText value="#{tipoVia.nombreCorto}" />
+				            </p:column> 
+		         				
+				            <p:column>
+				                <h:outputText value="#{tipoVia.descripcion}" />
+				            </p:column> 				
+						</p:autoComplete>
+					</p:column>					
+				</p:row>
+				
+				<p:row>
+					<p:column styleClass="derecha">
+						<h:outputLabel value="Direccion: " />
+					</p:column>
+					<p:column colspan="3">
+						<p:inputText value="#{mantenimiento.bean.direccion.direccion}" readonly="#{mantenimiento.bean.soloLectura}"
+							required="true" requiredMessage="La dirección es obligatoria" styleClass="tamano96p"/>					
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="derecha">
+						<h:outputLabel value="Complemento: " />
+					</p:column>
+					<p:column>
+						<p:inputText value="#{mantenimiento.bean.direccion.complemento}" readonly="#{mantenimiento.bean.soloLectura}" />					
+					</p:column>
+					<p:column styleClass="derecha">
+						<h:outputLabel value="Código Postal: " />
+					</p:column>
+					<p:column >
+						<p:inputText value="#{mantenimiento.bean.direccion.codPostal}" readonly="#{mantenimiento.bean.soloLectura}"
+							required="true" requiredMessage="El código postal es obligatorio" />
+					</p:column>						
+				</p:row>
+
+				<p:row>
+					<p:column styleClass="derecha">
+						<h:outputLabel value="Provincia: " />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="provinciaSelect" value="#{mantenimiento.bean.provinciaSelect}" required="true"
+							filter="true" filterMatchMode="contains" converter="omnifaces.SelectItemsConverter" immediate="true"
+							requiredMessage="Debe seleccionar una provincia" rendered="#{!mantenimiento.bean.soloLectura}" >
+							<f:selectItem itemLabel="--Seleccione Provincia--" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{mantenimiento.bean.lstProvincias}" var="provincia" itemLabel="#{provincia.nombre}" itemValue="#{provincia}"/>
+							<p:ajax update="localidadSelect" />
+							
+						</p:selectOneMenu>											
+					</p:column>
+					<p:column styleClass="derecha">
+						<h:outputLabel value="Localidad: " />
+					</p:column>
+					<p:column>
+						<p:selectOneMenu id="localidadSelect" value="#{mantenimiento.bean.localidadesSelect}" required="true" 
+							filter="true" filterMatchMode="contains"  converter="omnifaces.SelectItemsConverter"
+							requiredMessage="Debe seleccionar una localidad" rendered="#{!mantenimiento.bean.soloLectura}" >
+							<f:selectItem itemLabel="--Seleccione Localidad--" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{mantenimiento.bean.lstLocalidades}" var="localidad" itemLabel="#{localidad.nombre}" itemValue="#{localidad}"/>
+						</p:selectOneMenu>						
+		        	</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column styleClass="centro" colspan="2">
+						<p:commandButton value="Guardar" actionListener="#{mantenimiento.bean.guardarDireccion}"
+							partialSubmit="true" process="@form" icon="fa fa-floppy-o"/>
+					</p:column>
+					<p:column styleClass="centro" colspan="2">
+						<p:commandButton value="Cancelar" actionListener="#{mantenimiento.bean.cancelarDireccion}" 
+							rendered="#{!mantenimiento.bean.soloLectura}" process="@this" partialSubmit="true"/>
+						<p:commandButton value="Cerrar" onclick="PF('dialogoDirecciones').hide()" 
+							rendered="#{mantenimiento.bean.soloLectura}"/>
+					</p:column>					
+				</p:row>
+									
+			</p:panelGrid>
+
+		</h:form>
+		
+	</p:dialog>
+
+</ui:composition>

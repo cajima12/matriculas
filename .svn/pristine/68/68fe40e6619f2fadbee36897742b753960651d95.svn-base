@@ -1,0 +1,32 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.marcaconsultoria.paginacion.PaginacionTablaGenericaImpl;
+
+/**
+ * Adaptación de la paginación al proyecto de seguimiento
+ * 
+ * @author RCHZ
+ *
+ * @param <ENTIDAD>
+ */
+public class PaginacionTablaGenericaSeguimientoImpl<ENTIDAD> extends PaginacionTablaGenericaImpl<ENTIDAD> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7576187188710925412L;
+
+	public PaginacionTablaGenericaSeguimientoImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+	@Override
+	@PersistenceContext(name = "entityManagerFactory", unitName = "seguimiento")
+	public void setEntityManager(EntityManager entityManager) {
+		super.setEntityManager(entityManager);
+	}
+
+}

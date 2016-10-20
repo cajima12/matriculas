@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions" xmlns:c="http://java.sun.com/jstl/core">
+	<h:inputHidden value="#{mantenimiento.bean.instancia.id}" />
+	
+	<p:panelGrid styleClass="" style="width: 98%;">
+	       
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Código:" for="codigo" />
+			</p:column>
+			<p:column>
+				<p:inputText id="codigo" value="#{mantenimiento.bean.instancia.codigo}" readonly="#{mantenimiento.bean.soloLectura}" 
+					required="true" requiredMessage="El campo Código no puede estar vacío" maxlength="20" 
+					validator="#{mantenimiento.bean.validarCodigo}" />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Nombre:" for="nombre" />
+			</p:column>
+			<p:column>
+				<p:inputText id="nombre" value="#{mantenimiento.bean.instancia.nombre}" readonly="#{mantenimiento.bean.soloLectura}" 
+					required="true"	requiredMessage="El campo nombre no puede estar vacío" />
+			</p:column>
+		</p:row>
+		
+		<p:row>			
+			<p:column>
+				<h:outputLabel value="Referencia interna:" for="refCodigo" />
+			</p:column>
+			<p:column>
+				<p:inputText id="refCodigo" value="#{mantenimiento.bean.instancia.refCodigo}" readonly="#{mantenimiento.bean.soloLectura}" 
+					maxlength="20" validator="#{mantenimiento.bean.validarReferenciaInterna}" />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="DIR3:" for="dir3" />
+			</p:column>
+			<p:column>
+				<p:selectOneMenu id="dir3" value="#{mantenimiento.bean.instancia.unidadDir3}" disabled="#{mantenimiento.bean.soloLectura}" 
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem itemValue=""  itemLabel="No" />  
+					<f:selectItems value="#{mantenimiento.bean.listadoDir3}" var="unidadDir3" itemValue="#{unidadDir3}" 
+						itemLabel="#{unidadDir3.id} - #{unidadDir3.denominacion}" />
+				</p:selectOneMenu>	
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Padre:" for="padre" />
+			</p:column>
+			<p:column colspan="3">	
+      			<p:autoComplete id="padre" 
+					value="#{mantenimiento.bean.instancia.padre}" 
+					completeMethod="#{autoUnidad.completarUnidad}" 
+					var="uni" readonly="#{mantenimiento.bean.soloLectura}"
+					itemLabel="#{uni.refCodigo} #{uni.nombre}" itemValue="#{uni}" dropdown="true" maxResults="10"
+					forceSelection="true" style="width: 80%!important" 
+					converter="entidadConverter">
+<!-- 					<o:converter converterId="omnifaces.ListConverter" list="#{autoUnidad.lstUnidades}"/> -->
+					<p:ajax event="itemSelect" process="@this" update="@this" />
+					
+		            <p:column>
+		                <h:outputText value="#{uni.refCodigo}" />
+		            </p:column> 
+         				
+		            <p:column>
+		                <h:outputText value="#{uni.nombre}" />
+		            </p:column>         					
+        			
+        		</p:autoComplete>			
+			</p:column>	
+		
+		</p:row>		
+		
+		<p:row>
+			<p:column colspan="4" styleClass="sinBordeDerecho sonBordeIzquierdo">
+				<p:outputLabel />
+			</p:column>
+		</p:row>
+		
+		<p:row styleClass="tablaSeleccionMantenimientos">
+			<p:column colspan="4">
+				<p:panelGrid>
+				    <f:facet name="header">
+				        <p:outputLabel value="Seleccione los procedimientos de la unidad" />
+				    </f:facet>		
+
+					<p:dataTable 
+						style="width: 100%!important;"
+						value="#{mantenimiento.bean.listadoProcedimientos}"
+						var="procedi"
+						selection="#{mantenimiento.bean.instancia.procedimientos}" 
+						rowKey="#{procedi.id}"
+						paginator="true" rows="10"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
+						rowsPerPageTemplate="5,10,15"
+						paginatorPosition="bottom" 
+						lazy="false" >
+							<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+							<p:column headerText="Código Procedimiento" >
+								<p:outputLabel value="#{procedi.id}" />
+							</p:column>
+							<p:column headerText="Nombre Procedimiento" >
+								<p:outputLabel value="#{procedi.nombre}" />
+							</p:column>
+					</p:dataTable>					
+
+				</p:panelGrid>
+			</p:column>		
+		</p:row>
+				
+	</p:panelGrid>
+	
+</ui:composition>

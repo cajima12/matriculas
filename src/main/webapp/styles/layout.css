@@ -1,0 +1,551 @@
+body {
+	margin: 0em;
+	padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+	color: #837669;
+}
+ .ui-panel .ui-panel-content{
+ 	padding:0.5em 0.5em !important;
+ }
+h1, h2, h3 {
+	margin: 0.4em;
+	font-weight: normal;
+	color:grey;
+}
+h1{ 
+	font-size: 2.2em;
+	font-weight: bold;
+	margin-left: 15%;
+	margin-right: auto;
+}
+.titleHeader{ 
+	font-size: 2.2em;
+	font-weight: bold;
+		color:grey;
+}
+.subtile{ 
+	font-size: 1.0em;
+	font-weight: normal;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:auto;
+	color:grey;
+} 
+
+a{
+	color:#000;
+}
+a:hover{
+	color:#999;
+}
+
+a, a:hover { text-decoration: none; }
+
+label{
+	font-size: 0.8em;
+	font-weight: bold;
+}
+.buttons{
+	margin-top:10px;
+	padding:5px;
+}
+.buttons input{
+	margin-right:10px;
+}
+
+table {
+    background-color: #FFF;
+    margin-top: 2px;
+    width:100%;
+}
+.tablaContents{
+	   margin-top:-0.5em !important;
+}
+table th {
+    background-color: #EFEFEF;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    border-right: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size:0.8em;
+}
+
+table .row1 { 
+    background-color: #FFF;
+}
+table .row2 { 
+    background-color: #DDD;
+}
+
+div#wrapper{
+	margin:auto;
+	width:98%;
+    overflow: auto;  
+    min-height: 1000px;
+	min-width: 1000px;	
+}
+
+div#header{
+	margin-top:0.1em; 
+	padding:0.1em;
+	border-bottom:1px solid #CCC;
+	height:90px;  
+}
+div#header h1, div#header h4{
+	display:inline;
+	float:left;
+}
+
+div#header #logo{
+	float:right;
+}
+div#header #logo img{
+	border: 0px;
+}
+
+div#nav {
+	float:left;
+	width:150px;
+}
+	
+div#nav ul {
+	list-style: none; 
+	margin: 0; 
+	margin-left: 0.4em;
+	padding:0;
+}
+div#nav li { 
+	margin: 0;
+}
+ 
+
+div#content{
+	width:99%;
+	float:left;
+	margin-left:0.1em;
+	padding-left:0.1em; 
+	margin-top:-8.0em;
+	margin-top:0.4em !important\0/; /*esta línea controla la distancia al top exclusivamente para el caso de IE8*/
+	border:0px;
+}
+div#content h4{
+	border-bottom:1px solid #CCC;
+}
+div#footer{
+	border-top:1px solid #CCC;
+	padding-top:1em;
+	margin-top:18em;
+	clear:both;
+}
+div#footer img{
+	float: right;
+}
+.wMin{
+	width:5%;
+}
+
+#userMenu{
+	margin-top: 1em;
+}
+#userMenu ul {
+	list-style: none; 
+	margin: 0; 
+	margin-right: 1em;
+	padding:0;
+}
+#userMenu li {
+	
+	margin-left: 0.5em;
+}
+
+.errorMessages, .red{
+	color:red;
+}
+
+.invalid{
+	border: 2px solid red;
+}
+
+#listUserForm\00003AlistUsers\00003Aapellidos_filter{
+	width: 250px;
+} 
+.maintenance tr, .maintenance td {
+    border: none !important;
+
+}
+
+.ui-widget-content tr{
+	    background:transparent !important;
+}
+.ui-widget-content table{
+	    background:transparent !important;
+}
+.maintenance label{
+	width: 150px;
+	display: inline-block;
+	font-size:1em;
+}
+.maintenance textarea{
+	display: inline;
+	font-size:1em;
+}
+
+.labelMedio {
+   width: 120px !important;
+   display: inline-block;
+}
+
+.labelMax{
+   width: 160px;
+   display: inline-block;
+}
+.buttonSend{
+	   background: url(#{resource['img/sendservicio.gif']}) !important;
+	   background-size: 100% Auto  !important;
+}
+/*Boton de baja del listado de usuarios*/
+.button-trash {
+   background: url(#{resource['img/delete.gif']}) no-repeat scroll 0 0  !important;
+   background-size: 100% Auto  !important;
+   margin-left: 40%;
+ 	margin-right: 40%;
+    color:transparent !important;
+} 
+.button-help{
+	 background: url(#{resource['img/icon-help.gif']}) no-repeat scroll 0 0  !important;
+}
+.button-config{
+	 background: url(#{resource['img/config.png']}) no-repeat scroll 0 0  !important;
+}
+
+.button-tick{
+	 background: url(#{resource['img/icon-tick.png']}) no-repeat scroll 0 0  !important;
+}
+
+.button-test{
+	 background: url(#{resource['img/automate-testing-icon.png']}) no-repeat scroll 0 0  !important;
+}
+.button-imagen{
+	 background: url(#{resource['img/imagen.png']}) no-repeat scroll 0 0  !important;
+	 background-size: 100% Auto  !important;
+	 margin-left: 40%;
+	 margin-right: 40%;
+	 color:transparent !important;
+}
+.botonSelected{
+	border: 1px solid #C5DBEC !important;
+    color: orange !important;
+    font-weight: bold !important;
+}
+
+.blue{
+	color:#6CACE4 !important;
+	font-weight:bold;
+}
+.blueDark{
+	color:#6C6Cc2 !important;
+	font-weight:bold;
+}
+.redDark{
+	color:#FF5500 !important;
+	font-weight:bold;
+}
+.blueTitle{
+	color:#6CACE4;
+	font-weight:bold;
+	font-size: 1.2em !important;
+}
+.blueSubTitle{
+	color:#6CACE4;
+	font-weight:bold;
+	font-size: 1.1em !important;
+}
+.blueDarkSubTitle{
+	color:#6C6Cc2;
+	font-weight:bold;
+	font-size: 1.1em !important;
+}
+.blueSizeShort{
+	
+	color:#6CACE4;
+	font-weight:bold;
+	width:70px !important;
+}
+.labelWidthAuto{
+	width:auto !important;
+} 
+.blueSizeMedium{
+	color:#6CACE4;
+	font-weight:bold;
+	width:300px !important;
+}
+.blueSizeLarge{
+	color:#6CACE4;
+	font-weight:bold;
+	width:400px !important;
+	word-wrap: break-word !important;
+}
+
+.blueSizeExtraLarge{
+	color:#6CACE4;
+	font-weight:bold;
+	width:700px !important;
+	word-wrap: break-word !important;
+}
+/* control del ancho de tabla*/
+.tablaListado table{
+    table-layout: fixed;
+}
+
+.tablaListado table td{
+    /*word-wrap  : word-break;*/
+    word-wrap:break-all;    
+}
+
+
+.genericos {
+vertical-align: top;
+width:50%;
+}
+.genericosSinEspecificos {
+vertical-align: top;
+width:70%;
+}
+.especificos {
+vertical-align: top;
+width:50%;
+}
+.especificosVacios{
+vertical-align: top;
+width:25%;
+}
+.inputMedium{
+	width: 300px !important;
+}
+.labelMedium{
+	width: 220px !important;
+}
+.labelRedMedium{
+	width: 220px !important;
+	color:red;
+}
+.labelLarge{
+	width: 300px !important;
+}
+.labelRedLarge{
+	width: 300px !important;
+	color:red;
+}
+.inputLarge{
+	width: 500px !important;
+}
+.alignTop {
+vertical-align: top;
+overflow: auto !important;
+width:500px !important;
+}
+
+.ui-dock-top{
+	position:absolute !important;
+	top:10% !important; 
+	left:50% !important;
+	right:50% !important;
+}
+ .maintenance_cd label{
+	width: 100%;
+	display: inline-block;
+	font-size:1em;
+}
+.ui-panel .ui-panel-titlebar{
+	padding:0.1em 1em 0.1em !important;
+}
+.xls {
+		background: url(#{resource['img/xls.png']})  !important;
+		background-repeat: no-repeat !important;
+		color:#6CACE4 !important;
+		font-weight:bold;
+}
+.greyText{
+	color:grey !important;
+}
+
+.ui-menu .ui-menuitem-link {
+	line-height: 32px  !important;
+}
+.ui-menubar .ui-menuitem-link {
+	margin: 0.1em !important;
+	background-color: cornflowerBlue !important;
+}
+.ui-menuitem-text{
+	font-family: Lucida Grande, Lucida Sans, Arial, sans-serif !important;
+	font-size: 1.1em !important;
+	color:white !important;
+}
+.autoWidthDialog {
+	height:auto !important;
+    width:auto !important;
+}
+
+.WidthDialog {
+	height:auto !important;
+    width:100% !important;
+}
+/*css para el listado de lotes indicando el estilo del caso normal, y de aquellas peticiones sin respuesta no seleccionables*/
+.selectable .ui-chkbox-icon {
+   display:block !important;
+}
+.unselectable  .ui-chkbox-icon{
+   display:none !important;
+}
+.unselectable  .ui-selection-column{
+   background-color: rgba(218, 34, 34, 0.81) !important;
+}
+/** reglas sobre los nodos del arbol de los datos especificos*/
+.treeDatosEspecificos{ 
+	border:0px; 
+
+}
+
+.ui-tree-nodes {
+	width: 400px !important;
+}
+
+.blasa{
+	width:400px !important;
+	word-wrap: break-word ;
+	overflow: auto !important;
+	white-space: normal !important;
+}
+.ui-tree .ui-treenode-label {
+	display: inline !important;
+}
+.ui-tree .ui-treenode{
+	white-space: normal !important;	
+}
+.ui-messages-error-summary{
+	white-space: normal !important;		
+}
+.ui-tree   {
+	width:600px !important;
+}
+.datosgenericos_response{
+	width:95% !important;
+	word-wrap: break-word ;
+	height:950px !important;
+	overflow-y: auto !important; 
+}
+.datosespecificos_response{
+	width:95% !important; 
+	word-wrap: break-word ;
+	overflow-y: auto !important;
+	
+}
+/** Lista de servicios*/
+.columnCert {
+ 	width: 10% !important;
+ 	white-space: normal !important;;
+ }
+.background_warning .columnCert{
+	background:rgb( 249, 204, 121) !important; 
+ 	width: 10% !important;
+ 	white-space: normal !important;
+}
+ .columnDescripcion {
+ 	width: 45% !important;
+ 	white-space: normal !important;
+ }
+ .background_warning .columnDescripcion{
+	background:rgb(  249, 204, 121) !important; 
+	width: 45% !important;
+ 	white-space: normal !important;;
+}
+ .columnEmisor {
+ 	width: 10% !important;
+ 	white-space: normal !important;;
+ }
+ 
+.background_warning .columnEmisor{
+	background:rgb( 249, 204, 121) !important; 
+ 	width: 10% !important;
+ 	white-space: normal !important;;
+}
+ .columnVersion{
+  	width: 10% !important;
+  	white-space: normal !important;;
+ }
+ .background_warning .columnVersion{
+	background:rgb(  249, 204, 121) !important; 
+ 	width: 10% !important;
+  	white-space: normal !important;;
+}
+.serviciosTable.ui-datatable table {
+   width: auto;
+   
+}
+.columnaListadoMedium{
+	width:25% !important;
+	white-space: normal !important;;
+}
+.background_warning .columnaListadoMedium{
+ 	background:rgb(  249, 204, 121) !important;
+ 	width:25% !important;
+	white-space: normal !important;;
+}
+.columnaListadoCorta{
+	width:5% !important;
+	white-space: normal !important;;
+}
+.background_warning .columnaListadoCorta {
+ 	background:rgb(  249, 204, 121) !important;
+ 	width:5% !important;
+	white-space: normal !important;;
+ } 
+.columnaListadoCorta .ui-dt-c{
+	padding: 0;
+	overflow: hidden;
+	white-space: normal;
+	
+}
+.columnaListadoInfo{
+	padding: 0;
+	overflow: hidden;
+	white-space: normal;
+	width:5% !important;
+}
+.background_warning .columnaListadoInfo{
+	padding: 0;
+	overflow: hidden;
+	white-space: normal;
+	width:5% !important;
+	background:rgb(  249, 204, 121) !important; 
+}
+ .columnWithOutWhiteSpace{ 
+	white-space: normal !important; 
+}
+
+/** Listado de procedimientos a autorizar  */
+.background_selected{
+	background:rgb(200, 216, 113) !important; 
+}
+  
+.background_warning{
+	background:rgb(  249, 204, 121) !important; 
+}
+ 
+/* workarround necesario que el funcionamiento del componente fileupload en ie10*/
+.fileupload-buttonbar .ui-button input { 
+	position : fixed !important; 
+}
+
+.panelCenter {
+    margin: 0 auto;
+}
+.panelNoBorder    tr, .panelNoBorder td{
+	 border: none !important;
+}

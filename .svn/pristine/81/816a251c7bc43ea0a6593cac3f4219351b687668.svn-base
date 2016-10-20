@@ -1,0 +1,88 @@
+package org.ayuncordoba.eseg.bean;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+@ManagedBean
+@SessionScoped
+@SuppressWarnings("unused")
+public class MenuBean {	
+	
+	
+	// Accesos a la página principal	
+	public String goToMenuPrincipal(){
+		return "/pages/secure/busquedas/loginLayout.xhtml?faces-redirect=true";
+	}	
+	
+	public String goToDashboard(){
+		return "/pages/secure/principal/index.xhtml?faces-redirect=true";
+	}	
+	
+	/* PANEL DE CONTROL - MANTENIMIENTOS */
+	
+//  Mantenimiento Firmantes
+	public String goToMantenimientoFirmantes() {
+		return "/pages/secure/mantenimientos/firmantes.xhtml?faces-redirect=true";
+	}
+	
+//	Mantenimientos Acceso
+	public String goToMantenimientoRoles() {
+		return "/pages/secure/mantenimientos/roles.xhtml?faces-redirect=true";
+	}
+
+	public String goToMantenimientoUsuarios() {
+		return "/pages/secure/mantenimientos/usuarios.xhtml?faces-redirect=true";
+	}
+
+	public String goToMantenimientoAplicaciones() {
+		return "/pages/secure/mantenimientos/aplicaciones.xhtml?faces-redirect=true";
+	}
+	
+//	Mantenimientos Estructura Orgánica
+	public String goToMantenimientoNivelesDir3() {
+		return "/pages/secure/mantenimientos/nivelesDir3.xhtml?faces-redirect=true";
+	}
+
+	public String goToMantenimientoDir3() {
+		return "/pages/secure/mantenimientos/dir3.xhtml?faces-redirect=true";
+	}
+	
+	public String goToMantenimientoUnidades() {
+		return "/pages/secure/mantenimientos/unidades.xhtml?faces-redirect=true";
+	}
+	
+	
+//	Mantenimiento Documentos
+	public String goToMantenimientoTiposDocumentos() {
+		return "/pages/secure/mantenimientos/tiposDocumentos.xhtml?faces-redirect=true";
+	}
+
+	public String goToMantenimientoDocumentos() {
+		return "/pages/secure/mantenimientos/documentos.xhtml?faces-redirect=true";
+	}
+	
+//	Mantenimientos Seguimientos
+	public String goToMantenimientoProcedimientos() {
+		return "/pages/secure/mantenimientos/procedimientos.xhtml?faces-redirect=true";
+	}
+	
+	public String goToMantenimientoMetaFases() {
+		return "/pages/secure/mantenimientos/metaFases.xhtml?faces-redirect=true";
+	}
+	
+	public String goToMantenimientoFases() {
+		return "/pages/secure/mantenimientos/fases.xhtml?faces-redirect=true";
+	}
+
+	public String goToMantenimientoActuaciones() {
+		return "/pages/secure/mantenimientos/actuaciones.xhtml?faces-redirect=true";
+	}
+	
+	public String goToMantenimientoJerarquiaPadresHijos() {
+		return "/pages/secure/mantenimientos/jerarquia.xhtml?faces-redirect=true";
+	}
+
+}

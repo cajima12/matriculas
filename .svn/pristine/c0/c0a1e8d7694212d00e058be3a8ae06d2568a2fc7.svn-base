@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" >
+		<p:dialog id="dialogoBoe" header="Nueva Cabecera y Pie para BOE" widgetVar="dlgModalNuevoBoe"  position="center middle"  modal="true" height="700" appendTo="@(body)">
+			<h:form id="nuevoFormulario">
+				<h:inputHidden value="#{mantenimiento.bean.boeTipoTextoNuevo.id}"/>
+				<h:panelGrid columns="2" cellpadding="4" >
+					<h:outputLabel value="Tipo:" for="nombreTipo" />
+					<p:inputText id="nombreTipo" value="#{mantenimiento.bean.boeTipoTextoNuevo.tipo}">
+						<p:ajax process="@this"/>
+					</p:inputText>
+				</h:panelGrid>
+				<h:panelGrid columns="1" cellpadding="4" >
+					<p:outputLabel value="Cabecera BOE" />
+					<pe:ckEditor id="editor" value="#{mantenimiento.bean.boeTipoTextoNuevo.cabecera}" height="180" 
+						toolbar="[['Cut','Copy','Paste','PasteText','PasteFromWord','-', 'SpellChecker', 'Scayt', 'Bold', 'Italic']]" ></pe:ckEditor>  
+				</h:panelGrid>
+				<h:panelGrid columns="1" cellpadding="4" >
+					<p:outputLabel value="Pie BOE" />
+					<pe:ckEditor id="secondEditor" value="#{mantenimiento.bean.boeTipoTextoNuevo.pie}" height="180"
+						toolbar="[['Cut','Copy','Paste','PasteText','PasteFromWord','-', 'SpellChecker', 'Scayt', 'Bold', 'Italic']]" ></pe:ckEditor>  
+	 			</h:panelGrid>	
+				<h:panelGrid columns="2" cellpadding="4" styleClass="botonera">
+					<p:commandButton icon="ui-icon-disk" value="Guardar" action="#{mantenimiento.bean.addNuevoBoe}" process="@form" partialSubmit="true" update="formulario:boePorDir3"/>
+					<p:commandButton ajax="true" value="Cancelar" onclick="PF('dlgModalNuevoBoe').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+</ui:composition>

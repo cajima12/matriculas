@@ -1,0 +1,9 @@
+package org.ayuncordoba.eseg.servicio;
+
+import org.ayuncordoba.eseg.modelo.Rol;
+
+public interface RolServicio {
+	 
+    public Rol getRol(int id);
+
+}

@@ -1,0 +1,174 @@
+package org.ayuncordoba.eseg.modelo.dto;
+//package org.ayuncordoba.seg.model.dto;
+//
+//import java.lang.reflect.Type;
+//
+//import org.ayuncordoba.seg.model.Dir3;
+//import org.ayuncordoba.seg.model.Dir3Nivel;
+//import org.ayuncordoba.seg.repository.Dir3Repository;
+//import org.modelmapper.AbstractConverter;
+//import org.modelmapper.ModelMapper;
+//import org.modelmapper.PropertyMap;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Component;
+//
+///**
+// * Componente de Spring que ejerce de envoltura para el objeto ModelMapper. Se
+// * incluyen los mapeos existentes en esta clase
+// * 
+// * @author RCHZ
+// *
+// */
+//@Component
+//public class ModelMapperEstructuraDir3Bean {
+//
+//	@Autowired
+//	private Dir3Repository dir3Repo;
+//
+//	/**
+//	 * Objeto ModelMapper encapsulado.
+//	 */
+//	private ModelMapper modelMapper = new ModelMapper();
+//
+//	/**
+//	 * Constructor por defecto
+//	 */
+//	public ModelMapperEstructuraDir3Bean() {
+//		mapeoDir3EstructuraDir3Dto();
+//	}
+//
+//	/**
+//	 * Mapea un objeto a la clase indicada
+//	 * 
+//	 * @param dtoOrigen
+//	 * @param claseDestino
+//	 * @return
+//	 */
+//	public <DESTINO> DESTINO map(Object dtoOrigen, Class<DESTINO> claseDestino) {
+//		return modelMapper.map(dtoOrigen, claseDestino);
+//	}
+//
+//	/**
+//	 * Mapea un objeto al tipo indicado
+//	 * 
+//	 * @param dtoOrigen
+//	 * @param claseDestino
+//	 * @return
+//	 */
+//	public <DESTINO> DESTINO map(Object dtoOrigen, Type claseDestino) {
+//		return modelMapper.map(dtoOrigen, claseDestino);
+//	}
+//
+//	/**
+//	 * Mapeo entre la entidad Dir3 y el DTO Dir3Dto
+//	 */
+//	private void mapeoDir3EstructuraDir3Dto() {
+//		PropertyMap<Dir3, Dir3Dto> mapeoDir3EstructuraDir3Dto = new PropertyMap<Dir3, Dir3Dto>() {
+//			protected void configure() {
+//				map().setId(source.getId());
+//				map().setDenominacion(source.getDenominacion());
+//				map().setNivelJerarquico(source.getNivelJerarquico());
+//
+//				using(new AbstractConverter<Dir3, EstructuraUnidadDir3Dto>() {
+//					@Override
+//					protected EstructuraUnidadDir3Dto convert(Dir3 source) {
+//						return source == null ? null : converEstructuraDir3(source.getUnidadSuperior());
+//					}
+//				}).map(source.getUnidadSuperior()).setUnidadSuperiorDto(null);
+//
+//				using(new AbstractConverter<Dir3, EstructuraUnidadDir3Dto>() {
+//					@Override
+//					protected EstructuraUnidadDir3Dto convert(Dir3 source) {
+//						return source == null ? null : converEstructuraDir3(source.getUnidadPrincipal());
+//					}
+//				}).map(source.getUnidadPrincipal()).setUnidadPrincipalDto(null);
+//
+//				using(new AbstractConverter<Dir3, EstructuraUnidadDir3Dto>() {
+//					@Override
+//					protected EstructuraUnidadDir3Dto convert(Dir3 source) {
+//						return source == null ? null : converObtenerUnidadPublicadoraDir3(source.getId());
+//					}
+//				}).map(source.getPublicador()).setUnidadPublicadorDto(null);
+//
+//				using(new AbstractConverter<Dir3, EstructuraNivelDir3Dto>() {
+//					@Override
+//					protected EstructuraNivelDir3Dto convert(Dir3 source) {
+//						EstructuraNivelDir3Dto dto = converEstructuraNivelDir3(source.getNivel());
+//						return dto;
+//						// return source == null ? null :
+//						// converEstructuraNivelDir3(source);
+//					}
+//				}).map(source.getNivel()).setNivelDir3(null);
+//
+//				map().setProvincia(source.getProvincia().getNombre());
+//			}
+//		};
+//		modelMapper.addMappings(mapeoDir3EstructuraDir3Dto);
+//
+//	}
+//
+//	public EstructuraUnidadDir3Dto converEstructuraDir3(String id) {
+//		Dir3 dir3 = new Dir3();
+//		EstructuraUnidadDir3Dto unidad = new EstructuraUnidadDir3Dto();
+//
+//		dir3 = dir3Repo.findOne(id);
+//
+//		if (dir3 != null) {
+//			unidad.setId(dir3.getId());
+//			unidad.setDenominacion(dir3.getDenominacion());
+//		}
+//
+//		return unidad;
+//
+//	}
+//
+//	public EstructuraNivelDir3Dto converEstructuraNivelDir3(Dir3Nivel nivel) {
+//		EstructuraNivelDir3Dto unidad = new EstructuraNivelDir3Dto();
+//
+//		unidad.setId(nivel.getId());
+//		unidad.setTipoEntidad(nivel.getTipoEntidad());
+//
+//		return unidad;
+//
+//	}
+//
+//	public EstructuraUnidadDir3Dto converObtenerUnidadPublicadoraDir3(String id) {
+//
+//		EstructuraUnidadDir3Dto unidad = new EstructuraUnidadDir3Dto();
+//
+//		Integer indice = dir3Repo.findNivelJerarquicoById(id) + 1;
+//		Dir3 dir3Temp = new Dir3();
+//
+//		for (int i = indice; i > 0; i--) {
+//			Dir3 dir3 = dir3Repo.findById(id);
+//			if (dir3.getPublicador())
+//				dir3Temp = dir3;
+//			if (!id.equals(dir3.getUnidadSuperior()))
+//				id = dir3.getUnidadSuperior();
+//		}
+//
+//		if (dir3Temp != null) {
+//			unidad.setId(dir3Temp.getId());
+//			unidad.setDenominacion(dir3Temp.getDenominacion());
+//		}
+//
+//		return unidad;
+//	}
+//
+//	public void obtenerDtoCompleto(Dir3Dto dto, Dir3 dir3) {
+//
+//		EstructuraUnidadDir3Dto superior = converEstructuraDir3(dir3.getUnidadSuperior());
+//		dto.setUnidadSuperiorDto(superior);
+//
+//		EstructuraUnidadDir3Dto principal = converEstructuraDir3(dir3.getUnidadPrincipal());
+//		dto.setUnidadPrincipalDto(principal);
+//
+//		EstructuraUnidadDir3Dto publicador = converObtenerUnidadPublicadoraDir3(dir3.getId());
+//		dto.setUnidadPublicadorDto(publicador);
+//
+//		EstructuraNivelDir3Dto nivel = converEstructuraNivelDir3(dir3.getNivel());
+//		dto.setNivelDir3(nivel);
+//
+//	}
+//
+//}

@@ -1,0 +1,25 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+
+public class EstructuraUnidadDir3Dto implements Serializable {
+
+	private static final long serialVersionUID = 6303426435055716733L;
+	
+	private String id;
+	private String denominacion;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getDenominacion() {
+		return denominacion;
+	}
+	public void setDenominacion(String denominacion) {
+		this.denominacion = denominacion;
+	}	
+
+}

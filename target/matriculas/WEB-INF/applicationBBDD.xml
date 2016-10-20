@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd         
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd         
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd         
+	http://www.springframework.org/schema/jee 
+	http://www.springframework.org/schema/jee/spring-jee.xsd         
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/data/jpa 
+	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<!--#################################################################################################################################### -->
+	<!-- @ESEG -->
+	<!--#################################################################################################################################### -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceProviderClass" value="${bd.persistence}" />
+		<property name="persistenceUnitName" value="matriculas" />
+		<property name="packagesToScan">
+			<list>
+				<value>${bd.matriculas.packageScan}</value>
+			</list>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.show_sql">${bd.hibernate.show_sql}</prop>
+				<prop key="hibernate.dialect">${bd.oracle.dialect}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${bd.oracle.driver}" />
+		<property name="jdbcUrl" value="${bd.matriculas.url}" />
+		<property name="user" value="${bd.matriculas.user}" />
+		<property name="password" value="${bd.matriculas.pass}" />
+		<property name="maxPoolSize" value="${bd.matriculas.maxPoolSize}" />
+		<property name="minPoolSize" value="${bd.matriculas.minPoolSize}" />
+		<property name="maxStatementsPerConnection" value="${bd.matriculas.maxStatementsPerConnection}" />
+		<property name="preferredTestQuery" value="${bd.matriculas.preferredTestQuery}" />
+		<property name="idleConnectionTestPeriod" value="${bd.matriculas.idleConnectionTestPeriod}" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<jpa:repositories base-package="org.ksoft.matriculas.repositorio" transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory" />
+
+</beans>

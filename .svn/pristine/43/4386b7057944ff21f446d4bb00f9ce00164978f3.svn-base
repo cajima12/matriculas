@@ -1,0 +1,22 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface MetafaseRepositorio extends JpaRepository<Metafase, Long>, PaginacionTabla<Metafase>{
+
+	public List<Metafase> findBySubFases(Fase fase);
+	
+	public Metafase findByNombreMetafase(String nombre);
+	
+	
+}

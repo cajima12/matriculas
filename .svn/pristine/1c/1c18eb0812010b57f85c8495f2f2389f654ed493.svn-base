@@ -1,0 +1,67 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class FaseDto implements Serializable {
+
+	private static final long serialVersionUID = 4580812499382681532L;
+
+	private Long id;
+	private String nombreFase;
+
+	private List<ActuacionDto> actuaciones;
+	private List<MetafaseDto> metafases;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNombreFase() {
+		return nombreFase;
+	}
+
+	public void setNombreFase(String nombreFase) {
+		this.nombreFase = nombreFase;
+	}
+
+	public List<ActuacionDto> getActuaciones() {
+		return actuaciones;
+	}
+
+	public void setActuaciones(List<ActuacionDto> actuaciones) {
+		this.actuaciones = actuaciones;
+	}
+
+	public List<MetafaseDto> getMetafases() {
+		return metafases;
+	}
+
+	public void setMetafases(List<MetafaseDto> metafases) {
+		this.metafases = metafases;
+	}
+
+	public static FaseDto toDto(Fase fase) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true);
+		PropertyMap<Fase, FaseDto> map = new PropertyMap<Fase, FaseDto>() {
+			protected void configure() {
+				skip().setActuaciones(null);
+			}
+		};
+		modelMapper.addMappings(map);
+		FaseDto dto = modelMapper.map(fase, FaseDto.class);
+		return dto;
+
+	}
+
+}

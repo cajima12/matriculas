@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14422261413230" configfile="/matriculas/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="338" y="178" id="pf14422261971621" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf14422261971622 pf14422261971623" inlinks="pf14422261971623 pf14422261971624" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/secure/templates/list.xhtlm" x="554" y="178" id="pf14422261971635" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14422261971622" path="/pages/secure/templates/list.xhtlm"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/secure/templates/dashboard.xhtml" x="122" y="178" id="pf14422261971636" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf14422261971624" path="/pages/secure/templates/dashboard.xhtml"/>
+  <links id="pf14422261971622" target="pf14422261971635" source="pf14422261971621" outcome="correct" fromaction="#{loginMgmtBean.login}"/>
+  <links id="pf14422261971624" target="pf14422261971621" source="pf14422261971636" outcome="loggedout" redirect="true"/>
+  <links id="pf14422261971623" target="pf14422261971621" source="pf14422261971621" outcome="incorrect" fromaction="#{loginMgmtBean.login}">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+</pageflow:Pageflow>

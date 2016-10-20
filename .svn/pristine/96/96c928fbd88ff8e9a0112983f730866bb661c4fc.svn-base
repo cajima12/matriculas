@@ -1,0 +1,119 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+
+import org.ayuncordoba.eseg.modelo.Dir3;
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.ayuncordoba.eseg.repositorio.Dir3Repositorio;
+import org.ayuncordoba.eseg.repositorio.ProcedimientoRepositorio;
+import org.ayuncordoba.eseg.repositorio.UnidadRepositorio;
+import org.springframework.data.domain.Sort;
+
+
+@ManagedBean(name = "mantenimientoUnidadesBean")
+@ViewScoped
+public class MantenimientoUnidadesBean extends MantenimientoGenericoBean<Unidad, Long>{
+
+	private static final long serialVersionUID = -8516354388163728983L;
+
+	@ManagedProperty("#{unidadRepositorio}")
+	private UnidadRepositorio unidadRepositorio;
+	@ManagedProperty("#{procedimientoRepositorio}")
+	private ProcedimientoRepositorio procedimientoRepo;
+	@ManagedProperty("#{dir3Repositorio}")
+	private Dir3Repositorio dir3Repositorio;
+	
+	private List<Procedimiento> listadoProcedimientos;
+	
+	private List<Procedimiento> procedimientosSelect;
+	
+	private Procedimiento procedimientoSelect;
+	
+	private List<Dir3> listadoDir3;
+		
+	@Override
+	protected void cargarListado(List<Unidad> listado) {
+		listado.addAll(unidadRepositorio.findAll());
+		listadoDir3 = dir3Repositorio.findAll(new Sort("id", "denominacion"));
+		setListadoProcedimientos(procedimientoRepo.findAll(new Sort("nombre")));
+	}
+	
+	public void validarCodigo(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		if (!value.toString().equals(getInstancia().getCodigo()) && unidadRepositorio.findByCodigo(value.toString()) != null) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "El código indicado ya existe.", null));
+		}
+	}
+	
+	public void validarReferenciaInterna(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		if (!value.toString().equals(getInstancia().getRefCodigo()) && unidadRepositorio.findByRefCodigo(value.toString()) != null) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "La referencia interna indicada ya existe.", null));
+		}
+	}
+	
+	public void setUnidadRepositorio(UnidadRepositorio unidadRepositorio) {
+		setRepositorio(unidadRepositorio);
+		this.unidadRepositorio = unidadRepositorio;
+	}
+	
+	public void setDir3Repositorio(Dir3Repositorio dir3Repositorio) {
+		this.dir3Repositorio = dir3Repositorio;
+	}
+
+	public List<Dir3> getListadoDir3() {
+		return listadoDir3;
+	}
+
+	public void setListadoDir3(List<Dir3> listadoDir3) {
+		this.listadoDir3 = listadoDir3;
+	}
+
+	public ProcedimientoRepositorio getProcedimientoRepo() {
+		return procedimientoRepo;
+	}
+
+	public void setProcedimientoRepo(ProcedimientoRepositorio procedimientoRepo) {
+		this.procedimientoRepo = procedimientoRepo;
+	}
+
+	public UnidadRepositorio getUnidadRepositorio() {
+		return unidadRepositorio;
+	}
+
+	public Dir3Repositorio getDir3Repositorio() {
+		return dir3Repositorio;
+	}
+
+	public List<Procedimiento> getListadoProcedimientos() {
+		return listadoProcedimientos;
+	}
+
+	public void setListadoProcedimientos(List<Procedimiento> listadoProcedimientos) {
+		this.listadoProcedimientos = listadoProcedimientos;
+	}
+
+	public Procedimiento getProcedimientoSelect() {
+		return procedimientoSelect;
+	}
+
+	public void setProcedimientoSelect(Procedimiento procedimientoSelect) {
+		this.procedimientoSelect = procedimientoSelect;
+	}
+
+	public List<Procedimiento> getProcedimientosSelect() {
+		return procedimientosSelect;
+	}
+
+	public void setProcedimientosSelect(List<Procedimiento> procedimientosSelect) {
+		this.procedimientosSelect = procedimientosSelect;
+	}
+
+}

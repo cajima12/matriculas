@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:sec="http://www.springframework.org/security/tags">
+<div>
+	<div id="h1Ayun">
+		<div id="logo_menu">
+			<a href="#{request.contextPath}/pages/secure/principal/index.xhtml"><img src="#{request.contextPath}/images/logoAyunTransparente.png" /></a>
+		</div>
+		<h:outputText value="Plataforma" styleClass="h1PpalAyun" style="font-size: 1.5em;color: #EF8C08!important;"/>
+		<h:outputText value="eSEG" styleClass="h1SecondAyun" style="font-size: 1.5em;color: #881436!important;" />
+		
+		<div id="logo_usuario">
+			<div style="float: left;">
+				<p:outputLabel value="Usuario:" />
+				<p:outputLabel style="color: #881436;margin-left:5px;font-size: 12px!important;margin-right: 20px;" value="#{sessionBean.username()}" />
+			</div>
+			<div style="float: right;">
+				<h:form id="formLogout">
+					<p:commandButton icon="buttonPass" styleClass="buttonLogoutStyle" alt="Salir" title="Cambiar contraseña"  actionListener="#{cambiarClaveBean.abrirVentana}" process="formLogout" />
+					<p:commandButton icon="buttonLogout" styleClass="buttonLogoutStyle" alt="Salir" title="Salir" action="#{loginMgmtBean.logout}" ajax="false"
+						partialSubmit="true" process="@this" />
+				</h:form>
+			</div>
+		</div>
+		<br/>
+		<h:outputText value="Gestión de Seguimiento y Actuaciones en Expedientes" styleClass="h1SecondAyun" 
+			style="font-size: 0.6em;color: grey!important;margin-left: -18%;" />
+	</div>
+</div>
+<p:dialog id="dialogoClave" header="Cambiar contraseña" widgetVar="dialogoSubir" modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+	style="text-align: center!important;" appendTo="@(body)">
+	<h:form>
+		<p:growl id="msgsClave" showDetail="false" />
+		<h:panelGrid columns="2" cellpadding="4" style="width: 100%;">
+			<h:outputLabel value="Contraseña actual:" for="clave_actual" />
+			<p:password id="clave_actual" value="#{cambiarClaveBean.claveActual}" required="true" requiredMessage="Debe introducir la contraseña actual" />
+
+			<h:outputLabel value="Contraseña nueva:" for="clave_nueva" />
+			<p:password id="clave_nueva" value="#{cambiarClaveBean.claveNueva}" required="true" requiredMessage="Debe indicar su nueva contraseña" />
+			
+			<h:outputLabel value="Repita la contraseña:" for="clave_nueva_bis" />
+			<p:password id="clave_nueva_bis" value="#{cambiarClaveBean.claveNuevaBis}" required="true" requiredMessage="No ha completado la repetición de la contraseña" />
+
+			<p:commandButton actionListener="#{cambiarClaveBean.submit}" ajax="true" value="Cambiar" update="msgsClave" />
+			<p:commandButton ajax="true" value="Cancelar" onclick="PF('dialogoSubir').hide();" />
+		</h:panelGrid>
+	</h:form>
+</p:dialog>
+</html>

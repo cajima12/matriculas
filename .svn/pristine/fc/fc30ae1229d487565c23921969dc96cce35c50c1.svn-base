@@ -1,0 +1,176 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.bean.ImagenBean;
+import org.ayuncordoba.eseg.modelo.Firmante;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.ayuncordoba.eseg.repositorio.FirmanteRepositorio;
+import org.ayuncordoba.eseg.repositorio.UnidadRepositorio;
+import org.ayuncordoba.eseg.util.Funciones;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoFirmantesBean extends MantenimientoGenericoBean<Firmante, Long> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoFirmantesBean.class);
+
+	@ManagedProperty("#{firmanteRepositorio}")
+	private FirmanteRepositorio firmanteRepo;
+
+	@ManagedProperty("#{unidadRepositorio}")
+	private UnidadRepositorio unidadRepo;
+	
+	@ManagedProperty("#{imagenBean}")
+	private ImagenBean imagenBean;
+	
+	private List<Unidad> listadoUnidades = new ArrayList<Unidad>();
+	private Unidad unidadSeleccionada;
+	private Unidad unidadDelegadaSeleccionada;
+	
+	private StreamedContent imagen;
+	
+	@Override
+	protected void cargarListado(List<Firmante> listado) {
+		listado.addAll(firmanteRepo.findAll());
+	}
+
+	
+	@Override
+	public void guardar() {
+		try {	
+			if ( unidadSeleccionada != null ) {
+				getInstancia().setUnidad(unidadSeleccionada);
+			}
+			
+			if ( unidadDelegadaSeleccionada != null ) {
+				getInstancia().setUnidadDelegado(unidadDelegadaSeleccionada);
+			}
+			
+			if ( imagen != null ) getInstancia().setImagenFirma( IOUtils.toByteArray(imagen.getStream()) );
+			
+			super.guardar();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ocurrió un error en el proceso de guardado"));
+		}
+		
+	}
+	
+	@Override
+	public void setInstancia(Firmante instancia) {
+		if (instancia != null) {
+			unidadSeleccionada = instancia.getUnidad();
+			unidadDelegadaSeleccionada = instancia.getUnidadDelegado();
+			if ( instancia.getImagenFirma() != null )
+				try {
+					imagenBean.setImagen(instancia.getImagenFirma());
+				} catch (IOException e) {
+					imagenBean.setImagen(new DefaultStreamedContent());
+				}
+		}
+		super.setInstancia(instancia);
+	}
+			
+	public void subirImagen( FileUploadEvent event ) {
+		try {
+			this.imagen=Funciones.toStreamedContent(event.getFile().getContents());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static Logger getLog() {
+		return log;
+	}
+
+
+	public FirmanteRepositorio getFirmanteRepo() {
+		return firmanteRepo;
+	}
+
+
+	public void setFirmanteRepo(FirmanteRepositorio firmanteRepo) {
+		this.firmanteRepo = firmanteRepo;
+	}
+
+
+	public UnidadRepositorio getUnidadRepo() {
+		return unidadRepo;
+	}
+
+
+	public void setUnidadRepo(UnidadRepositorio unidadRepo) {
+		this.unidadRepo = unidadRepo;
+	}
+
+
+	public Unidad getUnidadDelegadaSeleccionada() {
+		return unidadDelegadaSeleccionada;
+	}
+
+
+	public void setUnidadDelegadaSeleccionada(Unidad unidadDelegadaSeleccionada) {
+		this.unidadDelegadaSeleccionada = unidadDelegadaSeleccionada;
+	}
+
+
+	public List<Unidad> getListadoUnidades() {
+		listadoUnidades = unidadRepo.findAll();
+		return listadoUnidades;
+	}
+
+
+	public void setListadoUnidades(List<Unidad> listadoUnidades) {
+		this.listadoUnidades = listadoUnidades;
+	}
+
+
+	public Unidad getUnidadSeleccionada() {
+		return unidadSeleccionada;
+	}
+
+
+	public void setUnidadSeleccionada(Unidad unidadSeleccionada) {
+		this.unidadSeleccionada = unidadSeleccionada;
+	}
+
+
+	public StreamedContent getImagen() {
+		return imagen;
+	}
+
+
+	public void setImagen(StreamedContent imagen) {
+		this.imagen = imagen;
+	}
+
+
+	public ImagenBean getImagenBean() {
+		return imagenBean;
+	}
+
+
+	public void setImagenBean(ImagenBean imagenBean) {
+		this.imagenBean = imagenBean;
+	}
+
+	
+	
+}

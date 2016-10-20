@@ -1,0 +1,220 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+
+import org.ayuncordoba.eseg.modelo.Documento;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class DocumentoDto implements Serializable {
+
+	private static final long serialVersionUID = -1553629074456851968L;
+
+	private String id;
+	private String documento;
+	private String descripcion;
+	private boolean boe;
+	private String descripcionDocumentoBoe;
+	private boolean firma;
+	private String tipoFirma;
+	private String tipoDocumento;
+	private boolean registro;
+	private String nombre;
+	private String textoAuxiliar;
+	private Boolean fechaFirma;
+	private String entradaSalida;
+	private Boolean reutilizable;
+	private Boolean notificable;
+	private Boolean versionable;
+	private String nombreFichero;
+	private String formatoPlantilla;
+	private String plantilla;	
+	private Boolean masivo;
+	private Boolean cyr;	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public boolean isBoe() {
+		return boe;
+	}
+
+	public void setBoe(boolean boe) {
+		this.boe = boe;
+	}
+
+	public String getDescripcionDocumentoBoe() {
+		return descripcionDocumentoBoe;
+	}
+
+	public void setDescripcionDocumentoBoe(String descripcionDocumentoBoe) {
+		this.descripcionDocumentoBoe = descripcionDocumentoBoe;
+	}
+
+	public boolean isFirma() {
+		return firma;
+	}
+
+	public void setFirma(boolean firma) {
+		this.firma = firma;
+	}
+
+	public String getTipoFirma() {
+		return tipoFirma;
+	}
+
+	public void setTipoFirma(String tipoFirma) {
+		this.tipoFirma = tipoFirma;
+	}
+
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public boolean isRegistro() {
+		return registro;
+	}
+
+	public void setRegistro(boolean registro) {
+		this.registro = registro;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getTextoAuxiliar() {
+		return textoAuxiliar;
+	}
+
+	public void setTextoAuxiliar(String textoAuxiliar) {
+		this.textoAuxiliar = textoAuxiliar;
+	}
+
+	public Boolean getFechaFirma() {
+		return fechaFirma;
+	}
+
+	public void setFechaFirma(Boolean fechaFirma) {
+		this.fechaFirma = fechaFirma;
+	}
+
+	public String getEntradaSalida() {
+		return entradaSalida;
+	}
+
+	public void setEntradaSalida(String entradaSalida) {
+		this.entradaSalida = entradaSalida;
+	}
+
+	public Boolean getReutilizable() {
+		return reutilizable;
+	}
+
+	public void setReutilizable(Boolean reutilizable) {
+		this.reutilizable = reutilizable;
+	}
+
+	public Boolean getNotificable() {
+		return notificable;
+	}
+
+	public void setNotificable(Boolean notificable) {
+		this.notificable = notificable;
+	}
+
+	public Boolean getVersionable() {
+		return versionable;
+	}
+
+	public void setVersionable(Boolean versionable) {
+		this.versionable = versionable;
+	}
+
+	public String getNombreFichero() {
+		return nombreFichero;
+	}
+
+	public void setNombreFichero(String nombreFichero) {
+		this.nombreFichero = nombreFichero;
+	}
+
+	public String getFormatoPlantilla() {
+		return formatoPlantilla;
+	}
+
+	public void setFormatoPlantilla(String formatoPlantilla) {
+		this.formatoPlantilla = formatoPlantilla;
+	}
+
+	public String getPlantilla() {
+		return plantilla;
+	}
+
+	public void setPlantilla(String plantilla) {
+		this.plantilla = plantilla;
+	}
+
+	public Boolean getMasivo() {
+		return masivo;
+	}
+
+	public void setMasivo(Boolean masivo) {
+		this.masivo = masivo;
+	}
+
+	public Boolean getCyr() {
+		return cyr;
+	}
+
+	public void setCyr(Boolean cyr) {
+		this.cyr = cyr;
+	}
+
+	public static DocumentoDto toDto(Documento documento) {
+
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true);
+
+		PropertyMap<Documento, DocumentoDto> map = new PropertyMap<Documento, DocumentoDto>() {
+			protected void configure() {
+				map().setTipoDocumento(source.getTipoDocumento().getNombre());
+			}
+		};
+		
+		modelMapper.addMappings(map);
+		DocumentoDto dto = modelMapper.map(documento, DocumentoDto.class);
+
+		return dto;
+
+	}
+}

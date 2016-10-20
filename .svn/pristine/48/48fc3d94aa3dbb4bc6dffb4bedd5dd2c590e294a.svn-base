@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" >
+	
+	<p:panelGrid styleClass="" style="width: 100%;">
+		
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Clave:" for="clave" />
+			</p:column>
+			<p:column>
+				<p:inputText id="clave" value="#{mantenimiento.bean.instancia.clave}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}" required="true" requiredMessage="El campo clave no puede estar vacío" />	
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Descripción:" for="descripcion" />
+			</p:column>
+			<p:column>
+				<p:inputText id="descripcion" value="#{mantenimiento.bean.instancia.situacion}" 
+				readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.situacion}" />
+			</p:column>
+		</p:row>	
+
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Siglas:" for="siglas" />
+			</p:column>
+			<p:column>			
+				<p:inputText id="siglas" value="#{mantenimiento.bean.instancia.siglas}" readonly="#{mantenimiento.bean.soloLectura}"  />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Evento:" for="evento" />
+			</p:column>
+			<p:column>
+				<p:inputText id="evento" value="#{mantenimiento.bean.instancia.evento}" 
+				readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.evento}" />
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Tipo Vencimiento:" for="tvencimiento" />
+			</p:column>
+			<p:column>	
+		        <p:selectOneMenu id="tvencimiento" value="#{mantenimiento.bean.instancia.tipoVencimiento}" style="width: 68%!important;">
+		            <f:selectItem itemLabel="Seleccione tipo de vencimiento" itemValue="" noSelectionOption="true" />
+		            <f:selectItem itemLabel="DIAS NATURALES" itemValue="DIAS NATURALES" />
+		            <f:selectItem itemLabel="DIAS HABILES" itemValue="DIAS HABILES" />
+		            <f:selectItem itemLabel="MESES" itemValue="MESES" />
+		            <f:selectItem itemLabel="AÑOS" itemValue="AÑOS" />
+		        </p:selectOneMenu>						
+			</p:column>
+			<p:column>			
+				<h:outputLabel value="Nº vencimientos:" for="nvencimiento" />
+			</p:column>
+			<p:column>	
+		        <p:inputText id="nvencimiento" value="#{mantenimiento.bean.instancia.numeroVencimientos}" readonly="#{mantenimiento.bean.soloLectura}"  />						
+			</p:column>
+		</p:row>			
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Visible:" for="visible" />
+			</p:column>
+			<p:column>			
+				<p:selectBooleanButton id="visible" value="#{mantenimiento.bean.instancia.ver}" onLabel="SI" offLabel="NO" style="width:60px" />
+		    </p:column>
+			<p:column>			
+				<h:outputLabel value="Fin de Fase" for="finFase" />
+			</p:column>
+			<p:column>			
+				<p:selectBooleanButton id="finFase" value="#{mantenimiento.bean.instancia.finFase}" onLabel="SI" offLabel="NO" style="width:60px" />
+		    </p:column>
+		</p:row>
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Dependiente:" for="dependencia" />
+			</p:column>
+			<p:column>	
+				<p:selectBooleanButton id="dependencia" value="#{mantenimiento.bean.instancia.dependencia}" onLabel="SI" offLabel="NO" style="width:60px" />					
+			</p:column>
+			<p:column>			
+				<h:outputLabel value="Esperar Respuesta:" for="respuesta" />
+			</p:column>
+			<p:column>	
+				<p:selectBooleanButton id="respuesta" value="#{mantenimiento.bean.instancia.respuesta}" onLabel="SI" offLabel="NO" style="width:60px" />					
+			</p:column>	
+		</p:row>
+		<p:row>		
+			<p:column>			
+				<h:outputLabel value="Masivo" for="masivo" />
+			</p:column>
+			<p:column>	
+				<p:selectBooleanButton id="masivo" value="#{mantenimiento.bean.instancia.masivo}" onLabel="SI" offLabel="NO" style="width:60px" />					
+			</p:column>
+			<p:column>			
+				<h:outputLabel value="Admin:" for="admin" />
+			</p:column>
+			<p:column>	
+				<p:selectBooleanButton id="admin" value="#{mantenimiento.bean.instancia.admin}" onLabel="SI" offLabel="NO" style="width:60px" />					
+			</p:column>	
+		</p:row>							
+		<p:row>
+			<p:column colspan="4" styleClass="sinBordeDerecho sonBordeIzquierdo">
+				<p:outputLabel />
+			</p:column>
+		</p:row>
+		
+		<p:row styleClass="tablaSeleccionMantenimientos">
+			<p:column colspan="4">
+				    <p:accordionPanel activeIndex="#{mantenimiento.bean.tab}"  dynamic="true" id="panelAct" styleClass="grafo">
+				    
+				    <p:ajax event="tabChange" partialSubmit="true" process="@form" listener="#{mantenimiento.bean.updateAccion}" update="panelAct, grafo" />
+				    
+				    
+        				<p:tab title="Fases">
+							<p:panelGrid>
+							    <f:facet name="actuaciones">
+							        <p:outputLabel value="Seleccione las fases que usarán esta actuacion" />
+							    </f:facet>		
+			
+								<p:dataTable 
+									style="width: 100%!important;"
+									value="#{mantenimiento.bean.lstFases}"
+									var="fase"
+									selection="#{mantenimiento.bean.instancia.fases}" 
+									rowKey="#{fase.id}"
+									paginator="true" rows="10"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+									paginatorPosition="bottom" 
+									rowsPerPageTemplate="5,10,15"
+									lazy="false" >
+										<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+										<p:column headerText="Nombre Fase" filterBy="#{fase.nombreFase}">
+											<p:outputLabel value="#{fase.nombreFase}" />
+										</p:column>								
+										<p:column headerText="Metafase" filterBy="#{fase.metafase.nombreMetafase}" >
+											<p:outputLabel value="#{fase.metafase.nombreMetafase}" />
+										</p:column>
+								</p:dataTable>					
+			
+							</p:panelGrid>
+						</p:tab>
+
+        				<p:tab title="Documentos">
+							<p:panelGrid>
+							    <f:facet name="documentos">
+							        <p:outputLabel value="Seleccione los documentos que usarán esta actuacion" />
+							    </f:facet>		
+			
+								<p:dataTable 
+									style="width: 100%!important;"
+									value="#{mantenimiento.bean.lstDocumentos}"
+									var="documento"
+									selection="#{mantenimiento.bean.instancia.documentos}" 
+									rowKey="#{documento.id}"
+									paginator="true" rows="10"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+									paginatorPosition="bottom" 
+									rowsPerPageTemplate="5,10,15"
+									lazy="false" >
+										<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+										<p:column headerText="Documento" filterBy="#{documento.documento}">
+											<p:outputLabel value="#{documento.documento}" />
+										</p:column>								
+										<p:column headerText="Nombre Documento" filterBy="#{documento.descripcion}">
+											<p:outputLabel value="#{documento.descripcion}" />
+										</p:column>								
+								</p:dataTable>					
+			
+							</p:panelGrid>
+						</p:tab>
+						
+						<p:tab title="Grafo de Seguimiento" id="grafo" >
+							<p:panelGrid >
+
+								<p:diagram id="imp" value="#{diagramaView.model}" style="height:760px" styleClass="ui-widget-content" />
+													
+							</p:panelGrid>
+							
+							<p:commandButton value="Imprimir Modelo" type="button" icon="ui-icon-print">
+                        		<p:printer target="imp" />
+                    		</p:commandButton>
+                    		
+						</p:tab>
+						
+					</p:accordionPanel>						
+			</p:column>		
+		</p:row>		
+		
+	</p:panelGrid>
+	
+</ui:composition>

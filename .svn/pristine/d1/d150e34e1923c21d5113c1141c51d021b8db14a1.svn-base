@@ -1,0 +1,87 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+
+public class UnidadDocumentoDto implements Serializable {
+
+	private static final long serialVersionUID = -1390036842241062437L;
+
+	//datos de la unidad
+	private Long idUnidad;
+	private String refCodigo;
+	private String nombre;
+	private String codigo;
+	
+	//Datos de Dir3 de la unidad
+	private String idDir3;
+	private String nombreDir3;
+	
+	public Long getIdUnidad() {
+		return idUnidad;
+	}
+	public void setIdUnidad(Long idUnidad) {
+		this.idUnidad = idUnidad;
+	}
+	public String getRefCodigo() {
+		return refCodigo;
+	}
+	public void setRefCodigo(String refCodigo) {
+		this.refCodigo = refCodigo;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public String getIdDir3() {
+		return idDir3;
+	}
+	public void setIdDir3(String idDir3) {
+		this.idDir3 = idDir3;
+	}
+	public String getNombreDir3() {
+		return nombreDir3;
+	}
+	public void setNombreDir3(String nombreDir3) {
+		this.nombreDir3 = nombreDir3;
+	}
+	
+	public static UnidadDocumentoDto toDto( Unidad unidad ) {
+		
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true);		
+	
+	 PropertyMap<Unidad, UnidadDocumentoDto> map = new PropertyMap<Unidad, UnidadDocumentoDto>() {
+	 
+		 protected void configure() {
+			 map().setIdUnidad(source.getId());
+			 map().setRefCodigo(source.getRefCodigo());
+			 map().setNombre(source.getNombre());
+			 map().setCodigo(source.getCodigo());
+			 map().setIdDir3(source.getUnidadDir3().getId());
+			 map().setNombreDir3(source.getUnidadDir3().getDenominacion());
+         }
+		 
+	 };
+	 
+	 modelMapper.addMappings(map);
+	 
+	 UnidadDocumentoDto dto = modelMapper.map(unidad, UnidadDocumentoDto.class);
+	
+	 return dto;
+	 
+	}
+	
+}

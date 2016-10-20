@@ -1,0 +1,172 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Rol;
+import org.ayuncordoba.eseg.modelo.Usuario;
+import org.ayuncordoba.eseg.repositorio.RolRepositorio;
+import org.ayuncordoba.eseg.repositorio.UsuarioRepositorio;
+import org.ayuncordoba.utilidades.UtilidadesNIF;
+import org.ayuncordoba.utilidades.UtilidadesNIF.ExcepcionValidacionNIF;
+
+@ManagedBean(name = "mantenimientoUsuariosBean")
+@ViewScoped
+public class MantenimientoUsuariosBean extends MantenimientoGenericoBean<Usuario, Long> {
+
+	private static final long serialVersionUID = -774535204839807754L;
+	private static final Logger log = Logger.getLogger(MantenimientoUsuariosBean.class);
+
+	@ManagedProperty("#{usuarioRepositorio}")
+	private UsuarioRepositorio usuarioRepo;
+
+	@ManagedProperty("#{rolRepositorio}")
+	private RolRepositorio rolRepo;
+
+	private List<Rol> listadoRoles = new ArrayList<Rol>();
+	private Rol rolSeleccionado;
+	// la contraseña almacenada en BBDD está codificada en MD5, hay que tenerlo en cuenta para las comprobaciones
+	private String claveAnterior;
+
+	@Override
+	protected void cargarListado(List<Usuario> listado) {
+		listado.addAll(usuarioRepo.findAllFetchRoles());
+	}
+
+	@Override
+	public void guardar() {
+		try {
+			//CONTRASEÑA
+			if (claveAnterior == null || !claveAnterior.equals(getInstancia().getPassword())) {
+				getInstancia().setPassword(DigestUtils.md5Hex(getInstancia().getPassword()));
+			}
+
+			//FECHA CREACION
+			if (getInstancia().getId() <= 0) {
+				getInstancia().setFechaCreacion(new Timestamp(new Date().getTime()));
+			}
+
+			//ROL SELECCIONADO
+			if (rolSeleccionado != null) {
+				List<Rol> roles = getInstancia().getRoles();
+				if (roles != null) {
+					// limpiamos el rol de acuses si existe
+					roles.remove(getRolAcuses(getInstancia()));
+				} else {
+					roles = new ArrayList<Rol>(1);
+					getInstancia().setRoles(roles);
+				}
+				roles.add(rolSeleccionado);
+			}
+
+			super.guardar();
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ocurrió un error en el proceso de guardado"));
+		}
+	}
+
+	@Override
+	public void setInstancia(Usuario instancia) {
+		if (instancia != null) {
+			List<Rol> roles = instancia.getRoles();
+			if (!roles.isEmpty()) {
+				rolSeleccionado = getRolAcuses(instancia);
+			} else {
+				rolSeleccionado = null;
+			}
+			claveAnterior = instancia.getPassword();
+		} else {
+			rolSeleccionado = null;
+			claveAnterior = null;
+		}
+		super.setInstancia(instancia);
+	}
+
+	public String getNombreRolAcuses(Usuario usuario) {
+		Rol r = getRolAcuses(usuario);
+		if (r != null) {
+			return r.getRol();
+		}
+		return "SIN PERMISOS";
+	}
+
+	public void validarLogin(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Usuario u = usuarioRepo.findByUsername(value.toString());
+		if (u != null && getInstancia().getId() != u.getId()) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "El login indicado ya existe.", null));
+		}
+	}
+
+	public void validarSiglas(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Usuario u = usuarioRepo.findBySiglas(value.toString());
+		if (u != null && getInstancia().getId() != u.getId()) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Las siglas indicadas ya existen.", null));
+		}
+	}
+
+	public void validarNif(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Usuario u = usuarioRepo.findBySiglas(value.toString());
+		if (u != null && getInstancia().getId() != u.getId()) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ya existe un usuario con el NIF indicado.", null));
+		} else {
+			try {
+				UtilidadesNIF.validaNIF(value.toString().toUpperCase());
+			} catch (ExcepcionValidacionNIF e) {
+				getInstancia().setNif(null);
+				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+			}
+		}
+	}
+
+	private Rol getRolAcuses(Usuario usuario) {
+		if (usuario != null) {
+			for (Rol r : usuario.getRoles()) {
+				if (listadoRoles.contains(r)) {
+					return r;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void setUsuarioRepo(UsuarioRepositorio usuarioRepo) {
+		setRepositorio(usuarioRepo);
+		this.usuarioRepo = usuarioRepo;
+	}
+
+	public void setRolRepo(RolRepositorio rolRepo) {
+		this.rolRepo = rolRepo;
+	}
+
+	public List<Rol> getListadoRoles() {
+		listadoRoles = rolRepo.findAll();
+		return listadoRoles ;
+	}
+
+	public void setListadoRoles(List<Rol> listadoRoles) {
+		this.listadoRoles = listadoRoles;
+	}
+
+	public Rol getRolSeleccionado() {
+		return rolSeleccionado;
+	}
+
+	public void setRolSeleccionado(Rol rolSeleccionado) {
+		this.rolSeleccionado = rolSeleccionado;
+	}
+
+}

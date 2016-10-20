@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" >
+	
+	<p:panelGrid styleClass="" style="width: 98%;">
+		
+		<p:row>
+			<p:column>
+				<h:outputLabel value="ID:" for="id" />
+			</p:column>
+			<p:column>
+				<p:inputText id="id" value="#{mantenimiento.bean.instancia.id}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}" required="true" requiredMessage="El campo ID no puede estar vacío" />	
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Documento:" for="documento" />
+			</p:column>
+			<p:column>
+				<p:inputText id="documento" value="#{mantenimiento.bean.instancia.documento}" readonly="#{mantenimiento.bean.soloLectura}"  />
+			</p:column>
+		</p:row>	
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Descripción:" for="descripcion" />
+			</p:column>
+			<p:column>
+				<p:inputText id="descripcion" value="#{mantenimiento.bean.instancia.descripcion}" readonly="#{mantenimiento.bean.soloLectura}"  />
+			</p:column>		
+			<p:column>
+				<h:outputLabel value="Descripción BOE:" for="descripcionBoe" />
+			</p:column>
+			<p:column>
+				<p:inputText id="descripcionBoe" value="#{mantenimiento.bean.instancia.descripcionDocumentoBoe}" readonly="#{mantenimiento.bean.soloLectura}"  />
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Enviar BOE" for="envioBoe" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="envioBoe" value="#{mantenimiento.bean.instancia.boe}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>		
+			<p:column>
+				<h:outputLabel value="Enviar Registro" for="envioRegistro" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="envioRegistro" value="#{mantenimiento.bean.instancia.registro}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>	
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Enviar a Firma:" for="envioFirma" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="envioFirma" value="#{mantenimiento.bean.instancia.firma}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>	
+			<p:column>
+				<h:outputLabel value="Fecha Firma al Pie:" for="fechaFirma" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="fechaFirma" value="#{mantenimiento.bean.instancia.fechaFirma}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Masivo:" for="masivo" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="masivo" value="#{mantenimiento.bean.instancia.masivo}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>	
+			<p:column>
+				<h:outputLabel value="CYR:" for="cyr" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="cyr" value="#{mantenimiento.bean.instancia.cyr}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Reutilizable:" for="reutilizable" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="reutilizable" value="#{mantenimiento.bean.instancia.reutilizable}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>	
+			<p:column>
+				<h:outputLabel value="Notificable:" for="notificable" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="notificable" value="#{mantenimiento.bean.instancia.notificable}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Versionable:" for="versionable" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="versionable" value="#{mantenimiento.bean.instancia.versionable}" onLabel="SI" offLabel="NO" style="width:60px" />
+			</p:column>	
+		</p:row>
+				
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Texto Auxiliar:" for="auxiliar" />
+			</p:column>
+			<p:column>
+				<p:inputTextarea id="auxiliar" value="#{mantenimiento.bean.instancia.textoAuxiliar}" cols="60" rows="10"/>
+			</p:column>	
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Nombre Fichero:" for="fichero" />
+			</p:column>
+			<p:column>
+				<p:inputText id="fichero" value="#{mantenimiento.bean.instancia.nombreFichero}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}" />	
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Formato Plantilla:" for="formato" />
+			</p:column>
+			<p:column>
+				<p:inputText id="formato" value="#{mantenimiento.bean.instancia.formatoPlantilla}" readonly="#{mantenimiento.bean.soloLectura}"  />
+			</p:column>
+		</p:row>		
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Nombre Plantilla:" for="plantilla" />
+			</p:column>
+			<p:column>
+				<p:inputText id="plantilla" value="#{mantenimiento.bean.instancia.plantilla}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}"  />	
+			</p:column>
+		</p:row>		
+										
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Tipo de documento:" for="tiposDocumento" />
+			</p:column>
+			<p:column>			
+				<p:selectOneMenu id="tiposDocumento" value="#{mantenimiento.bean.instancia.tipoDocumento}" disabled="#{mantenimiento.bean.soloLectura}" converter="omnifaces.SelectItemsConverter">  
+					<f:selectItems value="#{mantenimiento.bean.listadoTipoDocumento}" var="tipoDocumento" itemValue="#{tipoDocumento}" itemLabel="#{tipoDocumento.nombre}" />
+				</p:selectOneMenu>	
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column colspan="4" styleClass="sinBordeDerecho sonBordeIzquierdo">
+				<p:outputLabel />
+			</p:column>
+		</p:row>
+		
+		<p:row styleClass="tablaSeleccionMantenimientos">
+			<p:column colspan="4">
+				<p:panelGrid>
+				    <f:facet name="header">
+				        <p:outputLabel value="Seleccione las unidades que usarán este documento" />
+				    </f:facet>		
+
+					<p:dataTable 
+						style="width: 100%!important;"
+						value="#{mantenimiento.bean.listadoUnidades}"
+						var="uni"
+						selection="#{mantenimiento.bean.instancia.unidades}" 
+						rowKey="#{uni.id}"
+						paginator="true" rows="10"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						paginatorPosition="bottom" 
+						rowsPerPageTemplate="5,10,15"
+						lazy="false" >
+							<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+							<p:column headerText="Código Unidad" filterBy="#{uni.id}" >
+								<p:outputLabel value="#{uni.id}" />
+							</p:column>
+							<p:column headerText="Nombre Unidad" filterBy="#{uni.nombre}">
+								<p:outputLabel value="#{uni.nombre}" />
+							</p:column>
+					</p:dataTable>					
+
+				</p:panelGrid>
+			</p:column>		
+		</p:row>		
+		
+	</p:panelGrid>
+	
+</ui:composition>

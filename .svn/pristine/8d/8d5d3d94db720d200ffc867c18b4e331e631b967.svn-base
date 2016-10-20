@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Metafase;
+
+public class MetafaseRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Metafase> {
+
+	private static final long serialVersionUID = 987015761167183240L;
+
+	public MetafaseRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

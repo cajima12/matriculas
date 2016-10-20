@@ -1,0 +1,24 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Actuacion;
+
+/** 
+ * @author RCHZ
+ *
+ */
+public class ActuacionRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Actuacion> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 987015761167183240L;
+
+	/**
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	public ActuacionRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

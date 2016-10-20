@@ -1,0 +1,416 @@
+package org.ayuncordoba.eseg.modelo;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+@Entity
+@Table(name="documentos")
+public class Documento implements Serializable {
+	private static final long serialVersionUID = 1089358125780533534L;
+
+	@Id
+	private String id;
+
+	private String documento;
+	
+	private String descripcion;
+	
+	@Column(name="bop")
+	private boolean boe;
+	
+	@Column(name="descripcion_boe")
+	private String descripcionDocumentoBoe;
+
+	private boolean firma;
+	
+	@Column(name="tipo_firma")
+	private String tipoFirma;
+
+	//bi-directional many-to-one association to TipoDocumentos
+	@ManyToOne(optional=false)
+	@JoinColumn(name="tipo_documentos_id")
+	private TipoDocumento tipoDocumento;	
+	
+	private boolean registro;
+	
+	//bi-directional many-to-many association to Rol
+	@ManyToMany( fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	@JoinTable( name="documentos_unidades",
+		joinColumns={ @JoinColumn(name="documentos_id", nullable=false) },		
+		inverseJoinColumns={ @JoinColumn(name="unidades_id", nullable=false) } )
+	private List<Unidad> unidades;	
+	
+	// bi-directional many-to-many association to Unidad
+	@ManyToMany(mappedBy = "documentos")
+	private List<Actuacion> actuaciones;
+	
+	private String nombre;
+	
+	@Column(name="texto_auxiliar")
+	private String textoAuxiliar;
+	
+	@Column(name="fecha_firma")
+	private Boolean fechaFirma;
+	
+	@Column(name="entrada_salida")
+	private String entradaSalida;
+	
+	private Boolean reutilizable;
+	
+	private Boolean notificable;
+	
+	private Boolean versionable;
+	
+	@Column(name="nombre_fichero")
+	private String nombreFichero;
+
+	@Column(name="formato_plantilla")
+	private String formatoPlantilla;
+
+	private String plantilla;
+
+	private Boolean masivo;
+	
+	private Boolean cyr;
+	
+	public Documento() {
+
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public boolean isBoe() {
+		return boe;
+	}
+
+	public void setBoe(boolean boe) {
+		this.boe = boe;
+	}
+
+	public String getDescripcionDocumentoBoe() {
+		return descripcionDocumentoBoe;
+	}
+
+	public void setDescripcionDocumentoBoe(String descripcionDocumentoBoe) {
+		this.descripcionDocumentoBoe = descripcionDocumentoBoe;
+	}
+
+	public boolean isFirma() {
+		return firma;
+	}
+
+	public void setFirma(boolean firma) {
+		this.firma = firma;
+	}
+
+	public String getTipoFirma() {
+		return tipoFirma;
+	}
+
+	public void setTipoFirma(String tipoFirma) {
+		this.tipoFirma = tipoFirma;
+	}
+
+	public TipoDocumento getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public boolean isRegistro() {
+		return registro;
+	}
+
+	public void setRegistro(boolean registro) {
+		this.registro = registro;
+	}
+
+	public List<Unidad> getUnidades() {
+		return unidades;
+	}
+
+	public void setUnidades(List<Unidad> unidades) {
+		this.unidades = unidades;
+	}
+
+	public List<Actuacion> getActuaciones() {
+		return actuaciones;
+	}
+
+	public void setActuaciones(List<Actuacion> actuaciones) {
+		this.actuaciones = actuaciones;
+	}
+
+		public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getTextoAuxiliar() {
+		return textoAuxiliar;
+	}
+
+	public void setTextoAuxiliar(String textoAuxiliar) {
+		this.textoAuxiliar = textoAuxiliar;
+	}
+
+	public Boolean getFechaFirma() {
+		return fechaFirma;
+	}
+
+	public void setFechaFirma(Boolean fechaFirma) {
+		this.fechaFirma = fechaFirma;
+	}
+
+	public String getEntradaSalida() {
+		return entradaSalida;
+	}
+
+	public void setEntradaSalida(String entradaSalida) {
+		this.entradaSalida = entradaSalida;
+	}
+
+	public Boolean getReutilizable() {
+		return reutilizable;
+	}
+
+	public void setReutilizable(Boolean reutilizable) {
+		this.reutilizable = reutilizable;
+	}
+
+	public Boolean getNotificable() {
+		return notificable;
+	}
+
+	public void setNotificable(Boolean notificable) {
+		this.notificable = notificable;
+	}
+
+	public Boolean getVersionable() {
+		return versionable;
+	}
+
+	public void setVersionable(Boolean versionable) {
+		this.versionable = versionable;
+	}
+
+	public String getNombreFichero() {
+		return nombreFichero;
+	}
+
+	public void setNombreFichero(String nombreFichero) {
+		this.nombreFichero = nombreFichero;
+	}
+
+	public String getFormatoPlantilla() {
+		return formatoPlantilla;
+	}
+
+	public void setFormatoPlantilla(String formatoPlantilla) {
+		this.formatoPlantilla = formatoPlantilla;
+	}
+
+	public String getPlantilla() {
+		return plantilla;
+	}
+
+	public void setPlantilla(String plantilla) {
+		this.plantilla = plantilla;
+	}
+
+	public Boolean getMasivo() {
+		return masivo;
+	}
+
+	public void setMasivo(Boolean masivo) {
+		this.masivo = masivo;
+	}
+
+	public Boolean getCyr() {
+		return cyr;
+	}
+
+	public void setCyr(Boolean cyr) {
+		this.cyr = cyr;
+	}
+
+	@Override
+	public String toString() {
+		return "Documento [id=" + id + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (boe ? 1231 : 1237);
+		result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
+		result = prime * result + ((descripcionDocumentoBoe == null) ? 0 : descripcionDocumentoBoe.hashCode());
+		result = prime * result + ((documento == null) ? 0 : documento.hashCode());
+		result = prime * result + ((entradaSalida == null) ? 0 : entradaSalida.hashCode());
+		result = prime * result + ((fechaFirma == null) ? 0 : fechaFirma.hashCode());
+		result = prime * result + (firma ? 1231 : 1237);
+		result = prime * result + ((formatoPlantilla == null) ? 0 : formatoPlantilla.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		result = prime * result + ((nombreFichero == null) ? 0 : nombreFichero.hashCode());
+		result = prime * result + ((notificable == null) ? 0 : notificable.hashCode());
+		result = prime * result + ((plantilla == null) ? 0 : plantilla.hashCode());
+		result = prime * result + (registro ? 1231 : 1237);
+		result = prime * result + ((reutilizable == null) ? 0 : reutilizable.hashCode());
+		result = prime * result + ((textoAuxiliar == null) ? 0 : textoAuxiliar.hashCode());
+		result = prime * result + ((tipoFirma == null) ? 0 : tipoFirma.hashCode());
+		result = prime * result + ((versionable == null) ? 0 : versionable.hashCode());
+		result = prime * result + ((masivo == null) ? 0 : masivo.hashCode());
+		result = prime * result + ((cyr == null) ? 0 : cyr.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Documento other = (Documento) obj;
+		if (boe != other.boe)
+			return false;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
+			return false;
+		if (descripcionDocumentoBoe == null) {
+			if (other.descripcionDocumentoBoe != null)
+				return false;
+		} else if (!descripcionDocumentoBoe.equals(other.descripcionDocumentoBoe))
+			return false;
+		if (documento == null) {
+			if (other.documento != null)
+				return false;
+		} else if (!documento.equals(other.documento))
+			return false;
+		if (entradaSalida == null) {
+			if (other.entradaSalida != null)
+				return false;
+		} else if (!entradaSalida.equals(other.entradaSalida))
+			return false;
+		if (fechaFirma == null) {
+			if (other.fechaFirma != null)
+				return false;
+		} else if (!fechaFirma.equals(other.fechaFirma))
+			return false;
+		if (firma != other.firma)
+			return false;
+		if (formatoPlantilla == null) {
+			if (other.formatoPlantilla != null)
+				return false;
+		} else if (!formatoPlantilla.equals(other.formatoPlantilla))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		if (nombreFichero == null) {
+			if (other.nombreFichero != null)
+				return false;
+		} else if (!nombreFichero.equals(other.nombreFichero))
+			return false;
+		if (notificable == null) {
+			if (other.notificable != null)
+				return false;
+		} else if (!notificable.equals(other.notificable))
+			return false;
+		if (plantilla == null) {
+			if (other.plantilla != null)
+				return false;
+		} else if (!plantilla.equals(other.plantilla))
+			return false;
+		if (registro != other.registro)
+			return false;
+		if (reutilizable == null) {
+			if (other.reutilizable != null)
+				return false;
+		} else if (!reutilizable.equals(other.reutilizable))
+			return false;
+		if (textoAuxiliar == null) {
+			if (other.textoAuxiliar != null)
+				return false;
+		} else if (!textoAuxiliar.equals(other.textoAuxiliar))
+			return false;
+		if (tipoFirma == null) {
+			if (other.tipoFirma != null)
+				return false;
+		} else if (!tipoFirma.equals(other.tipoFirma))
+			return false;
+		if (versionable == null) {
+			if (other.versionable != null)
+				return false;
+		} else if (!versionable.equals(other.versionable))
+			return false;
+		if (masivo == null) {
+			if (other.masivo != null)
+				return false;
+		} else if (!masivo.equals(other.masivo))
+			return false;
+		if (cyr == null) {
+			if (other.cyr != null)
+				return false;
+		} else if (!cyr.equals(other.cyr))
+			return false;		
+		return true;
+	}
+
+	
+		
+}

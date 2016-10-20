@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" >
+	
+	<h:inputHidden value="#{mantenimiento.bean.instancia.id}" />
+	
+	<p:panelGrid styleClass="" style="width: 98%;">
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Nombre:" for="nombre" />	
+			</p:column>
+			<p:column>
+				<p:inputText id="nombre" value="#{mantenimiento.bean.instancia.nombre}" readonly="#{mantenimiento.bean.soloLectura}" required="true" requiredMessage="El campo nombre no puede estar vacío" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column colspan="2" styleClass="sinBordeDerecho sonBordeIzquierdo">
+				<p:outputLabel />
+			</p:column>
+		</p:row>
+		
+		<p:row styleClass="tablaSeleccionMantenimientos">
+			<p:column colspan="2">
+				<p:panelGrid>
+				    <f:facet name="header">
+				        <p:outputLabel value="Seleccione las metafases del procedimiento" />
+				    </f:facet>		
+
+					<p:dataTable 
+						style="width: 100%!important;"
+						value="#{mantenimiento.bean.listadoMetafases}"
+						var="metafase"
+						selection="#{mantenimiento.bean.instancia.metafases}" 
+						rowKey="#{metafase.id}"
+						paginator="true" rows="10"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
+						rowsPerPageTemplate="5,10,15"
+						paginatorPosition="bottom" 
+						lazy="false" >
+							<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+							<p:column headerText="Código Metafase" >
+								<p:outputLabel value="#{metafase.id}" />
+							</p:column>
+							<p:column headerText="Nombre Metafase" >
+								<p:outputLabel value="#{metafase.nombreMetafase}" />
+							</p:column>
+					</p:dataTable>					
+
+				</p:panelGrid>
+			</p:column>		
+		</p:row>	
+		
+		<p:row styleClass="tablaSeleccionMantenimientos">
+			<p:column colspan="4">
+				    <p:accordionPanel activeIndex="#{mantenimiento.bean.tab}"  dynamic="true" id="panelAct" styleClass="grafo">
+				    
+				    <p:ajax event="tabChange" partialSubmit="true" process="@form" listener="#{mantenimiento.bean.updateAccion}" update="panelAct, grafo" />
+						
+						<p:tab title="Arbol de Procedimiento" id="grafo" >
+							<p:panelGrid >
+
+								<p:diagram id="imp" value="#{diagramaProcessView.model}" style="height:600px" styleClass="ui-widget-content" />
+													
+							</p:panelGrid>
+							
+							<p:commandButton value="Imprimir Modelo" type="button" icon="ui-icon-print">
+                        		<p:printer target="imp" />
+                    		</p:commandButton>
+                    		
+						</p:tab>
+						
+					</p:accordionPanel>						
+			</p:column>		
+		</p:row>	
+		
+	</p:panelGrid>
+	
+</ui:composition>

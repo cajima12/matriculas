@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.TipoDocumento;
+
+public class TipoDocumentoRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<TipoDocumento> {
+
+	private static final long serialVersionUID = -8237856245140003863L;
+
+	public TipoDocumentoRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

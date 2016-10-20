@@ -1,0 +1,78 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.modelo.Documento;
+import org.ayuncordoba.eseg.modelo.TipoDocumento;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.ayuncordoba.eseg.repositorio.DocumentoRepositorio;
+import org.ayuncordoba.eseg.repositorio.TipoDocumentoRepositorio;
+import org.ayuncordoba.eseg.repositorio.UnidadRepositorio;
+import org.primefaces.context.RequestContext;
+import org.springframework.data.domain.Sort;
+
+@ManagedBean(name = "mantenimientoDocumentosBean")
+@ViewScoped
+public class MantenimientoDocumentosBean extends MantenimientoGenericoBean<Documento, String> {
+
+	private static final long serialVersionUID = 4051884006596757037L;
+	
+	@ManagedProperty("#{documentoRepositorio}")
+	private DocumentoRepositorio documentoRepo;
+	
+	@ManagedProperty("#{tipoDocumentoRepositorio}")
+	private TipoDocumentoRepositorio tipoDocumentoRepositorio;
+	
+	@ManagedProperty("#{unidadRepositorio}")
+	private UnidadRepositorio unidadRepositorio;
+	
+	private List<Unidad> listadoUnidades;
+	private List<TipoDocumento> listadoTipoDocumento;
+		
+	@Override
+	protected void limpiarFiltros() {
+		RequestContext.getCurrentInstance().execute("$(PF('filtroMantenimientoDocumentos').buttons).removeClass('ui-state-active')");
+		RequestContext.getCurrentInstance().execute("$(PF('filtroMantenimientoDocumentos').buttons[0]).click()");		
+	}
+	
+	@Override
+	protected void cargarListado(List<Documento> listado) {
+		listado.addAll( documentoRepo.findAllFetchUnidades() );
+		listadoUnidades = unidadRepositorio.findAll(new Sort("nombre"));
+		listadoTipoDocumento = tipoDocumentoRepositorio.findAll(new Sort("nombre"));		
+	}
+	
+	public void setDocumentoRepo(DocumentoRepositorio documentoRepo) {
+		setRepositorio(documentoRepo);
+		this.documentoRepo = documentoRepo;
+	}
+	
+	public void setTipoDocumentoRepositorio(TipoDocumentoRepositorio tipoDocumentoRepositorio) {
+		this.tipoDocumentoRepositorio = tipoDocumentoRepositorio;
+	}
+
+	public List<Unidad> getListadoUnidades() {
+		return listadoUnidades;
+	}
+
+	public void setListadoUnidades(List<Unidad> listadoUnidades) {
+		this.listadoUnidades = listadoUnidades;
+	}
+	
+	public void setUnidadRepositorio(UnidadRepositorio unidadRepositorio) {
+		this.unidadRepositorio = unidadRepositorio;
+	}
+
+	public List<TipoDocumento> getListadoTipoDocumento() {
+		return listadoTipoDocumento;
+	}
+
+	public void setListadoTipoDocumento(List<TipoDocumento> listadoTipoDocumento) {
+		this.listadoTipoDocumento = listadoTipoDocumento;
+	}
+
+}

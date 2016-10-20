@@ -1,0 +1,25 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Localidades;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface LocalidadRepositorio extends JpaRepository<Localidades, Long>, PaginacionTabla<Localidades> {
+	
+	public Localidades findById(Long id);
+	
+	@Query("select l from Localidades l where l.provincia.id=?1")
+	public List<Localidades> findByProvinciasId(Long id);
+	
+	@Query("select l from Localidades l where translate(upper(l.nombre), 'áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ', 'aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC') like concat(?1,'%') and l.provincia.id = ?2")
+	public Localidades findLikeNombreAndIdProvincia(String nombre, Long idProvincia);	
+
+}

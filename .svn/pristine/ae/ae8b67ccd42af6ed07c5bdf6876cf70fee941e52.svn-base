@@ -1,0 +1,58 @@
+package org.ayuncordoba.eseg.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.ayuncordoba.eseg.repositorio.UnidadRepositorio;
+
+@ManagedBean(name="autoUnidad")
+@ViewScoped
+public class AutoCompleteUnidadesBean implements Serializable {
+
+	private static final long serialVersionUID = -3147885836484628033L;
+
+	@ManagedProperty("#{unidadRepositorio}")
+	private UnidadRepositorio unidadRepo;
+	
+	private List<Unidad> lstUnidades;
+	private Unidad selectUnidad;
+	
+	public List<Unidad> completarUnidad( String id ) {
+		
+		lstUnidades = unidadRepo.findUnidadLikeNombre(id.toUpperCase());
+		
+		return lstUnidades;
+		
+	}
+
+	public UnidadRepositorio getUnidadRepo() {
+		return unidadRepo;
+	}
+
+	public void setUnidadRepo(UnidadRepositorio unidadRepo) {
+		this.unidadRepo = unidadRepo;
+	}
+
+	public List<Unidad> getLstUnidades() {
+		return lstUnidades;
+	}
+
+	public void setLstUnidades(List<Unidad> lstUnidades) {
+		this.lstUnidades = lstUnidades;
+	}
+
+	public Unidad getSelectUnidad() {
+		return selectUnidad;
+	}
+
+	public void setSelectUnidad(Unidad selectUnidad) {
+		this.selectUnidad = selectUnidad;
+	}
+
+
+}

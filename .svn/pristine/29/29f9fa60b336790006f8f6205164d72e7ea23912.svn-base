@@ -1,0 +1,69 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class ProcedimientoDto implements Serializable {
+
+	private static final long serialVersionUID = 8211479268215805001L;
+
+	private long id;
+	private String nombre;
+	
+	private List<MetafaseDto> metafases;
+	private List<UnidadDto> unidades;
+	//private List<Meta>
+	
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	public List<MetafaseDto> getMetafases() {
+		return metafases;
+	}
+	public void setMetafases(List<MetafaseDto> metafases) {
+		this.metafases = metafases;
+	}
+	public List<UnidadDto> getUnidades() {
+		return unidades;
+	}
+	public void setUnidades(List<UnidadDto> unidades) {
+		this.unidades = unidades;
+	}
+	public static ProcedimientoDto toDto( Procedimiento procedimiento) {
+		
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true);		
+	
+	 PropertyMap<Procedimiento, ProcedimientoDto> map = new PropertyMap<Procedimiento, ProcedimientoDto>() {
+	 
+		 protected void configure() {
+			 skip().setMetafases(null);
+			 skip().setUnidades(null);
+         }
+		 
+	 };
+	 
+	 modelMapper.addMappings(map);
+	 
+	 ProcedimientoDto dto = modelMapper.map(procedimiento, ProcedimientoDto.class);
+	
+	 return dto;
+		
+	}
+	
+}

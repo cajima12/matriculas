@@ -1,0 +1,32 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Dir3;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface Dir3Repositorio extends JpaRepository<Dir3, String>, PaginacionTabla<Dir3> {
+
+	public Dir3 findById(String id);
+	public Dir3 findByDenominacion(String denominacion);
+	
+	@Query("select d.nivelJerarquico from Dir3 d where d.id = ?1")
+	public Integer findNivelJerarquicoById(String id);
+	
+	@Query("select d from Dir3 d order by d.denominacion")
+	public List<Dir3> findAllOrderByDenominacion();
+	
+	@Query("select d from Dir3 d where d.id=(select d.unidadSuperior from Dir3 d where d.id=?1)")
+	public Dir3 findUnidadSuperiorById(String id);
+
+	@Query("select d from Dir3 d where d.id=(select d.unidadPrincipal from Dir3 d where d.id=?1)")
+	public Dir3 findUnidadPrincipalById(String id);
+	
+}

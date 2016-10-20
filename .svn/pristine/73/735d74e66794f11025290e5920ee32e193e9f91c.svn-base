@@ -1,0 +1,148 @@
+package org.ayuncordoba.eseg.bean;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.primefaces.model.diagram.Connection;
+import org.primefaces.model.diagram.DefaultDiagramModel;
+import org.primefaces.model.diagram.DiagramModel;
+import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.connector.StraightConnector;
+import org.primefaces.model.diagram.endpoint.DotEndPoint;
+import org.primefaces.model.diagram.endpoint.EndPoint;
+import org.primefaces.model.diagram.endpoint.EndPointAnchor;
+ 
+@ManagedBean(name = "diagramaView")
+@ViewScoped
+public class DiagramaView {
+     
+    private DefaultDiagramModel model;
+    
+    private Actuacion actuacion;
+    
+	 StraightConnector connector = new StraightConnector();
+	 Element padre = new Element();
+ 
+    public void init() {
+    	
+        if ( actuacion != null && ( actuacion.getHijos() != null && actuacion.getHijos().size() > 0 ) ) {
+        	
+        	//Ponemos los colores del nodo principal
+            connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
+            connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+        	
+        	padre = addPadre();
+        	
+        	addnode( padre, actuacion.getHijos(), 1, 13, 0 );
+
+        } 
+        
+    }
+     
+    private EndPoint createEndPoint(EndPointAnchor anchor) {
+        DotEndPoint endPoint = new DotEndPoint(anchor);
+        endPoint.setStyle("{fillStyle:'#404a4e'}");
+        endPoint.setHoverStyle("{fillStyle:'#20282b'}");
+         
+        return endPoint;
+    }
+    
+    //Creamos el nodo principal del grafo
+    private Element addPadre() {
+    	
+        model = new DefaultDiagramModel();
+        model.setMaxConnections(-1);
+                       
+        //Actuacion sobre la que trabajamos
+        Element original = new Element(actuacion.getClave(), "1em", "3em");
+        original.setStyleClass("elementoPadre");
+        original.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+        model.addElement(original);
+        
+        return original;
+        
+    }
+        
+    //Añadimos el nodo hijo
+    private void addnode( Element padre, List<Actuacion> hijos, Integer posicionX, Integer posicionY, Integer nivel ) {
+    	
+    	//Primero comprobamos que tenemos datos en el array
+    	if ( hijos.size() > 0 ) {
+    		
+    		List<Element> elementos = new ArrayList<Element>();
+    		
+    		//Ahora recorremos el array
+    		for (Iterator<Actuacion> it = hijos.iterator(); it.hasNext();) {
+    			
+    			Actuacion proc = (Actuacion) it.next();
+    			
+    			//Comprobamos que tenemos datos en el elemento
+    			if ( proc != null ) {
+    				
+    				Element elemento = new Element(proc.getClave(), posicionX.toString() + "em", posicionY.toString()+"em");
+    				
+    				elementos.add(elemento);
+    				
+    				//Comprobamos si es el último delemento
+    		        if ( proc.getFinFase() ) {
+    		        	elemento.setStyleClass("elementoHijoFin");
+    		        } else {
+    		        	elemento.setStyleClass("elementoHijo");
+    		        }
+    		        
+    		        elemento.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+    		        if ( proc.getHijos().size() > 0) elemento.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+    		        
+    		        model.addElement(elemento);
+    		        
+    		        
+    		        if ( nivel == 0 ) {
+    		        	nivel++;
+    		        	model.connect(new Connection(padre.getEndPoints().get(0), elemento.getEndPoints().get(0), connector));
+    		        } else {
+    		        	if ( padre.getEndPoints().size() > 1 ) {
+    		        		model.connect(new Connection(padre.getEndPoints().get(1), elemento.getEndPoints().get(0), connector));
+    		        	} else {
+    		        		model.connect(new Connection(padre.getEndPoints().get(0), elemento.getEndPoints().get(0), connector));
+    		        	}
+    		        }
+    		        
+    		        if ( proc.getHijos().size() > 0 ) {
+    		        	posicionY += 10;
+    		        	addnode( elemento, proc.getHijos(), posicionX, posicionY, nivel);
+    		        } 
+    			}
+    			
+    			posicionY -= 10;
+    			posicionX += 15;
+    			
+    		}
+    		
+    	}
+    	
+    }
+ 
+        
+ 	public void actualizarActuacion(Actuacion actuacion) {
+		this.actuacion = actuacion;
+		this.init();
+	}
+    
+    public DiagramModel getModel() {
+        return model;
+    }
+
+	public Actuacion getActuacion() {
+		return actuacion;
+	}
+
+	public void setActuacion(Actuacion actuacion) {
+		this.actuacion = actuacion;
+	}
+	
+}

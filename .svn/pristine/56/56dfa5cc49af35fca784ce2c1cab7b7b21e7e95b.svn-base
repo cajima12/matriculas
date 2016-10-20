@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+
+public class ProcedimientoRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Procedimiento> {
+
+	private static final long serialVersionUID = 987015761167183240L;
+
+	public ProcedimientoRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

@@ -1,0 +1,112 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.bean.DiagramaView;
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.ayuncordoba.eseg.modelo.Documento;
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.ayuncordoba.eseg.repositorio.ActuacionRepositorio;
+import org.ayuncordoba.eseg.repositorio.DocumentoRepositorio;
+import org.ayuncordoba.eseg.repositorio.FaseRepositorio;
+import org.primefaces.event.TabChangeEvent;
+import org.springframework.data.domain.Sort;
+
+@ManagedBean(name = "mantenimientoActuacionesBean")
+@ViewScoped
+public class MatenimientoActuacionesBean extends MantenimientoGenericoBean<Actuacion, String>{
+
+	private static final long serialVersionUID = 8424668796070987166L;
+
+	@ManagedProperty("#{actuacionRepositorio}")
+	private ActuacionRepositorio actuacionRepositorio;
+	
+	@ManagedProperty("#{faseRepositorio}")
+	private FaseRepositorio faseRepositorio;
+
+	@ManagedProperty("#{documentoRepositorio}")
+	private DocumentoRepositorio documentoRepositorio;
+
+	@ManagedProperty("#{diagramaView}")
+	private DiagramaView grafo;
+	
+	private List<Fase> lstFases;
+	
+	private List<Documento> lstDocumentos;
+	
+	@Override
+	protected void cargarListado(List<Actuacion> listado) {		
+		setTab(-1);
+		listado.addAll(actuacionRepositorio.findAllFetchFase());
+		setLstFases(faseRepositorio.findAll(new Sort("nombreFase")));
+		setLstDocumentos(documentoRepositorio.findAll(new Sort("descripcion")));
+		
+	}
+
+	public String getSiNo(Boolean valor){
+		return ( valor ) ? "SI" : "NO";
+		
+	}
+
+	public ActuacionRepositorio getActuacionRepositorio() {
+		return actuacionRepositorio;
+	}
+
+	public void setActuacionRepositorio(ActuacionRepositorio actuacionRepositorio) {
+		this.actuacionRepositorio = actuacionRepositorio;
+	}
+
+	public FaseRepositorio getFaseRepositorio() {
+		return faseRepositorio;
+	}
+
+	public void setFaseRepositorio(FaseRepositorio faseRepositorio) {
+		this.faseRepositorio = faseRepositorio;
+	}
+
+	public List<Fase> getLstFases() {
+		return lstFases;
+	}
+
+	public void setLstFases(List<Fase> lstFases) {
+		this.lstFases = lstFases;
+	}
+
+	public List<Documento> getLstDocumentos() {
+		return lstDocumentos;
+	}
+
+	public void setLstDocumentos(List<Documento> lstDocumentos) {
+		this.lstDocumentos = lstDocumentos;
+	}
+
+	public DocumentoRepositorio getDocumentoRepositorio() {
+		return documentoRepositorio;
+	}
+
+	public void setDocumentoRepositorio(DocumentoRepositorio documentoRepositorio) {
+		this.documentoRepositorio = documentoRepositorio;
+	}
+	
+	public void updateAccion( TabChangeEvent event ) {
+		
+		if ( event.getTab().getClientId().equals("formulario:panelAct:grafo") ) grafo.actualizarActuacion(getInstancia());
+		
+	}
+
+	public DiagramaView getGrafo() {
+		return grafo;
+	}
+
+	public void setGrafo(DiagramaView grafo) {
+		this.grafo = grafo;
+	}
+
+
+	
+}
+

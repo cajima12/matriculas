@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="Clave" style="width:150px;" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.clave}" filterBy="#{registro.clave}" >
+		<h:outputText value="#{registro.clave}" title="#{registro.clave}" />
+	</p:column>
+	<p:column headerText="Situación" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.situacion}" filterBy="#{registro.situacion}">
+		<h:outputText value="#{registro.situacion}" title="#{registro.situacion}" />
+	</p:column>
+	<p:column headerText="Siglas" style="width:240px;" filterMatchMode="contains" sortBy="#{registro.siglas}" filterBy="#{registro.siglas}">
+		<h:outputText value="#{registro.siglas}" title="#{registro.siglas}" />
+	</p:column>
+</ui:composition>

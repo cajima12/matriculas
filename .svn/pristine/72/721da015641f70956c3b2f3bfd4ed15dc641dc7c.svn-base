@@ -1,0 +1,225 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+
+import org.ayuncordoba.eseg.util.Constantes;
+import org.ayuncordoba.eseg.util.Funciones;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.marcaconsultoria.utilidades.ReflexionUtil;
+import com.marcaconsultoria.utilidades.SpringUtil;
+
+public abstract class MantenimientoGenericoBean<ENTIDAD, ID_ENTIDAD extends Serializable> implements Serializable {
+
+	private static final long serialVersionUID = 2019450071614154948L;
+
+	private List<ENTIDAD> listado = new ArrayList<ENTIDAD>();
+	private ENTIDAD instancia;
+	private Boolean soloLectura = false;
+	private Boolean panelNuevoEditar;
+	private Boolean panelEliminar;
+	private String operacion;
+
+	private DataTable tabla = new DataTable();
+	private boolean puedeAnadir = true;
+	private boolean puedeEditar = true;
+	private boolean puedeEliminar = true;
+	private List<String> campoUnico = new ArrayList<String>();
+
+	private Class<ENTIDAD> claseEntidad;
+
+	private JpaRepository<ENTIDAD, ID_ENTIDAD> repositorio;
+	
+	private Integer tab;
+
+	@SuppressWarnings("unchecked")
+	@PostConstruct
+	public void init() throws InstantiationException, IllegalAccessException {
+		claseEntidad = (Class<ENTIDAD>) Funciones.getClaseParametrizada(this, 0);
+		instancia = claseEntidad.newInstance();
+		repositorio = (JpaRepository<ENTIDAD, ID_ENTIDAD>) SpringUtil.getRepositorioDeEntidad(claseEntidad, "Repositorio");
+		cargarListado(listado);
+		tabla.setFirst(0);
+	}
+
+	public void guardar() {
+		instancia = repositorio.saveAndFlush(instancia);
+		if (operacion.equals(Constantes.MANTENIMIENTO_OPERACION_ANADIR)) {
+			listado.add(instancia);
+		}
+		limpiarFiltros();
+	}
+
+	public void eliminar() {
+		listado.remove(instancia);
+		repositorio.delete(instancia);
+		limpiarFiltros();
+	}
+
+	public void cancelar() {
+		limpiarFiltros();
+	}
+
+	public void validarCampoUnico(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		// component.get
+		// List<String> errores = new ArrayList<String>();
+		// Map<String, Object> filtro = new HashMap<String, Object>();
+		// for (String campo: campoUnico) {
+		// filtro.clear();
+		// filtro.put(campo, value);
+		// if ( ((PaginacionTabla<ENTIDAD>)
+		// repositorio).contarRegistros(filtro)> 0) {
+		// errores.add("");
+		// }
+		// }
+		// if (!errores.isEmpty()) {
+		//
+		// }
+
+	}
+
+	protected void limpiarFiltros() {
+		RequestContext.getCurrentInstance().execute("PF('mantenimientoTable').clearFilters()");
+	}
+
+	protected void addCampoUnico(String campo) {
+		campoUnico.add(campo);
+	}
+
+	protected void cargarListado(List<ENTIDAD> listado) {
+		this.listado = repositorio.findAll();
+	}
+
+	public void limpiar() throws InstantiationException, IllegalAccessException {
+		instancia = claseEntidad.newInstance();
+	}
+
+	public String aTexto(List<? extends Object> lista, String campo) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		return Funciones.aString(lista, campo);
+	}
+
+	public List<ENTIDAD> getListado() {
+		return listado;
+	}
+
+	public void setListado(List<ENTIDAD> listado) {
+		
+		this.listado = listado;
+	}
+
+	public ENTIDAD getInstancia() {
+		return instancia;
+	}
+	
+	/**
+	 * Metodo que recarga la instancia recuperando los ultimos datos contenidos en la base de datos.
+	 */
+	@SuppressWarnings("unchecked")
+	public void refrescarEntidad() {
+		ENTIDAD aux = getInstancia();
+		try {
+			ID_ENTIDAD ID = (ID_ENTIDAD) ReflexionUtil.getGetter(claseEntidad, ReflexionUtil.getCampoId(claseEntidad).getName()).invoke(instancia, null);
+			instancia = repositorio.findOne(ID);
+		} catch (Exception e) {
+			e.printStackTrace();
+			setInstancia(aux);
+		}
+		
+	}
+
+	public void setInstancia(ENTIDAD instancia) {
+		setTab(-1);
+		this.instancia = instancia;
+	}
+
+	public Boolean getSoloLectura() {
+		return soloLectura;
+	}
+
+	public void setSoloLectura(Boolean soloLectura) {
+		this.soloLectura = soloLectura;
+	}
+
+	public void setRepositorio(JpaRepository<ENTIDAD, ID_ENTIDAD> repositorio) {
+		this.repositorio = repositorio;
+	}
+
+	protected JpaRepository<ENTIDAD, ID_ENTIDAD> getRepositorio() {
+		return repositorio;
+	}
+
+	public Boolean getPanelNuevoEditar() {
+		return panelNuevoEditar;
+	}
+
+	public void setPanelNuevoEditar(Boolean panelNuevoEditar) {
+		this.panelNuevoEditar = panelNuevoEditar;
+	}
+
+	public Boolean getPanelEliminar() {
+		return panelEliminar;
+	}
+
+	public void setPanelEliminar(Boolean panelEliminar) {
+		this.panelEliminar = panelEliminar;
+	}
+
+	public String getOperacion() {
+		return operacion;
+	}
+
+	public void setOperacion(String operacion) {
+		this.operacion = operacion;
+	}
+
+	public boolean getPuedeAnadir() {
+		return puedeAnadir;
+	}
+
+	public void setPuedeAnadir(boolean puedeAnadir) {
+		this.puedeAnadir = puedeAnadir;
+	}
+
+	public boolean getPuedeEditar() {
+		return puedeEditar;
+	}
+
+	public void setPuedeEditar(boolean puedeEditar) {
+		this.puedeEditar = puedeEditar;
+	}
+
+	public boolean getPuedeEliminar() {
+		return puedeEliminar;
+	}
+
+	public void setPuedeEliminar(boolean puedeEliminar) {
+		this.puedeEliminar = puedeEliminar;
+	}
+
+	public DataTable getTabla() {
+		return tabla;
+	}
+
+	public void setTabla(DataTable tabla) {
+		this.tabla = tabla;
+	}
+
+	public Integer getTab() {
+		return tab;
+	}
+
+	public void setTab(Integer tab) {
+		this.tab = tab;
+	}
+
+}

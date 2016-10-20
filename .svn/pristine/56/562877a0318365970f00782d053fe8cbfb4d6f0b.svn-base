@@ -1,0 +1,66 @@
+package org.ayuncordoba.eseg.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.ayuncordoba.eseg.repositorio.ActuacionRepositorio;
+
+@ManagedBean(name="autoActuacion")
+@ViewScoped
+public class AutoCompleteActuacionBean implements Serializable {
+
+	private static final long serialVersionUID = -3147885836484628033L;
+
+	@ManagedProperty("#{actuacionRepositorio}")
+	private ActuacionRepositorio actuacionRepo;
+	
+	private List<Actuacion> lstActuaciones;
+	private Actuacion selectActuacionPadre;
+	private Actuacion selectActuacionHijo;
+	
+	public List<Actuacion> completarActuacion( String id ) {
+		
+		lstActuaciones = actuacionRepo.findActuacionLikeId(id.toUpperCase());
+		
+		return lstActuaciones;
+		
+	}
+
+	public ActuacionRepositorio getActuacionRepo() {
+		return actuacionRepo;
+	}
+
+	public void setActuacionRepo(ActuacionRepositorio actuacionRepo) {
+		this.actuacionRepo = actuacionRepo;
+	}
+
+	public List<Actuacion> getLstActuaciones() {
+		return lstActuaciones;
+	}
+
+	public void setLstActuaciones(List<Actuacion> lstActuaciones) {
+		this.lstActuaciones = lstActuaciones;
+	}
+
+	public Actuacion getSelectActuacionPadre() {
+		return selectActuacionPadre;
+	}
+
+	public void setSelectActuacionPadre(Actuacion selectActuacionPadre) {
+		this.selectActuacionPadre = selectActuacionPadre;
+	}
+
+	public Actuacion getSelectActuacionHijo() {
+		return selectActuacionHijo;
+	}
+
+	public void setSelectActuacionHijo(Actuacion selectActuacionHijo) {
+		this.selectActuacionHijo = selectActuacionHijo;
+	}
+	
+}

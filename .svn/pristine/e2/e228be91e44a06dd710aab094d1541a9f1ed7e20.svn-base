@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Aplicacion;
+
+public class AplicacionRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Aplicacion> {
+
+	private static final long serialVersionUID = 987015761167183240L;
+
+	public AplicacionRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

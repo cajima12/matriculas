@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="/pages/secure/templates/dashboard.xhtml">
+
+	<ui:define name="content">
+		<ui:include src="/pages/secure/templates/plantilla_mantenimiento.xhtml">
+			<ui:param name="nombreEntidad" value="metafase"/>
+			<ui:param name="nombreEntidadPlural" value="metafases"/>
+			<ui:param name="bean" value="#{mantenimientoMetaFasesBean}"/>
+			<ui:param name="rutaColumnas" value="/pages/secure/mantenimientos/metaFases/columnasMetaFases.xhtml"/>
+			<ui:param name="rutaModal" value="/pages/secure/mantenimientos/metaFases/modalMetaFases.xhtml"/>
+		</ui:include>
+	</ui:define>
+
+</ui:composition>

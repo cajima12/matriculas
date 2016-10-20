@@ -1,0 +1,178 @@
+package org.ayuncordoba.eseg.bean;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.primefaces.model.diagram.Connection;
+import org.primefaces.model.diagram.DefaultDiagramModel;
+import org.primefaces.model.diagram.DiagramModel;
+import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.connector.StraightConnector;
+import org.primefaces.model.diagram.endpoint.DotEndPoint;
+import org.primefaces.model.diagram.endpoint.EndPoint;
+import org.primefaces.model.diagram.endpoint.EndPointAnchor;
+ 
+@ManagedBean(name = "diagramaProcessView")
+@ViewScoped
+public class DiagramaProcessView {
+     
+    private DefaultDiagramModel model;
+    
+    private Procedimiento procedimiento;
+    
+	 StraightConnector connector = new StraightConnector();
+	 Element padre = new Element();
+ 
+    public void init() {
+    	
+        if ( procedimiento != null && ( procedimiento.getMetafases() != null && procedimiento.getMetafases().size() > 0 ) ) {
+        	
+        	//Ponemos los colores del nodo principal
+            connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
+            connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+        	
+        	padre = addPadre();
+        	
+        	addnode( padre, procedimiento.getMetafases(), 1, 13, 0 );
+
+        } 
+        
+    }
+     
+    private EndPoint createEndPoint(EndPointAnchor anchor) {
+        DotEndPoint endPoint = new DotEndPoint(anchor);
+        endPoint.setStyle("{fillStyle:'#404a4e'}");
+        endPoint.setHoverStyle("{fillStyle:'#20282b'}");
+         
+        return endPoint;
+    }
+    
+    //Creamos el nodo principal del grafo
+    private Element addPadre() {
+    	
+        model = new DefaultDiagramModel();
+        model.setMaxConnections(-1);
+                       
+        //Actuacion sobre la que trabajamos
+        Element original = new Element(procedimiento.getNombre(), "1em", "3em");
+        original.setStyleClass("elementoPadre");
+        original.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+        model.addElement(original);
+        
+        return original;
+        
+    }
+        
+    //Añadimos el nodo hijo
+    private void addnode( Element padre, List<Metafase> hijos, Integer posicionX, Integer posicionY, Integer nivel ) {
+    	
+    	//Primero comprobamos que tenemos datos en el array
+    	if ( hijos.size() > 0 ) {
+    		
+    		List<Element> elementos = new ArrayList<Element>();
+    		
+    		//Ahora recorremos el array
+    		for (Iterator<Metafase> it = hijos.iterator(); it.hasNext();) {
+    			
+    			Metafase proc = (Metafase) it.next();
+    			
+    			//Comprobamos que tenemos datos en el elemento
+    			if ( proc != null ) {
+    				
+    				Element elemento = new Element(proc.getNombreMetafase(), posicionX.toString() + "em", posicionY.toString()+"em");
+    				
+    				elementos.add(elemento);
+    				
+   		        	elemento.setStyleClass("elementoHijo");
+    		        
+    		        elemento.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+    		        
+    		        if ( proc.getSubFases().size() > 0) {
+    		        	elemento.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+    		        	posicionY += 10;
+    		        	posicionX = addHijo(elemento, proc.getSubFases(), posicionX, posicionY);
+    		        }
+    		        
+    		        model.addElement(elemento);
+    		        
+   		        	model.connect(new Connection(padre.getEndPoints().get(0), elemento.getEndPoints().get(0), connector));
+   		        	
+   		        	posicionY -= 10;
+    		        
+    			}
+    			
+    		}
+    		
+    	}
+    	
+    }
+    
+    private Integer addHijo( Element padre, List<Fase> hijos, Integer posicionX, Integer posicionY ) {
+    	
+    	//Primero comprobamos que tenemos datos en el array
+    	if ( hijos.size() > 0 ) {
+    		
+    		List<Element> elementos = new ArrayList<Element>();
+    		
+    		//Ahora recorremos el array
+    		for (Iterator<Fase> it = hijos.iterator(); it.hasNext();) {
+    			
+    			Fase proc = (Fase) it.next();
+    			
+    			//Comprobamos que tenemos datos en el elemento
+    			if ( proc != null ) {
+    				
+    				Element elemento = new Element(proc.getNombreFase(), posicionX.toString() + "em", posicionY.toString()+"em");
+    				
+    				elementos.add(elemento);
+    				
+   		        	elemento.setStyleClass("elementoHijoFin");
+    		        
+    		        elemento.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+    		        
+    		        model.addElement(elemento);
+    		        
+   		        	model.connect(new Connection(padre.getEndPoints().get(1), elemento.getEndPoints().get(0), connector));
+   		        	
+   		        	posicionX += 12;
+    		        
+    			}
+    			
+    		}
+    		
+    	}
+    	
+    	return posicionX;
+    	
+    }
+ 
+        
+ 	public void actualizarActuacion(Procedimiento procedimiento) {
+		this.procedimiento = procedimiento;
+		this.init();
+	}
+ 	
+ 	public void nodeSelect() {
+ 		System.out.println("pulsado");
+ 	}
+    
+    public DiagramModel getModel() {
+        return model;
+    }
+
+	public Procedimiento getProcedimiento() {
+		return procedimiento;
+	}
+
+	public void setProcedimiento(Procedimiento procedimiento) {
+		this.procedimiento = procedimiento;
+	}
+	
+}

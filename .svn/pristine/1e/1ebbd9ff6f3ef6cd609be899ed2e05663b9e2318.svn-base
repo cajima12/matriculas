@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions">
+	<h:inputHidden value="#{mantenimiento.bean.instancia.id}" />
+
+	<p:growl id="growl" showDetail="true" />
+	<p:panelGrid styleClass="" style="width: 98%;">
+		<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth10_100,colWidth20_100,colWidth15_100,colWidth55_100">
+			<h:outputLabel value="ID:" for="id_dir3" />
+			<p:inputText id="id_dir3" value="#{mantenimiento.bean.instancia.id}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}"
+				required="true" requiredMessage="El campo ID no puede estar vacío" maxlength="20" />
+			<h:outputLabel value="Denominación:" for="denominacion" />
+			<p:inputText id="denominacion" value="#{mantenimiento.bean.instancia.denominacion}" readonly="#{mantenimiento.bean.soloLectura}"
+				required="true" requiredMessage="El campo Código no puede estar vacío" maxlength="20" />
+	
+			<h:outputLabel value="Nivel jerárquico:" for="nivel_jerarquico" />
+			<pe:inputNumber id="nivel_jerarquico" value="#{mantenimiento.bean.instancia.nivelJerarquico}" readonly="#{mantenimiento.bean.soloLectura}"
+				decimalPlaces="0" thousandSeparator="" minValue="0" required="true" requiredMessage="El campo nivel jerárquico no puede estar vacío" />
+			<h:outputLabel value="Unidad superior:" for="unidad_superior" />
+			<p:selectOneMenu id="unidad_superior" value="#{mantenimiento.bean.instancia.unidadSuperior}" disabled="#{mantenimiento.bean.soloLectura}"
+				maxlength="20">
+				<p:ajax event="change" update="nivel_jerarquico" listener="#{mantenimiento.bean.actualizaNivelJerarquico}" />
+				<f:selectItem itemLabel="La unidad actual" itemValue="" />
+				<f:selectItems value="#{mantenimiento.bean.listadoDir3}" var="unidadDir3" itemValue="#{unidadDir3.id}"
+					itemLabel="#{unidadDir3.id} - #{unidadDir3.denominacion}" />
+			</p:selectOneMenu>
+	
+			<h:outputLabel value="Nivel Dir3:" for="dir3" />
+			<p:selectOneMenu id="dir3" value="#{mantenimiento.bean.instancia.nivel}" disabled="#{mantenimiento.bean.soloLectura}"
+				converter="omnifaces.SelectItemsConverter">
+				<f:selectItems value="#{mantenimiento.bean.listadoNiveles}" var="nivel" itemValue="#{nivel}"
+					itemLabel="#{nivel.id} - #{nivel.tipoEntidad}" />
+			</p:selectOneMenu>
+			<h:outputLabel value="Unidad principal:" for="unidad_principal" />
+			<p:selectOneMenu id="unidad_principal" value="#{mantenimiento.bean.instancia.unidadPrincipal}"
+				disabled="#{mantenimiento.bean.soloLectura}" converter="omnifaces.SelectItemsConverter">
+				<f:selectItem itemLabel="La unidad actual" itemValue="" />
+				<f:selectItems value="#{mantenimiento.bean.listadoDir3}" var="unidadDir3" itemValue="#{unidadDir3.id}"
+					itemLabel="#{unidadDir3.id} - #{unidadDir3.denominacion}" />
+			</p:selectOneMenu>
+	
+			<h:outputLabel value="Provincia:" for="provincia" />
+			<p:selectOneMenu id="provincia" value="#{mantenimiento.bean.instancia.provincia}" disabled="#{mantenimiento.bean.soloLectura}"
+				converter="omnifaces.SelectItemsConverter">
+				<f:selectItems value="#{mantenimiento.bean.listadoProvincias}" var="provincia" itemValue="#{provincia}"
+					itemLabel="#{provincia.id} - #{provincia.nombre}" />
+			</p:selectOneMenu>
+			<h:outputLabel value="Unidad publicadora:" for="publicar" />
+			<p:selectBooleanCheckbox id="publicar" value="#{mantenimiento.bean.instancia.publicador}" disabled="#{mantenimiento.bean.soloLectura}" />
+
+			<h:outputLabel value="Logo BOE:" for="imagenFirma" />
+			<p:graphicImage id="imagenFirma" value="#{imagenBean.imagen}" alt="No hay logo de unidad" 
+				rendered="#{mantenimiento.bean.operacion != 'Añadir'}"  cache="false" />
+			<p:fileUpload id="upImagenFirma" label="Examinar" uploadLabel="Subir" cancelLabel="Cancelar" 
+				update="msgs" fileUploadListener="#{mantenimiento.bean.subirImagen}" multiple="false" 
+				allowTypes="/(\.|\/)(png|PNG)$/" auto="true" 
+				rendered="#{mantenimiento.bean.operacion == 'Añadir' or mantenimiento.bean.operacion == 'Editar'}" />				
+			<h:outputLabel  />
+		
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" cellpadding="4" style="width: 100%;" >
+	
+		</h:panelGrid>		
+
+
+		<h:panelGrid columns="1" cellpadding="4" style="width: 100%;" >
+			<p:commandButton value="Nuevo texto BOE" actionListener="#{mantenimiento.bean.abrirNuevoBoe}" icon="ui-icon-plus" update=":nuevoFormulario" />
+
+			<p:dataTable id="boePorDir3" style="width: 100%!important;" value="#{mantenimiento.bean.instancia.boeTipoTexto}" var="uni" rowKey="#{uni.id}" paginator="true"
+				emptyMessage="Esta unidad no tiene asignado ningún tipo BOE."
+				rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" lazy="false">
+				<p:column headerText="Encabezados y Pie de BOE" >
+					<p:outputLabel value="#{uni.tipo}" />
+				</p:column>
+				<p:column headerText="Acciones" styleClass="anchoFijo_140 centrado">
+					<p:commandButton partialSubmit="true" process="@form" icon="ui-icon-pencil" title="Editar Tipo BOE" action="#{mantenimiento.bean.editarBoe(uni.id)}"  update=":dialogoBoe" oncomplete="PF('dlgModalNuevoBoe').show();"></p:commandButton>
+					<p:commandButton partialSubmit="true" process="@form" icon="ui-icon-trash" title="Eliminar Tipo BOE" action="#{mantenimiento.bean.borrarBoe(uni.id)}" update="@form"></p:commandButton>
+				</p:column>
+			</p:dataTable>
+	
+		</h:panelGrid>
+		
+	</p:panelGrid>
+
+</ui:composition>

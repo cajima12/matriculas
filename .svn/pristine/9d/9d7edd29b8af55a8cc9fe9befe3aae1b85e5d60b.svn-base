@@ -1,0 +1,14 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Dir3;
+
+public class Dir3RepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Dir3> {
+
+	private static final long serialVersionUID = 8636210175640585707L;
+
+	public Dir3RepositorioImpl() throws InstantiationException,	IllegalAccessException {
+		super();
+	}
+	
+	
+}

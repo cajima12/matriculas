@@ -1,0 +1,193 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class ActuacionDto implements Serializable {
+
+	private static final long serialVersionUID = 8698538804894320465L;
+
+	private String clave;
+	private String situacion;
+	private String siglas;
+	private Boolean ver;
+	private Boolean dependencia;
+	private Boolean respuesta;
+	private Integer numeroVencimientos;
+	private String tipoVencimiento;
+	private Boolean finFase;
+	private Date fechaVencimiento; 
+	private boolean masivo;
+	private boolean admin;
+	private String evento;
+	
+	private List<DocumentoDto> documentos;
+	private List<ActuacionDto> actuacionesPadre;
+	private List<ActuacionDto> proximosTrabajos;
+	private List<FaseDto> fases;
+
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
+	}
+
+	public String getSituacion() {
+		return situacion;
+	}
+
+	public void setSituacion(String situacion) {
+		this.situacion = situacion;
+	}
+
+	public String getSiglas() {
+		return siglas;
+	}
+
+	public void setSiglas(String siglas) {
+		this.siglas = siglas;
+	}
+
+	public Boolean getVer() {
+		return ver;
+	}
+
+	public void setVer(Boolean ver) {
+		this.ver = ver;
+	}
+
+	public Boolean getDependencia() {
+		return dependencia;
+	}
+
+	public void setDependencia(Boolean dependencia) {
+		this.dependencia = dependencia;
+	}
+
+	public Boolean getRespuesta() {
+		return respuesta;
+	}
+
+	public void setRespuesta(Boolean respuesta) {
+		this.respuesta = respuesta;
+	}
+
+	public Integer getNumeroVencimientos() {
+		return numeroVencimientos;
+	}
+
+	public void setNumeroVencimientos(Integer numeroVencimientos) {
+		this.numeroVencimientos = numeroVencimientos;
+	}
+
+	public String getTipoVencimiento() {
+		return tipoVencimiento;
+	}
+
+	public void setTipoVencimiento(String tipoVencimiento) {
+		this.tipoVencimiento = tipoVencimiento;
+	}
+
+	public Boolean getFinFase() {
+		return finFase;
+	}
+
+	public void setFinFase(Boolean finFase) {
+		this.finFase = finFase;
+	}
+
+	public List<DocumentoDto> getDocumentos() {
+		return documentos;
+	}
+
+	public void setDocumentos(List<DocumentoDto> documentos) {
+		this.documentos = documentos;
+	}
+
+	public List<ActuacionDto> getActuacionesPadre() {
+		return actuacionesPadre;
+	}
+
+	public void setActuacionesPadre(List<ActuacionDto> actuacionesPadre) {
+		this.actuacionesPadre = actuacionesPadre;
+	}
+
+	public List<ActuacionDto> getProximosTrabajos() {
+		return proximosTrabajos;
+	}
+
+	public void setProximosTrabajos(List<ActuacionDto> proximosTrabajos) {
+		this.proximosTrabajos = proximosTrabajos;
+	}
+
+	public List<FaseDto> getFases() {
+		return fases;
+	}
+
+	public void setFases(List<FaseDto> fases) {
+		this.fases = fases;
+	}
+
+	public static ActuacionDto toDtoSinListas(Actuacion actuacion) {
+
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			modelMapper.getConfiguration().setFieldMatchingEnabled(true);
+			PropertyMap<Actuacion, ActuacionDto> map = new PropertyMap<Actuacion, ActuacionDto>() {
+				protected void configure() {
+					skip().setProximosTrabajos(null);
+					skip().setActuacionesPadre(null);
+					skip().setFases(null);
+					skip().setDocumentos(null);
+				}
+			};
+			modelMapper.addMappings(map);
+			ActuacionDto dto = modelMapper.map(actuacion, ActuacionDto.class);
+			return dto;
+
+		} catch (Exception e) {
+			System.err.println(e.getCause());
+			return null;
+		}
+	}
+
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public boolean isMasivo() {
+		return masivo;
+	}
+
+	public void setMasivo(boolean masivo) {
+		this.masivo = masivo;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	public String getEvento() {
+		return evento;
+	}
+
+	public void setEvento(String evento) {
+		this.evento = evento;
+	}
+
+}

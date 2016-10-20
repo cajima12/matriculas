@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="ID" style="width:60px;" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.id}" filterBy="#{registro.id}" >
+		<h:outputText value="#{registro.id}" title="#{registro.id}" />
+	</p:column>
+	<p:column headerText="Tipo" style="width:120px;" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.tipoDocumento.nombre}" filterBy="#{registro.tipoDocumento.nombre}">
+		<h:outputText value="#{registro.tipoDocumento.nombre}" title="#{registro.tipoDocumento.nombre}" />
+	</p:column>
+	<p:column headerText="Descripción" filterMatchMode="contains" sortBy="#{registro.descripcion}" filterBy="#{registro.descripcion}">
+		<h:outputText value="#{registro.descripcion}" title="#{registro.descripcion}" />
+	</p:column>
+</ui:composition>

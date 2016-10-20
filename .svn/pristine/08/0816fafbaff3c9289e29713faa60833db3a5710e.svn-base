@@ -1,0 +1,43 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.ayuncordoba.eseg.repositorio.MetafaseRepositorio;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoMetaFasesBean extends MantenimientoGenericoBean<Metafase, Long> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoMetaFasesBean.class);
+
+	@ManagedProperty("#{metafaseRepositorio}")
+	private MetafaseRepositorio metaFaseRepo;
+
+	@Override
+	protected void cargarListado(List<Metafase> listado) {
+		listado.addAll(metaFaseRepo.findAll());
+	}
+	
+	public static Logger getLog() {
+		return log;
+	}
+
+	public MetafaseRepositorio getMetaFaseRepo() {
+		return metaFaseRepo;
+	}
+
+	public void setMetaFaseRepo(MetafaseRepositorio metaFaseRepo) {
+		this.metaFaseRepo = metaFaseRepo;
+	}
+	
+	
+	
+}

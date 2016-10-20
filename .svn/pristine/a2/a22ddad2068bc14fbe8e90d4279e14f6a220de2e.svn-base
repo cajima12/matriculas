@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Rol;
+
+public class RolRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Rol> {
+
+	private static final long serialVersionUID = -8237856245140003863L;
+
+	public RolRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

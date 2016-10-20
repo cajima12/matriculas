@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+	<h:inputHidden value="#{mantenimiento.bean.instancia.id}" />
+	<p:fieldset legend="Datos de acceso a la aplicación">
+		<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth20_100,colWidth30_100,colWidth20_100,colWidth30_100"
+			id="modal_usuario_acceso">
+			<h:outputLabel value="Usuario: " for="usernameUsuario" />
+			<p:inputText id="usernameUsuario" value="#{mantenimiento.bean.instancia.username}" readonly="#{mantenimiento.bean.soloLectura}"
+				validator="#{mantenimiento.bean.validarLogin}" required="true" requiredMessage="El login del usuario es obligatorio" />
+
+			<h:outputLabel value="Password: " for="passwordUsuario" />
+			<p:password id="passwordUsuario" value="#{mantenimiento.bean.instancia.password}" readonly="#{mantenimiento.bean.soloLectura}" redisplay="true"
+				required="true" requiredMessage="La contraseña es obligatoria" />
+
+			<h:outputLabel value="Rol: " for="rolUsuario" />
+			<p:selectOneMenu id="rolUsuario" value="#{mantenimiento.bean.rolSeleccionado}" disabled="#{mantenimiento.bean.soloLectura}"
+				converter="omnifaces.SelectItemsConverter">
+				<f:selectItems value="#{mantenimiento.bean.listadoRoles}" var="s" itemValue="#{s}" itemLabel="#{s.rol}" />
+			</p:selectOneMenu>
+
+		</h:panelGrid>
+	</p:fieldset>
+	<p:fieldset legend="Datos personales">
+		<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth20_100,colWidth30_100,colWidth20_100,colWidth30_100"
+			id="modal_usuario_personales">
+			<h:outputLabel value="Nif: " for="nif" />
+			<p:inputText id="nif" value="#{mantenimiento.bean.instancia.nif}" required="true" requiredMessage="El NIF es obligatorio."
+				readonly="#{mantenimiento.bean.soloLectura}" validator="#{mantenimiento.bean.validarNif}">
+				<p:ajax event="change" process="@this" />
+			</p:inputText>
+
+			<h:outputLabel value="Nombre: " for="nombreUsuario" />
+			<p:inputText id="nombreUsuario" value="#{mantenimiento.bean.instancia.nombre}" readonly="#{mantenimiento.bean.soloLectura}" required="true"
+				requiredMessage="El nombre del usuario es obligatorio" />
+
+			<h:outputLabel value="Primer apellido: " for="primerApellido" />
+			<p:inputText id="primerApellido" value="#{mantenimiento.bean.instancia.apellido1}" readonly="#{mantenimiento.bean.soloLectura}" required="true"
+				requiredMessage="El primer apellido del usuario son obligatorios" />
+			<h:outputLabel value="Segundo apellido: " for="segundoApellido" />
+			<p:inputText id="segundoApellido" value="#{mantenimiento.bean.instancia.apellido2}" readonly="#{mantenimiento.bean.soloLectura}" required="true"
+				requiredMessage="El segundo apellido del usuario son obligatorios" />
+
+			<h:outputLabel value="E-mail:" for="email" />
+			<p:inputText id="email" value="#{mantenimiento.bean.instancia.email}" readonly="#{mantenimiento.bean.soloLectura}" />
+
+			<h:outputLabel value="Teléfono: " for="telefono" />
+			<p:inputText id="telefono" value="#{mantenimiento.bean.instancia.telefono}" readonly="#{mantenimiento.bean.soloLectura}" />
+
+			<h:outputLabel value="Siglas: " for="siglas" />
+			<p:inputText id="siglas" value="#{mantenimiento.bean.instancia.siglas}" readonly="#{mantenimiento.bean.soloLectura}" required="true"
+				requiredMessage="Las siglas del usuario son obligatorias" validator="#{mantenimiento.bean.validarSiglas}" />
+		</h:panelGrid>
+	</p:fieldset>
+
+</ui:composition>

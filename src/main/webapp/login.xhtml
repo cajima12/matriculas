@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/pages/templates/layout.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+	
+		<div id="form_login">
+
+			<div id="titulo_ventana">
+				<a href="http://www.cordoba.es"><img src="#{request.contextPath}#{msg['aplicacion.logo']}" style="width:320px!important"/></a>
+			</div>
+	
+		       
+		        <h:form  id="loginFormId" prependId="false">
+		        	
+		        	<f:metadata>	    
+						<f:attribute name="authToken" value="#{param['authToken']}" />
+						<f:event type="preRenderView" listener="#{loginMgmtBean.loginFromParams}" />
+					</f:metadata>
+		        	
+		        	<p:growl id="msgs" showDetail="true" />
+		        
+		        	<p:panel id="panel2" header="Acceso al Sistema" style="margin-bottom:10px;" styleClass="loginBox">
+		        	   	<p:messages id="messages" showDetail="true"/>
+		        	   	 <h:panelGrid columns="3" cellpadding="5">
+			               
+	                        <h:outputText id="outTxtUserNameId" value="Usuario: " name="outTxtUserNameNm"></h:outputText>
+	                        <h:inputText id="userName" required="true" value="#{loginMgmtBean.userName}" requiredMessage="Please enter username"></h:inputText>
+	                        <h:outputLabel id="outLblUserNameId" for="userName" name="outLblUserNameNm"></h:outputLabel>
+	                  
+	                        <h:outputText id="outTxtPasswordId" value="Contraseña: " name="outTxtPasswordNm"></h:outputText>
+	                        <h:inputSecret id="password"  required="true" value="#{loginMgmtBean.password}" requiredMessage="Please enter password" name="inTxtPasswordNm"></h:inputSecret>
+	                        <h:outputLabel id="outLblPasswordId" for="password" name="outLblPasswordNm"></h:outputLabel>
+	                    
+			             </h:panelGrid>
+
+	 					<h:panelGrid columns="2" id="loginBotonera">
+							<p:commandButton id="btnLoginId" value="Login" action="#{loginMgmtBean.login}" update=":loginFormId:msgs" styleClass="loginPanelBtn boton" />
+							<p:commandButton id="btnCancelId" value="Cancel" action="#{loginMgmtBean.cancel}" styleClass="loginPanelBtn boton red" immediate="true" update="loginFormId" />
+						</h:panelGrid>
+								             
+		            </p:panel>
+							                
+		        </h:form>
+		        
+		    <div>
+		        <h:messages></h:messages>
+		    </div>
+
+		</div>
+		
+	</ui:define>
+</ui:composition>

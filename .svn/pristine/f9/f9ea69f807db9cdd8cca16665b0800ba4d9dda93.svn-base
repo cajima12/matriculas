@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validator>
+	<validator-id>custom.nifValidator</validator-id>
+	<validator-class>org.ayuncordoba.correo.validator.NifValidator</validator-class>
+</validator>

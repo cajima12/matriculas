@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<h:form id="formulario">
+		<c:set value="#{bean}" target="#{mantenimiento}" property="bean" />
+		<p:growl id="msgs" />
+
+		<p:panel header="Mantenimiento #{nombreEntidadPlural}" id="tablaMantenimiento" widgetVar="tablaMantenimiento" rendered="#{!mantenimiento.bean.panelNuevoEditar and !mantenimiento.bean.panelEliminar}">
+			<h:panelGrid columns="1" cellpadding="5" style="width: 100%;text-align: right;">
+				<p:commandButton partialSubmit="true" process="@form" update="@form" value="Añadir #{nombreEntidad}" actionListener="#{mantenimiento.bean.limpiar}"
+					id="btn_add" icon="ui-icon-disk" rendered="#{mantenimiento.bean.puedeAnadir and nombreEntidad ne 'jerarquia'}">
+					<f:setPropertyActionListener target="#{mantenimiento.bean.soloLectura}" value="false" />
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="true" />
+					<f:setPropertyActionListener target="#{mantenimiento.bean.operacion}" value="Añadir" />
+				</p:commandButton>
+			</h:panelGrid>
+			<p:dataTable styleClass="mantenimientoTable" value="#{mantenimiento.bean.listado}" var="registro" id="mantenimientoTable" paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" rowsPerPageTemplate="5,10,15"
+				paginatorPosition="bottom" lazy="false" binding="#{mantenimiento.bean.tabla}" widgetVar="mantenimientoTable" >
+				<ui:include src="#{rutaColumnas}" />
+				<p:column headerText="Acciones" styleClass="anchoFijo_140 centrado">
+					<p:commandButton partialSubmit="true" process="@form" update="@form" icon="ui-icon-ver" title="Ver #{nombreEntidad}" oncomplete="readonly()" rendered="#{nombreEntidad ne 'jerarquia'}" >
+						<f:setPropertyActionListener target="#{mantenimiento.bean.operacion}" value="Ver" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.instancia}" value="#{registro}" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.soloLectura}" value="true" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="true" />
+					</p:commandButton>
+					<p:commandButton partialSubmit="true" process="@form" update="@form" icon="ui-icon-pencil" title="Editar #{nombreEntidad}" rendered="#{mantenimiento.bean.puedeEditar and nombreEntidad ne 'jerarquia'}" >
+						<f:setPropertyActionListener target="#{mantenimiento.bean.operacion}" value="Editar" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.instancia}" value="#{registro}" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.soloLectura}" value="false" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="true" />
+					</p:commandButton>
+					<p:commandButton partialSubmit="true" process="@form" update="@form" icon="ui-icon-trash" title="Eliminar #{nombreEntidad}" rendered="#{mantenimiento.bean.puedeEliminar and nombreEntidad ne 'jerarquia'}" 
+						oncomplete="readonly()">
+						<f:setPropertyActionListener target="#{mantenimiento.bean.operacion}" value="Eliminar" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.instancia}" value="#{registro}" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.soloLectura}" value="true" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.panelEliminar}" value="true" />
+					</p:commandButton>
+					<p:commandButton partialSubmit="true" process="@form" update="@form" icon="ui-icon-arrowthick-2-n-s" 
+						title="Asignación de Padres e Hijos" rendered="#{nombreEntidad eq 'jerarquia'}" >
+						<f:setPropertyActionListener target="#{mantenimiento.bean.instancia}" value="#{registro}" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.operacion}" value="Editar" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.soloLectura}" value="false" />
+						<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="true" />
+					</p:commandButton>					
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel header="#{mantenimiento.bean.operacion} #{nombreEntidad}" styleClass="panelNuevoEditar"  style="margin-top: 20px;margin-bottom:20px" 
+			id="panelNuevoEditar" widgetVar="panelNuevoEditar" rendered="#{mantenimiento.bean.panelNuevoEditar or mantenimiento.bean.panelEliminar}">
+			
+			<div class="formularioMantenimientosPanel">
+				<ui:include src="#{rutaModal}" />
+			</div>
+			
+			<h:panelGrid id="panelModal" columns="2" cellpadding="4" styleClass="botonera">
+				<p:commandButton update="@form" id="btn_save" icon="ui-icon-disk" value="Guardar" actionListener="#{mantenimiento.bean.guardar()}" rendered="#{!mantenimiento.bean.soloLectura and mantenimiento.bean.panelNuevoEditar}">
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="false" />
+				</p:commandButton>
+				<p:commandButton partialSubmit="true" process="@this" update="@form" ajax="true" immediate="true" id="btn_delete" icon="ui-icon-disk" value="Eliminar"
+					action="#{mantenimiento.bean.eliminar()}" rendered="#{mantenimiento.bean.panelEliminar}">
+					<p:confirm header="Confirmación" message="¿Está seguro de eliminar el registro?" icon="ui-icon-alert" />
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelEliminar}" value="false" />
+				</p:commandButton>
+				<p:commandButton process="@this" update="@form" id="btn_cancel" value="Cancelar" rendered="#{!mantenimiento.bean.soloLectura or !mantenimiento.bean.panelNuevoEditar}"  
+					actionListener="#{mantenimiento.bean.cancelar()}">
+					<p:ajax event="click" update="panelNuevoEditar, :formulario:msgs" resetValues="true"  />
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="false" />
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelEliminar}" value="false" />
+				</p:commandButton>
+				<p:commandButton partialSubmit="true" process="@this" update="@form" ajax="true" immediate="true" id="btn_volver" value="Volver" rendered="#{mantenimiento.bean.soloLectura and mantenimiento.bean.panelNuevoEditar}"
+					actionListener="#{mantenimiento.bean.cancelar()}">
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelNuevoEditar}" value="false" />
+					<f:setPropertyActionListener target="#{mantenimiento.bean.panelEliminar}" value="false" />
+				</p:commandButton>
+			</h:panelGrid>
+		</p:panel>		
+
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+			<p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+	</h:form>
+	<script>	
+		function readonly() {
+			$("#formulario\\:panelNuevoEditar").find('.ui-state-disabled')
+					.removeClass('ui-state-disabled');
+			$("#formulario\\:panelNuevoEliminar").find('.ui-state-disabled')
+					.removeClass('ui-state-disabled');
+		}
+	</script>
+	
+	<pe:tooltip global="true" atPosition="bottom center"/>  
+</ui:composition>

@@ -1,0 +1,20 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.BoeTipoTexto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface BoeTipoTextoRepositorio extends JpaRepository<BoeTipoTexto, Long>, PaginacionTabla<BoeTipoTexto> {
+
+	
+	@Query("select b from BoeTipoTexto b where b.dir3.id = ?1")
+	public List<BoeTipoTexto> findByDir3(String id);
+}

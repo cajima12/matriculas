@@ -1,0 +1,181 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.validator.ValidatorException;
+
+import org.ayuncordoba.eseg.modelo.BoeTipoTexto;
+import org.ayuncordoba.eseg.modelo.Dir3;
+import org.ayuncordoba.eseg.modelo.Dir3Nivel;
+import org.ayuncordoba.eseg.modelo.Provincias;
+import org.ayuncordoba.eseg.repositorio.BoeTipoTextoRepositorio;
+import org.ayuncordoba.eseg.repositorio.Dir3NivelRepositorio;
+import org.ayuncordoba.eseg.repositorio.Dir3Repositorio;
+import org.ayuncordoba.eseg.repositorio.ProvinciaRepositorio;
+import org.ayuncordoba.eseg.util.Constantes;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.event.TabChangeEvent;
+import org.springframework.data.domain.Sort;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoDir3Bean extends MantenimientoGenericoBean<Dir3, String> {
+
+	private static final long serialVersionUID = 1607293660128109968L;
+	private static final long NIVEL_DIR_INICIAL = 3L;
+	private static final long PROVINCIA_INICIAL = 14L;
+	
+	@ManagedProperty("#{dir3Repositorio}")
+	private Dir3Repositorio dir3Repositorio;
+	
+	@ManagedProperty("#{dir3NivelRepositorio}")
+	private Dir3NivelRepositorio dir3NivelRepositorio;
+	
+	@ManagedProperty("#{provinciaRepositorio}")
+	private ProvinciaRepositorio provinciaRepositorio;
+	
+	@ManagedProperty("#{boeTipoTextoRepositorio}")
+	private BoeTipoTextoRepositorio boeTipoTextoRepositorio;
+	
+	private List<Dir3Nivel> listadoNiveles;
+	private List<Provincias> listadoProvincias;
+	private List<Dir3> listadoDir3;
+	private List<BoeTipoTexto> listBoeTipoTexto;
+	private BoeTipoTexto boeTipoTextoNuevo;
+
+	@Override
+	protected void cargarListado(List<Dir3> listado) {
+		super.cargarListado(listado);
+		listadoNiveles = dir3NivelRepositorio.findAll(new Sort("tipoEntidad"));
+		listadoProvincias = provinciaRepositorio.findAll(new Sort("nombre"));
+		listadoDir3 = dir3Repositorio.findAll(new Sort("denominacion"));
+		listBoeTipoTexto = boeTipoTextoRepositorio.findAll();
+	}
+	
+	@Override
+	public void setOperacion(String operacion) {
+		if (operacion.equals(Constantes.MANTENIMIENTO_OPERACION_ANADIR)) {
+			for (Dir3Nivel n : listadoNiveles) {
+				if (n.getId() == NIVEL_DIR_INICIAL) {
+					getInstancia().setNivel(n);
+					break;
+				}
+			}
+			
+			for (Provincias p : listadoProvincias) {
+				if (p.getId() == PROVINCIA_INICIAL) {
+					getInstancia().setProvincia(p);
+					break;
+				}
+			}
+			
+			getInstancia().setNivelJerarquico(0);
+		}
+		if (operacion.equals(Constantes.MANTENIMIENTO_OPERACION_EDITAR)) {
+			System.out.println("Dir3: "+super.getInstancia().getId());
+		}
+		super.setOperacion(operacion);
+	}
+	
+	@Override
+	public void guardar() {
+		if (getInstancia().getUnidadPrincipal() == null) {
+			getInstancia().setUnidadPrincipal(getInstancia().getId());
+		}
+		
+		if (getInstancia().getUnidadSuperior() == null) {
+			getInstancia().setUnidadSuperior(getInstancia().getId());
+		}
+		
+		super.guardar();
+	}
+	
+	
+	public void actualizaNivelJerarquico(AjaxBehaviorEvent event) {
+		String idDir3 = (String) ((SelectOneMenu)event.getSource()).getValue();
+		for (Dir3 dir3 : listadoDir3) {
+			if (dir3.getId().equals(idDir3)) {
+				getInstancia().setNivelJerarquico(dir3.getNivelJerarquico() + 1);
+				break;
+			}
+		}
+	}
+	
+	public void validarId(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		Dir3 dir3 = dir3Repositorio.findOne(value.toString());
+		if (dir3 != null && getInstancia().getId() != dir3.getId()) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ya existe una unidad Dir3 con el ID indicado.", null));
+		}
+	}
+	
+	public void actualizaNivelJerarquico(ValueChangeEvent event) {
+		getInstancia().setNivelJerarquico(((Dir3)((SelectOneMenu)event.getSource()).getValue()).getNivelJerarquico() + 1);
+	}
+	
+	public void setDir3Repositorio(Dir3Repositorio dir3Repositorio) {
+		this.dir3Repositorio = dir3Repositorio;
+		setRepositorio(dir3Repositorio);
+	}
+	
+	public void setProvinciaRepositorio(ProvinciaRepositorio provinciaRepositorio) {
+		this.provinciaRepositorio = provinciaRepositorio;
+	}
+	
+	public void setDir3NivelRepositorio(Dir3NivelRepositorio dir3NivelRepositorio) {
+		this.dir3NivelRepositorio = dir3NivelRepositorio;
+	}
+
+	public List<Dir3> getListadoDir3() {
+		return listadoDir3;
+	}
+
+	public void setListadoDir3(List<Dir3> listadoDir3) {
+		this.listadoDir3 = listadoDir3;
+	}
+	
+	public List<Dir3Nivel> getListadoNiveles() {
+		return listadoNiveles;
+	}
+	
+	public void setListadoNiveles(List<Dir3Nivel> listadoNiveles) {
+		this.listadoNiveles = listadoNiveles;
+	}
+	
+	public List<Provincias> getListadoProvincias() {
+		return listadoProvincias;
+	}
+	
+	public void setListadoProvincias(List<Provincias> listadoProvincias) {
+		this.listadoProvincias = listadoProvincias;
+	}
+
+	public List<BoeTipoTexto> getListBoeTipoTexto() {
+		return listBoeTipoTexto;
+	}
+
+	public void setListBoeTipoTexto(List<BoeTipoTexto> listBoeTipoTexto) {
+		this.listBoeTipoTexto = listBoeTipoTexto;
+	}
+
+	public void setBoeTipoTextoRepositorio(BoeTipoTextoRepositorio boeTipoTextoRepositorio) {
+		this.boeTipoTextoRepositorio = boeTipoTextoRepositorio;
+	}
+
+	public BoeTipoTexto getBoeTipoTextoNuevo() {
+		return boeTipoTextoNuevo;
+	}
+
+	public void setBoeTipoTextoNuevo(BoeTipoTexto boeTipoTextoNuevo) {
+		this.boeTipoTextoNuevo = boeTipoTextoNuevo;
+	}
+	
+	
+}

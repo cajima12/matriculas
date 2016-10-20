@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" 
+	xmlns:o="http://omnifaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:of="http://omnifaces.org/functions">
+		<p:column headerText="NIF" style="width:150px;" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.identificacion}" filterBy="#{registro.identificacion}" >
+			<h:outputText value="#{registro.identificacion}" title="#{registro.identificacion}" />
+		</p:column>
+		<p:column headerText="Nombre" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.nombre}" filterBy="#{registro.nombre}">
+			<h:outputText value="#{registro.nombre}" title="#{registro.nombre}" />
+		</p:column>
+		<p:column headerText="Apellidos" styleClass="centrado" filterMatchMode="contains" sortBy="#{registro.apellido1}" filterBy="#{registro.apellido1}">
+			<h:outputText value="#{registro.apellidos}" title="#{registro.apellidos}" />
+		</p:column>
+		<p:column headerText="Cargo" style="width:240px;" filterMatchMode="contains" sortBy="#{registro.cargo}" filterBy="#{registro.cargo}">
+			<h:outputText value="#{registro.cargo}" title="#{registro.cargo}" />
+		</p:column>
+		<p:column headerText="Unidad" style="width:240px;" filterMatchMode="contains" sortBy="#{registro.unidad.nombre}" filterBy="#{registro.unidad.nombre}">
+			<h:outputText value="#{registro.unidad.nombre}" title="#{registro.unidad.nombre}" />
+		</p:column>		
+</ui:composition>

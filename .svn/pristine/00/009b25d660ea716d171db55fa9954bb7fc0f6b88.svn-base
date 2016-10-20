@@ -1,0 +1,5 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+public class TipoDocumentoDto {
+
+}

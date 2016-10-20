@@ -1,0 +1,280 @@
+body { 	 
+   		padding:0px;
+   		margin:0px;
+   		width:100%;
+   		height:100%;
+   		overflow:hidden;
+   	    background: #000 url(../images/login_background.png) center center fixed no-repeat; 
+		background:none\9;
+		background-size:100%
+} 
+.ui-button-icon-only .ui-icon, .ui-button-text-icon-left .ui-icon, .ui-button-text-icon-rigth .ui-icon{
+	
+	top:1% !important;
+}
+h1, h2, h3 {
+	margin: 0.4em;
+	font-weight: normal;
+	color:grey;
+}
+.h1text{ 
+	font-size: 5.2em;
+	font-weight: bold;
+	font-family:Calibri;
+	margin-left: 15%;
+	margin-right: auto;
+	border-bottom: 4px solid;
+	margin: 0.4em;
+	font-weight: normal;
+	color:grey;
+}
+.h2text{
+	font-weight: bold !important;
+	margin-left: 25%;
+	margin-right: auto;
+	font-size: 2.2em;
+	margin: 1.0em; 
+	color: grey;
+	 
+}
+.h3text{
+	
+	margin-left: 25%;
+	margin-right: auto;
+	font-size: 27px;
+	margin: 0px; 
+	color: grey;
+	 
+}
+.footertext{
+	font-size: 1.8em;
+	margin: 1.0em; 
+	color: black;
+	font-weight: bold;
+}
+.footerMailtext{
+	font-size: 1.4em;
+	margin: 1.0em; 
+	font-weight: bold;
+	color: black;
+}
+
+.button{
+	height: 114px !important;
+	width: 447px !important; 
+	background:none !important;
+	border:0px !important;
+	background-position:center !important;
+	 
+}
+.ui-button-icon-only .ui-icon{
+	left:0% !important;
+	margin-left: 0px !important;
+	position:relative !important;
+}
+ 
+.buttonOgtCorreo {
+		background: url(../images/ogtCorreo.png)  !important;
+ 		height: 114px !important;
+		width: 447px !important; 
+	/*	background-size:10.5em !important;*/
+		margin-top: 0.5em;
+		margin-left: 0.5em;
+		background-repeat:  no-repeat !important;
+		background-position:center !important;
+}
+
+.buttonOgtBop {
+		background: url(../images/ogtBop.png)  !important;
+ 		height: 114px !important;
+		width: 447px !important; 
+	/*	background-size:10.5em !important;*/
+		margin-top: 0.5em;
+		margin-left: 0.5em;
+		background-repeat:  no-repeat !important;
+		background-position:center !important;
+}
+
+.buttonOgtCorreoManual {
+		background: url(../images/ogtCorreoManual.png)  !important;
+ 		height: 114px !important;
+		width: 447px !important; 
+	/*	background-size:10.5em !important;*/
+		margin-top: 0.5em;
+		margin-left: 0.5em;
+		background-repeat:  no-repeat !important;
+		background-position:center !important;		
+}
+
+.buttonOgtCorreoPressed{
+		background: url(../images/ogtCorreo.png)  !important;
+ 		height: 114px !important;
+		width: 447px !important; 
+		/**background-size:10.5em !important;*/
+		margin-top: 0.5em;
+		margin-left: 0.5em;
+		background-repeat:  no-repeat !important;
+		background-position:center !important; 
+}
+
+.buttonOgtBopPressed{
+		background: url(../images/ogtBop.png)  !important;
+ 		height: 114px !important;
+		width: 447px !important; 
+		/**background-size:10.5em !important;*/
+		margin-top: 0.5em;
+		margin-left: 0.5em;
+		background-repeat:  no-repeat !important;
+		background-position:center !important; 
+}
+
+.ui-state-hover .ui-icon .ui_state_focus {
+	background: url(../images/ogtCorreo.png) !important;	
+}
+
+a{
+	color:#000;
+}
+a:hover{
+	color:#999;
+}
+
+a, a:hover { text-decoration: none; }
+
+label{
+	font-size: 0.8em;
+	font-weight: bold;
+}
+.buttons{
+	margin-top:10px;
+	padding:5px;
+	z-indez:100;
+}
+.buttons input{
+	margin-right:10px;
+}
+
+table {
+    background: none !important;
+    margin-top: 10px;
+    width:100%;
+}
+
+table th {
+    background-color: #EFEFEF;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    border-right: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size:0.8em;
+}
+
+table .row1 { 
+    background-color: #FFF;
+}
+table .row2 { 
+    background-color: #DDD;
+}
+
+
+
+div#wrapper{ 
+    		position:absolute;
+    		top:0px;
+    		left:0px;
+    		width:100%;
+    		height:100%;
+    		overflow:auto;
+    		position:absolute;   
+		width:100%;
+		height:100%;
+	min-height:860px;
+		z-index:-1;
+	       filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=#{resource['img/login_background.png']},sizingMethod='scale');
+     		-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src=#{resource['img/login_background.png']}, sizingMethod='scale')";
+ 
+} 
+
+div#header{
+	margin-top:2em;
+	margin-bottom:1em;
+	padding:0.1em;
+  
+}
+div#header h1, div#header h4{
+	display:inline;
+	float:left;
+}
+
+div#header #logo{
+	float:right;
+}
+div#header #logo img{
+	border: 0px;
+}
+
+div#nav {
+	float:left; 
+}
+	
+div#nav ul {
+	list-style: none; 
+	margin: 0; 
+	margin-left: 0.4em;
+	padding:0;
+}
+div#nav li { 
+	margin: 0;
+}
+
+div#content{
+ 
+	height:75%;
+	float:left;
+ 
+	border:0px;
+margin:0 auto 0 auto;   
+	clear:both;  
+	position: fixed;
+    bottom: 0px;
+    width:100%;
+    boder:0px;
+
+}
+div#content h4{
+	border-bottom:1px solid #CCC;
+}
+div#footer{ 
+	margin:0 auto 0 auto;   
+	clear:both;  
+	position: fixed;
+    bottom: 0px;
+    width:100%;
+    boder:0px;
+}
+
+
+div#footer img{
+	float: right;
+}
+.ui-widget-content{
+	background:none !important;
+	border:0px;
+}
+.maintenance  {
+	margin:0 auto 0 auto;   
+	clear:both;  
+	position: fixed;
+    	width:100%;
+    	boder:0px;
+	text-align:center;
+}
+.maintenance tr, .maintenance td {
+    border: none !important;
+
+}

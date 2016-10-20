@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<h:inputHidden value="#{mantenimiento.bean.instancia.id}" />
+
+	<h:panelGrid columns="4" cellpadding="4" style="width: 100%;" columnClasses="colWidth20_100"
+		id="modal_usuario_acceso">
+		<h:outputLabel value="Rol: " for="nombreRol" />
+		<p:inputText id="nombreRol" value="#{mantenimiento.bean.instancia.rol}" readonly="#{mantenimiento.bean.soloLectura}"
+			required="true" requiredMessage="El nombre del rol es obligatorio" />
+	</h:panelGrid>
+
+</ui:composition>

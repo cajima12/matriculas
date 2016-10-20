@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/secure/templates/dashboard.xhtml">
+
+	<ui:define name="content">
+	
+		<h:form id="formPpal">
+		
+			<p:growl id="infoMessages" showDetail="true" />
+			<p:commandButton value="plantilla" actionListener="#{treeBean.plantilla}"
+				process="@this" partialSubmit="true"/>
+			<p:panelGrid styleClass="tamano100p">
+				<p:row>
+					<p:column styleClass="tamano30p treeDocumentos">
+					    <p:tree id="treeDocumentos" value="#{treeBean.root}" var="node"
+					        selectionMode="single" 
+    						selection="#{treeBean.selectedNode}"
+    						dynamic="true">
+							    <p:treeNode type="#{treeBean.contribuyente}">
+							       <p:commandButton value="#{node}" />
+							    </p:treeNode>
+							    <p:treeNode type="#{treeBean.documento}">
+							       <p:commandButton value="#{node}" />
+							    </p:treeNode>
+							    <p:treeNode type="#{treeBean.actuacion}">
+							       <p:commandButton value="#{node}" />
+							    </p:treeNode>    						
+					    </p:tree>		
+					    
+						<p:contextMenu for="treeDocumentos" nodeType="#{treeBean.contribuyente}">
+						    <p:menuitem value="View" actionListener="#{treeBean.displaySelectedSingle}" icon="ui-icon-search" update="infoMessages"/>
+						    <p:menuitem value="Delete" update="treeDocumentos" actionListener="#{treeBean.deleteNode}" icon="ui-icon-close"/>
+						</p:contextMenu>
+						<p:contextMenu for="treeDocumentos" nodeType="#{treeBean.documento}">
+						    <p:menuitem value="Execute" actionListener="#{treeBean.execute}" update="infoMessages"/>
+						</p:contextMenu>
+						<p:contextMenu for="treeDocumentos" nodeType="#{treeBean.actuacion}">
+						    <p:menuitem value="Edit" actionListener="#{treeBean.edit}" icon="ui-icon-edit" update="infoMessages"/>
+						    <p:menuitem value="Delete" update="treeDocumentos" actionListener="#{treeBean.deleteNode}" icon="ui-icon-close"/>
+						</p:contextMenu >
+					</p:column>
+					<p:column rowspan="2">
+						<p:panelGrid >
+							<p:panel style="min-height: 403px !important;width: 100% !important;">
+								<p:panel header="Datos del Registro">
+										<h:outputLabel value="Nº Flora"/>
+										<p:inputText value=""/>
+										<h:outputLabel value="Nº Core"/>
+										<p:inputText value=""/>
+										<h:outputLabel value="Fecha Registro"/>
+										<p:inputText value=""/>
+								</p:panel>
+								<p:panel header="Datos del Procedimiento">
+									<h:outputText value="prueba" />
+								</p:panel>
+							</p:panel>
+							
+						</p:panelGrid>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column styleClass="tamano30p treeDatos">
+						<p:dataTable emptyMessage="sin datos">
+							<p:column headerText="nada"></p:column>
+						</p:dataTable>
+					</p:column>
+				</p:row>				
+			</p:panelGrid>
+		</h:form>
+	
+	
+	</ui:define>
+
+</ui:composition>

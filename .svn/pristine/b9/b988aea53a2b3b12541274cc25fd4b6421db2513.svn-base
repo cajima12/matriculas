@@ -1,0 +1,46 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.Dir3Nivel;
+import org.ayuncordoba.eseg.repositorio.Dir3NivelRepositorio;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoNivelesDir3Bean extends MantenimientoGenericoBean<Dir3Nivel, Long> {
+
+	private static final long serialVersionUID = -4810548148130215692L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoNivelesDir3Bean.class);
+	
+	@ManagedProperty("#{dir3NivelRepositorio}")
+	private Dir3NivelRepositorio dir3NivelRepositorio;
+	
+	public MantenimientoNivelesDir3Bean() {
+		setPuedeEliminar(false);
+	}
+	
+	@Override
+	protected void cargarListado(List<Dir3Nivel> listado) {
+		listado.addAll(dir3NivelRepositorio.findAll());
+	}
+	
+	public Dir3NivelRepositorio getDir3NivelRepositorio() {
+		return dir3NivelRepositorio;
+	}
+
+	public void setDir3NivelRepositorio(Dir3NivelRepositorio dir3NivelRepositorio) {
+		this.dir3NivelRepositorio = dir3NivelRepositorio;
+	}
+
+	public static Logger getLog() {
+		return log;
+	}
+	
+	
+}

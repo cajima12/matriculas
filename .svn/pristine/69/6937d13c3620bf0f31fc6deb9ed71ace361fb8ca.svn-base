@@ -1,0 +1,523 @@
+package org.ayuncordoba.eseg.ws.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+
+import javax.jws.WebService;
+
+import org.ayuncordoba.eseg.modelo.Actuacion;
+import org.ayuncordoba.eseg.modelo.Dir3;
+import org.ayuncordoba.eseg.modelo.Documento;
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.ayuncordoba.eseg.modelo.Firmante;
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.ayuncordoba.eseg.modelo.dto.ActuacionDto;
+import org.ayuncordoba.eseg.modelo.dto.Dir3Dto;
+import org.ayuncordoba.eseg.modelo.dto.DocumentoDto;
+import org.ayuncordoba.eseg.modelo.dto.FaseDto;
+import org.ayuncordoba.eseg.modelo.dto.FirmanteDto;
+import org.ayuncordoba.eseg.modelo.dto.MetafaseDto;
+import org.ayuncordoba.eseg.modelo.dto.ProcedimientoDto;
+import org.ayuncordoba.eseg.modelo.dto.UnidadDto;
+import org.ayuncordoba.eseg.repositorio.ActuacionRepositorio;
+import org.ayuncordoba.eseg.repositorio.Dir3Repositorio;
+import org.ayuncordoba.eseg.repositorio.DocumentoRepositorio;
+import org.ayuncordoba.eseg.repositorio.FaseRepositorio;
+import org.ayuncordoba.eseg.repositorio.FirmanteRepositorio;
+import org.ayuncordoba.eseg.repositorio.MetafaseRepositorio;
+import org.ayuncordoba.eseg.repositorio.ProcedimientoRepositorio;
+import org.ayuncordoba.eseg.repositorio.UnidadRepositorio;
+import org.ayuncordoba.eseg.util.Constantes;
+import org.ayuncordoba.eseg.ws.ExcepcionSeguimiento;
+import org.ayuncordoba.eseg.ws.SeguimientoServices;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionActuaciones;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionDocumentos;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionFases;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionFirmantes;
+import org.ayuncordoba.eseg.ws.peticiones.PeticionMetafases;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.marcaconsultoria.medidores.MedidorTiempoUtil;
+import com.marcaconsultoria.paginacion.filtrado.operadores.Igual;
+
+@WebService(endpointInterface = "org.ayuncordoba.eseg.ws.SeguimientoServices")
+public class SeguimientoServicesImpl implements SeguimientoServices {
+
+	private static final Logger log = org.slf4j.LoggerFactory.getLogger(SeguimientoServicesImpl.class);
+
+	@Autowired
+	private Dir3Repositorio dir3Repo;
+
+	@Autowired
+	private ProcedimientoRepositorio procedimientoRepo;
+
+	@Autowired
+	private UnidadRepositorio unidadRepo;
+
+	@Autowired
+	private FaseRepositorio faseRepo;
+
+	@Autowired
+	private DocumentoRepositorio documentoRepo;
+
+	@Autowired
+	private ActuacionRepositorio actuacionRepo;
+
+	@Autowired
+	private MetafaseRepositorio metafaseRepo;
+	
+	@Autowired
+	private FirmanteRepositorio firmanteRepo;
+
+	/**
+	 * - Obtener PADRE de un DIR3 dado. - Obtener PRINCIPAL de un DIR3 dado. - Obtener estructura jerárquica completa de un DIR3 dado. - Obtener metadatos
+	 * de una DIR3 dado.
+	 * 
+	 * @param idDir3
+	 * @return
+	 */
+	public Dir3Dto getDir3(String idDir3) {
+		log.info("Consultando el WS para el Dir3: " + idDir3);
+		long tiempoIni = System.currentTimeMillis();
+		Dir3Dto respuesta = new Dir3Dto();
+
+		// Metadatos
+		Dir3 dir3 = dir3Repo.findById(idDir3);
+		respuesta = Dir3Dto.toDto(dir3);
+
+		// Padre
+		Dir3 padre = dir3Repo.findById(dir3.getUnidadSuperior());
+		respuesta.setPadre(Dir3Dto.toDto(padre));
+
+		// Principal
+		Dir3 principal = dir3Repo.findUnidadPrincipalById(dir3.getId());
+		respuesta.setPrincipal(Dir3Dto.toDto(principal));
+
+		// Estructura jerarquica
+		respuesta.setEstructuraJerarquica(getEstructuraGerarquica(dir3));
+
+		// unidad publicadora
+		respuesta.setUnidadPublicadora(getUnidadPublicadora(dir3));
+		log.info(MedidorTiempoUtil.tiempoEmpleado(tiempoIni, "WS-Dir3"));
+		return respuesta;
+	}
+	/*
+	public Dir3Dto getDir3(String idDir3) {
+		log.info("Consultando el WS para el Dir3: " + idDir3);
+		long tiempoIni = System.currentTimeMillis();
+		Dir3Dto respuesta = new Dir3Dto();
+
+		Dir3 dir3 = dir3Repo.findUnidadSuperiorById(idDir3);
+
+		// Metadatos
+		respuesta = Dir3Dto.toDto(dir3);
+
+		// Padre
+		Dir3 padre = dir3Repo.findById(dir3.getUnidadSuperior());
+		respuesta.setPadre(Dir3Dto.toDto(padre));
+
+		// Principal
+		respuesta.setPrincipal(Dir3Dto.toDto(dir3));
+
+		// Estructura jerarquica
+		respuesta.setEstructuraJerarquica(getEstructuraGerarquica(dir3));
+
+		// unidad publicadora
+		respuesta.setUnidadPublicadora(getUnidadPublicadora(dir3));
+		log.info(MedidorTiempoUtil.tiempoEmpleado(tiempoIni, "WS-Dir3"));
+		return respuesta;
+	}
+	*/
+
+	public List<ActuacionDto> obtenerActuacionesDocumento(String idDocumento) {
+		Documento documento = documentoRepo.findOne(idDocumento);
+		List<Actuacion> actuaciones = actuacionRepo.findByDocumentos(documento);
+
+		List<ActuacionDto> procs = new ArrayList<ActuacionDto>();
+
+		for (Iterator<Actuacion> it = actuaciones.iterator(); it.hasNext();) {
+			Actuacion proc = (Actuacion) it.next();
+			ActuacionDto dto = ActuacionDto.toDtoSinListas(proc);
+			procs.add(dto);
+		}
+
+		return procs;
+	}
+	
+	public UnidadDto getUnidad(String codigo) {
+		log.info("Consultando el WS para la unidad: " + codigo);
+		long tiempoIni = System.currentTimeMillis();
+
+		UnidadDto respuesta = new UnidadDto();
+		Unidad unidad = unidadRepo.findByCodigo(codigo);
+		// Metadatos
+		respuesta = UnidadDto.toDto(unidad);
+
+		// Padre
+		if (unidad.getPadre() != null) {
+			respuesta.setPadre(UnidadDto.toDto(unidad.getPadre()));
+		}
+
+		// Procedimientos
+		List<ProcedimientoDto> procedimientos = new ArrayList<ProcedimientoDto>();
+		for (Iterator<Procedimiento> it = unidad.getProcedimientos().iterator(); it.hasNext();) {
+			Procedimiento proc = (Procedimiento) it.next();
+			ProcedimientoDto dto = ProcedimientoDto.toDto(proc);
+			procedimientos.add(dto);
+		}
+		respuesta.setProcedimientos(procedimientos);
+
+		// Si tiene Dir3, buscamos la informacion referente al Dir3
+		if (unidad.getUnidadDir3() != null && !unidad.getUnidadDir3().getId().isEmpty()) {
+
+			// unidad publicadora si la tiene
+			respuesta.setUnidadPublicadora(getUnidadPublicadora(unidad.getUnidadDir3()));
+
+			// Principal DIR3 si lo tiene
+			respuesta.setPrincipal(getUnidadPrincipal(unidad.getUnidadDir3()));
+
+			// nivel jerarquico
+			respuesta.setNivelJerarquico(getEstructuraGerarquica(unidad.getUnidadDir3()));
+		}
+		log.info(MedidorTiempoUtil.tiempoEmpleado(tiempoIni, "WS-Unidad"));
+		return respuesta;
+	}
+
+	private Dir3Dto getUnidadPublicadora(Dir3 dir3) {
+
+		Dir3Dto respuesta = new Dir3Dto();
+		// id Dir3
+		String id = dir3.getId();
+		Integer indice = (dir3.getNivelJerarquico()) + 1;
+		for (int i = indice; i > 0; i--) {
+			// Si es la publicadora la devolvemos
+			if (dir3.getPublicador())
+				return Dir3Dto.toDto(dir3);
+			else if (!id.equals(dir3.getUnidadSuperior()))
+				id = dir3.getUnidadSuperior();
+		}
+		return respuesta;
+	}
+
+	private Dir3Dto getUnidadPrincipal(Dir3 dir3) {
+		Dir3 principal = dir3Repo.findById(dir3.getUnidadPrincipal());
+		return Dir3Dto.toDto(principal);
+	}
+
+	private List<Dir3Dto> getEstructuraGerarquica(Dir3 dir3) {
+
+		String id = dir3.getId();
+		Integer indice = (dir3Repo.findNivelJerarquicoById(id)) + 1;
+		List<Dir3Dto> lstDir3 = new ArrayList<Dir3Dto>();
+		List<Dir3> lstDir3Temp = new ArrayList<Dir3>();
+
+		for (int i = indice; i > 0; i--) {
+			Dir3 aux = dir3Repo.findById(id);
+			lstDir3Temp.add(aux);
+			if (!id.equals(aux.getUnidadSuperior()))
+				id = aux.getUnidadSuperior();
+		}
+
+		for (ListIterator<Dir3> iterator = lstDir3Temp.listIterator(lstDir3Temp.size()); iterator.hasPrevious();) {
+			Dir3 aux = (Dir3) iterator.previous();
+			lstDir3.add(Dir3Dto.toDto(aux));
+		}
+		return lstDir3;
+	}
+
+	// PROCEDIMIENTOS
+	public ProcedimientoDto getProcedimiento(String nombre, Long id) {
+		log.info("Consultando el WS para el procedimiento: " + id);
+		long tiempoIni = System.currentTimeMillis();
+		ProcedimientoDto respuesta = new ProcedimientoDto();
+		Procedimiento procedimiento = procedimientoRepo.findOne(id);
+		respuesta = ProcedimientoDto.toDto(procedimiento);
+
+		// Metafases
+		List<MetafaseDto> metafases = new ArrayList<MetafaseDto>();
+		for (Iterator<Metafase> it = procedimiento.getMetafases().iterator(); it.hasNext();) {
+			Metafase proc = (Metafase) it.next();
+			metafases.add(MetafaseDto.toDto(proc));
+		}
+		respuesta.setMetafases(metafases);
+
+		// Unidades
+		List<Unidad> unidades = unidadRepo.findByProcedimientos(procedimiento);
+		List<UnidadDto> unidadesDto = new ArrayList<UnidadDto>();
+		for (Iterator<Unidad> it = unidades.iterator(); it.hasNext();) {
+			Unidad proc = (Unidad) it.next();
+			unidadesDto.add(UnidadDto.toDto(proc));
+		}
+		respuesta.setUnidades(unidadesDto);
+		log.info(MedidorTiempoUtil.tiempoEmpleado(tiempoIni, "WS-Procedimiento"));
+		return respuesta;
+	}
+
+	private LocalDate estimarDiasHabiles(LocalDate fecha, int numeroVencimientos) {
+		// TODO Auto-generated method stub
+		// Si la fecha pasada es en fin de semana, dirigimos al siguiente lunes
+		int diaSemana = fecha.getDayOfWeek();
+		if (diaSemana > DateTimeConstants.FRIDAY) {
+			fecha = fecha.plusDays(8 - diaSemana); // siguiente lunes
+		}
+
+		// 5 es el número de días laborales por semana, sumamos el número de semanas y posteriormente el número de días
+		fecha = fecha.plusWeeks(numeroVencimientos / 5);
+		numeroVencimientos %= 5;
+
+		// si hay un fin de semana descontamos los días hasta el viernes y vamos al siguiente lunes
+		diaSemana = fecha.getDayOfWeek();
+		int diasHastaViernes = DateTimeConstants.FRIDAY - diaSemana;
+		if (numeroVencimientos > diasHastaViernes) {
+			numeroVencimientos -= (diasHastaViernes + 1);
+			fecha = fecha.plusDays(8 - diaSemana); // siguiente lunes
+		}
+
+		// aplicamos los días restantes
+		return fecha.plusDays(numeroVencimientos);
+
+	}
+
+	@Override
+	public List<ActuacionDto> getActuaciones(PeticionActuaciones peticion) throws ExcepcionSeguimiento {
+
+		Map<String, Object> filtros = new HashMap<String, Object>();
+
+		if (peticion.getClave() != null) filtros.put("clave", new Igual(peticion.getClave()));
+		
+		if (peticion.getMasivo() != null) filtros.put("masivo", new Igual(peticion.getMasivo()));
+
+		if (peticion.getEvento() != null && !peticion.getEvento().isEmpty()) filtros.put("evento", new Igual(peticion.getEvento()));
+
+		if (peticion.getAdministrador() != null) filtros.put("admin", new Igual(peticion.getAdministrador()));
+
+		List<ActuacionDto> actuaciones = new ArrayList<ActuacionDto>();
+		for (Actuacion actuacion :  actuacionRepo.buscar(filtros)) {
+			ActuacionDto respuesta = ActuacionDto.toDtoSinListas(actuacion);
+			
+			// fecha de vencimiento
+			if (peticion.getFechaComienzo() != null) {
+				// si la actuacion tiene vencimiento
+				if (actuacion.getTipoVencimiento() != null && !actuacion.getTipoVencimiento().isEmpty() && actuacion.getNumeroVencimientos() != null) {
+					LocalDate fecha = new LocalDate(peticion.getFechaComienzo());
+
+					if (actuacion.getTipoVencimiento().equals(Constantes.ACTUACION_VENCIMIENTO_DIAS_NATURALES)) {
+						respuesta.setFechaVencimiento(fecha.plus(Period.days(actuacion.getNumeroVencimientos())).toDate());
+					} else if (actuacion.getTipoVencimiento().equals(Constantes.ACTUACION_VENCIMIENTO_MESES)) {
+						respuesta.setFechaVencimiento(fecha.plus(Period.months(actuacion.getNumeroVencimientos())).toDate());
+					} else if (actuacion.getTipoVencimiento().equals(Constantes.ACTUACION_VENCIMIENTO_ANYOS)) {
+						respuesta.setFechaVencimiento(fecha.plus(Period.years(actuacion.getNumeroVencimientos())).toDate());
+					} else { 
+						respuesta.setFechaVencimiento(estimarDiasHabiles(fecha, actuacion.getNumeroVencimientos()).toDate());
+					}
+				}
+			}			
+			
+			if (actuacion.getHijos() != null && !actuacion.getHijos().isEmpty()) {
+				List<ActuacionDto> hijos = new ArrayList<ActuacionDto>();
+				for (Actuacion hijo :  actuacion.getHijos()) {
+					hijos.add(ActuacionDto.toDtoSinListas(hijo));
+				}
+				respuesta.setProximosTrabajos(hijos);
+			}
+
+			if (actuacion.getPadres() != null && !actuacion.getPadres().isEmpty()) {
+				List<ActuacionDto> padres = new ArrayList<ActuacionDto>();
+				for (Actuacion padre :  actuacion.getPadres()) {
+					padres.add(ActuacionDto.toDtoSinListas(padre));
+				}
+				respuesta.setProximosTrabajos(padres);
+			}
+			
+			List<FaseDto> fases = new ArrayList<FaseDto>();
+			for (Fase fase : faseRepo.findFasesByActuacion(actuacion.getClave())) {
+				FaseDto faseDto = FaseDto.toDto(fase);
+				if (fase.getMetafase() != null) {
+					List<MetafaseDto> metafases = new ArrayList<MetafaseDto>();
+					metafases.add(MetafaseDto.toDto(fase.getMetafase()));
+					faseDto.setMetafases(metafases);
+				}
+				fases.add(faseDto);
+			}
+			respuesta.setFases(fases);
+			
+			List<DocumentoDto> listaDocumentos = new ArrayList<DocumentoDto>();
+			for (Documento documento : documentoRepo.findByActuacion(actuacion.getClave())) {
+				listaDocumentos.add(DocumentoDto.toDto(documento));
+			}
+			respuesta.setDocumentos(listaDocumentos);			
+					
+			actuaciones.add(respuesta);
+		}
+
+		return actuaciones;
+	}
+
+	
+	@Override
+	public List<DocumentoDto> getDocumentos( PeticionDocumentos peticion ) throws ExcepcionSeguimiento {
+
+		List<DocumentoDto> documentosDto = new ArrayList<DocumentoDto>();
+		
+		if ( peticion != null ) {
+			if ( peticion.getIdDocumento() != null && !peticion.getIdDocumento().isEmpty() ) {
+				documentosDto.add( DocumentoDto.toDto(documentoRepo.findOne(peticion.getIdDocumento())) );
+				return documentosDto;
+			}
+				
+			if ( peticion.getIdUnidad() != null ) {
+				List<Documento> documentos = documentoRepo.findAllByUnidad(peticion.getIdUnidad());
+				
+				for (Documento documento : documentos) {
+					documentosDto.add(DocumentoDto.toDto(documento));
+				}
+				return documentosDto;
+			}
+		}
+		
+		List<Documento> documentos = documentoRepo.findAllDocumentos();
+		for (Documento documento : documentos) {
+			documentosDto.add(DocumentoDto.toDto(documento));
+		}
+		return documentosDto;
+			
+	}
+
+	public List<MetafaseDto> getMetafases( PeticionMetafases peticion) throws ExcepcionSeguimiento {
+
+		Map<String, Object> filtros = new HashMap<String, Object>();
+		
+		if ( peticion.getId() != null ) {
+			filtros.put("id", new Igual(peticion.getId()));
+		}
+
+		if ( peticion.getNombre() != null ) {
+			filtros.put("nombreMetafase", new Igual(peticion.getNombre()));
+		}
+		
+		List<MetafaseDto> metafasesDto = new ArrayList<MetafaseDto>();
+		for (Metafase metafase : metafaseRepo.buscar(filtros) ) {
+			
+			MetafaseDto respuesta = MetafaseDto.toDto(metafase);
+			
+			// Fases
+			List<FaseDto> fases = new ArrayList<FaseDto>();
+			for (Iterator<Fase> it = metafase.getSubFases().iterator(); it.hasNext();) {
+				Fase fase = (Fase) it.next();
+				fases.add(FaseDto.toDto(fase));
+			}
+			respuesta.setFases(fases);
+
+			// Procedimientos
+			List<Procedimiento> procedimientos = procedimientoRepo.findByMetafases(metafase);
+			List<ProcedimientoDto> procedimientosDto = new ArrayList<ProcedimientoDto>();
+			for (Iterator<Procedimiento> it = procedimientos.iterator(); it.hasNext();) {
+				Procedimiento proc = (Procedimiento) it.next();
+				procedimientosDto.add(ProcedimientoDto.toDto(proc));
+			}
+			respuesta.setProcedimientos(procedimientosDto);			
+			
+			metafasesDto.add(respuesta);
+		}
+		
+		return metafasesDto;
+
+	}
+
+	public List<FaseDto> getFases( PeticionFases peticion) throws ExcepcionSeguimiento {
+
+		Map<String, Object> filtros = new HashMap<String, Object>();
+		
+		if ( peticion.getId() != null ) {
+			filtros.put("id", new Igual(peticion.getId()));
+		}
+
+		if ( peticion.getNombre() != null ) {
+			filtros.put("nombreFase", new Igual(peticion.getNombre()));
+		}
+
+		if ( peticion.getNombreMetafase() != null ) {
+			filtros.put("metafase.nombreMetafase", new Igual(peticion.getNombreMetafase()));
+		}
+		
+		List<FaseDto> fasesDto = new ArrayList<FaseDto>();
+		for (Fase fase : faseRepo.buscar(filtros) ) {
+
+			FaseDto respuesta = FaseDto.toDto(fase);
+			
+			// Actuaciones
+			List<Actuacion> actuaciones = actuacionRepo.findByFases(fase);
+			List<ActuacionDto> actuacionesDto = new ArrayList<ActuacionDto>();
+			for (Actuacion actuacion : actuaciones) {
+				actuacionesDto.add(ActuacionDto.toDtoSinListas(actuacion));
+			}
+			respuesta.setActuaciones(actuacionesDto);
+
+			// metafases
+			List<Metafase> metafases = metafaseRepo.findBySubFases(fase);
+			List<MetafaseDto> metafasesDto = new ArrayList<MetafaseDto>();
+			for (Metafase metafase : metafases) {
+				metafasesDto.add(MetafaseDto.toDto(metafase));
+			}
+			respuesta.setMetafases(metafasesDto);
+			
+			fasesDto.add(respuesta);
+		}
+
+		return fasesDto;
+		
+	}
+	
+	public List<FirmanteDto> getFirmantes( PeticionFirmantes peticion ) throws ExcepcionSeguimiento {
+		
+		Map<String, Object> filtros = new HashMap<String, Object>();
+
+		if ( peticion != null ) {
+			if ( peticion.getNif() != null ) {
+				filtros.put("identificacion", new Igual(peticion.getNif()));
+			}
+			
+			if ( peticion.getNombre() != null ) {
+				filtros.put("nombre", peticion.getNombre());
+			}
+			
+			if ( peticion.getIdUnidad() != null ) {
+				filtros.put("unidad.id", new Igual(peticion.getIdUnidad()));
+			}
+			
+			if ( peticion.getCodUnidad() != null ) {
+				filtros.put("unidad.codigo", new Igual(peticion.getCodUnidad()));
+			}
+			
+			if ( peticion.getOrden() != null ) {
+				filtros.put("ordenFirma", new Igual(peticion.getOrden()));
+			}
+			
+			if ( peticion.getFirmaBoe() != null ) {
+				filtros.put("firmaBoe", new Igual(peticion.getFirmaBoe()));
+			}			
+		}
+		
+		List<Firmante> firmantes = new ArrayList<Firmante>();
+		List<FirmanteDto> firmantesDto = new ArrayList<FirmanteDto>();
+		
+		firmantes = firmanteRepo.buscar(filtros);
+		if ( firmantes != null && firmantes.size() > 0 ) {
+			firmantesDto.addAll( FirmanteDto.toListDto(firmantes) );  
+		}
+		
+		return firmantesDto;
+	}
+
+
+}

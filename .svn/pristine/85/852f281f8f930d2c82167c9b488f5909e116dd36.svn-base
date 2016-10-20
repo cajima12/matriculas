@@ -1,0 +1,15 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Provincias;
+
+import com.marcaconsultoria.paginacion.PaginacionTablaGenericaImpl;
+
+public class ProvinciaRepositorioImpl extends PaginacionTablaGenericaImpl<Provincias> {
+
+	private static final long serialVersionUID = 3855089066694773439L;
+
+	public ProvinciaRepositorioImpl() throws InstantiationException,	IllegalAccessException {
+		super();
+	}
+	
+}

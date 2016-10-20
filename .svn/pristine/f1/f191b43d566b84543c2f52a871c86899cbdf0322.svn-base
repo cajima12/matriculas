@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="Código"  styleClass="anchoFijo_150 centrado" filterMatchMode="contains" sortBy="#{registro.codigo}" filterBy="#{registro.codigo}">
+		<h:outputText value="#{registro.codigo}" title="#{registro.codigo}" />
+	</p:column>
+	<p:column headerText="DIR3"  styleClass="anchoFijo_150 centrado" filterMatchMode="contains" sortBy="#{registro.unidadDir3.id}" filterBy="#{registro.unidadDir3.id}">
+		<h:outputText value="#{registro.unidadDir3.id}" title="#{registro.unidadDir3.id}" />
+	</p:column>
+	<p:column headerText="Referencia interna"  styleClass="anchoFijo_200" filterMatchMode="contains" sortBy="#{registro.refCodigo}" filterBy="#{registro.refCodigo}">
+		<h:outputText value="#{registro.refCodigo}" title="#{registro.refCodigo}" />
+	</p:column>
+	<p:column headerText="Nombre"  styleClass="" filterMatchMode="contains" sortBy="#{registro.nombre}" filterBy="#{registro.nombre}">
+		<h:outputText value="#{registro.nombre}" title="#{registro.nombre}" />
+	</p:column>
+	<p:column headerText="Procedimientos" filterMatchMode="contains" sortBy="#{mantenimiento.bean.aTexto(registro.procedimientos,'nombre')}" filterBy="#{mantenimiento.bean.aTexto(registro.procedimientos,'nombre')}">
+		<h:outputText value="#{mantenimiento.bean.aTexto(registro.procedimientos,'nombre')}" title="#{mantenimiento.bean.aTexto(registro.procedimientos,'nombre')}" />
+	</p:column>	
+</ui:composition>

@@ -1,0 +1,22 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Fase;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface FaseRepositorio extends JpaRepository<Fase, Long>, PaginacionTabla<Fase>{
+
+	public Fase findByNombreFase(String nombre);
+	
+	@Query("SELECT f FROM Fase f JOIN FETCH f.metafase JOIN f.actuaciones f_actuaciones WHERE f_actuaciones.clave = ?1 ")
+	public List<Fase> findFasesByActuacion(String clave);
+	
+}

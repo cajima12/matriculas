@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" >
+	
+	<p:panelGrid styleClass="" style="width: 100%;">
+		
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Nif:" for="nif" />
+			</p:column>
+			<p:column>
+				<p:inputText id="nif" value="#{mantenimiento.bean.instancia.identificacion}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}" required="true" requiredMessage="El campo clave no puede estar vacío" 
+				immediate="true" >
+		    		<f:validator validatorId="nifValidador" />
+		    		<p:ajax process="nif" partialSubmit="true" update=":formulario:msgNifTit" />
+		    		<p:ajax event="blur" process="nif" partialSubmit="true" update=":formulario:msgNifTit" />
+		    		<p:message for="nif" id="msgNifTit" redisplay="false" />
+		    	</p:inputText>					
+				
+			</p:column>
+		</p:row>	
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Nombre:" for="nombre" />
+			</p:column>
+			<p:column>
+				<p:inputText id="nombre" value="#{mantenimiento.bean.instancia.nombre}" 
+				readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.nombre}" />
+			</p:column>			
+			<p:column>
+				<h:outputLabel value="Apellido 1:" for="apellido1" />
+			</p:column>
+			<p:column>
+				<p:inputText id="apellido1" value="#{mantenimiento.bean.instancia.apellido1}" readonly="#{mantenimiento.bean.operacion != 'Añadir'}" required="true" requiredMessage="El campo clave no puede estar vacío" />	
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Apellido 2:" for="apellido2" />
+			</p:column>
+			<p:column>
+				<p:inputText id="apellido2" value="#{mantenimiento.bean.instancia.apellido2}" 
+				readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.apellido2}" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Cargo:" for="cargo" />
+			</p:column>
+			<p:column>			
+				<p:inputText id="cargo" value="#{mantenimiento.bean.instancia.cargo}" readonly="#{mantenimiento.bean.soloLectura}"  />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Fecha Inicio Vigencia:" for="inicioVigencia" />
+			</p:column>
+			<p:column>
+        		<p:calendar id="inicioVigencia" value="#{mantenimiento.bean.instancia.fechaInicioVigencia}" 
+        		readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.fechaInicioVigencia}" 
+        		pattern="dd-MM-yyyy" mask="true" />		
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Fecha Fin Vigencia:" for="finVigencia" />
+			</p:column>
+			<p:column>
+        		<p:calendar id="finVigencia" value="#{mantenimiento.bean.instancia.fechaFinVigencia}" 
+        		readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.fechaFinVigencia}" 
+        		pattern="dd-MM-yyyy" mask="true" />
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Sustituto:" for="sustituto" />
+				<p:selectBooleanButton id="sustituto" value="#{mantenimiento.bean.instancia.sustituto}" onLabel="SI" offLabel="NO" style="width:60px" 
+					disabled="#{mantenimiento.bean.soloLectura}" />		
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Delegado:" for="delegado" />
+        		<p:selectBooleanButton id="delegado" value="#{mantenimiento.bean.instancia.delegado}" onLabel="SI" offLabel="NO" style="width:60px" 
+					disabled="#{mantenimiento.bean.soloLectura}" />	
+			</p:column>
+			<p:column>			
+				<h:outputLabel value="Firma Propia:" for="firmaPropia" />
+				<p:selectBooleanButton id="firmaPropia" value="#{mantenimiento.bean.instancia.firmaPropia}" onLabel="SI" offLabel="NO" style="width:60px" 
+					disabled="#{mantenimiento.bean.soloLectura}" />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Activo:" for="activo" />
+        		<p:selectBooleanButton id="activo" value="#{mantenimiento.bean.instancia.activo}" onLabel="SI" offLabel="NO" style="width:60px" 
+					disabled="#{mantenimiento.bean.soloLectura}" />	
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Orden Firma:" for="ordenFirma" />
+			</p:column>
+			<p:column>
+        		<p:inputMask id="ordenFirma" value="#{mantenimiento.bean.instancia.ordenFirma}" readonly="#{mantenimiento.bean.soloLectura}" mask="9"  />
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Unidad:" for="unidad" />
+			</p:column>
+			<p:column colspan="2">
+				<p:selectOneMenu id="unidad" value="#{mantenimiento.bean.unidadSeleccionada}" disabled="#{mantenimiento.bean.soloLectura}"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItems value="#{mantenimiento.bean.listadoUnidades}" var="s" itemValue="#{s}" itemLabel="#{s.nombre}" />
+				</p:selectOneMenu>
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Unidad Delegada:" for="unidadDelegada" />
+			</p:column>
+			<p:column colspan="2">
+				<p:selectOneMenu id="unidadDelegada" value="#{mantenimiento.bean.unidadDelegadaSeleccionada}" disabled="#{mantenimiento.bean.soloLectura}"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItems value="#{mantenimiento.bean.listadoUnidades}" var="s" itemValue="#{s}" itemLabel="#{s.nombre}" />
+				</p:selectOneMenu>
+			</p:column>
+
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Texto Firma:" for="textoFirma" />
+			</p:column>
+			<p:column colspan="2">
+				<p:inputTextarea id="textoFirma" value="#{mantenimiento.bean.instancia.textoFirma}" rows="10" 
+				readonly="#{mantenimiento.bean.soloLectura}" title="#{mantenimiento.bean.instancia.textoFirma}" 
+				style="width:98%!important;"/>
+			</p:column>	
+			<p:column>
+				<h:outputLabel value="Imagen Firma:" for="imagenFirma" />
+			</p:column>
+			<p:column colspan="2">
+				<p:graphicImage id="imagenFirma" value="#{imagenBean.imagen}" alt="No hay imagen de firma" 
+					rendered="#{mantenimiento.bean.operacion != 'Añadir'}"  cache="false" 
+					style="width: 27%!important;"  />
+				<p:fileUpload id="upImagenFirma" label="Examinar" uploadLabel="Subir" cancelLabel="Cancelar" 
+					update="msgs" fileUploadListener="#{mantenimiento.bean.subirImagen}" multiple="false" 
+					allowTypes="/(\.|\/)(png|PNG)$/" auto="true"
+					rendered="#{mantenimiento.bean.operacion == 'Añadir' or mantenimiento.bean.operacion == 'Editar'}" />				
+			</p:column>	
+		</p:row>
+		
+		<p:row>
+			<p:column>			
+				<h:outputLabel value="Firma BOE" for="firmaBOE" />
+			</p:column>
+			<p:column>
+				<p:selectBooleanButton id="firmaBOE" value="#{mantenimiento.bean.instancia.firmaBoe}" onLabel="SI" offLabel="NO" style="width:60px" 
+					disabled="#{mantenimiento.bean.soloLectura}" />		
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Título con el que firma:" for="tituloBOE" />
+			</p:column>
+			<p:column colspan="3">
+        		<p:inputText id="tituloBOE" value="#{mantenimiento.bean.instancia.tituloBoe}" readonly="#{mantenimiento.bean.soloLectura}"  />	
+			</p:column>
+		</p:row>
+								
+	</p:panelGrid>
+	
+</ui:composition>

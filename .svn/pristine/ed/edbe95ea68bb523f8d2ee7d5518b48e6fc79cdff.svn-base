@@ -1,0 +1,118 @@
+package org.ayuncordoba.eseg.modelo;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+/**
+ * The persistent class for the PROCEDIMIENTOS database table.
+ * 
+ */
+@Entity
+@Table(name = "procedimientos")
+public class Procedimiento implements Serializable {
+	private static final long serialVersionUID = 638106421792878921L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
+	@Column(unique=true, nullable=false)
+	private String nombre;
+	
+	// bi-directional many-to-many association to Unidad
+	@ManyToMany(mappedBy = "procedimientos")
+	private List<Unidad> unidades;
+	
+	// bi-directional many-to-many association to Procedimientos
+	@ManyToMany( fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	@JoinTable(
+		name 				= "procedimientos_metafases", 
+		joinColumns 		= { @JoinColumn(name = "procedimiento_id") }, 
+		inverseJoinColumns 	= { @JoinColumn(name = "metafase_id")	})
+	private List<Metafase> metafases;
+
+	public Procedimiento() {
+	}
+
+	public List<Unidad> getUnidades() {
+		return unidades;
+	}
+
+	public void setUnidades(List<Unidad> unidades) {
+		this.unidades = unidades;
+	}
+
+	@Override
+	public String toString() {
+		return "Procedimiento [id=" + getId() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (getId() ^ (getId() >>> 32));
+		result = prime * result + ((getNombre() == null) ? 0 : getNombre().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Procedimiento other = (Procedimiento) obj;
+		if (getId() != other.getId())
+			return false;
+		if (getNombre() == null) {
+			if (other.getNombre() != null)
+				return false;
+		} else if (!getNombre().equals(other.getNombre()))
+			return false;
+		return true;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public List<Metafase> getMetafases() {
+		return metafases;
+	}
+
+	public void setMetafases(List<Metafase> metafases) {
+		this.metafases = metafases;
+	}
+
+}

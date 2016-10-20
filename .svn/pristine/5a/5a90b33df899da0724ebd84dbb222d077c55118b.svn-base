@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Fase;
+
+public class FaseRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Fase> {
+
+	private static final long serialVersionUID = -8237856245140003863L;
+
+	public FaseRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

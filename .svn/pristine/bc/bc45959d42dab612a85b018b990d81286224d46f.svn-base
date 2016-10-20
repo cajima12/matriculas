@@ -1,0 +1,26 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+
+public class EstructuraNivelDir3Dto implements Serializable {
+
+	private static final long serialVersionUID = -9221799328080516597L;
+	
+	private Long id;
+	private String tipoEntidad;
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getTipoEntidad() {
+		return tipoEntidad;
+	}
+	public void setTipoEntidad(String tipoEntidad) {
+		this.tipoEntidad = tipoEntidad;
+	}
+
+
+}

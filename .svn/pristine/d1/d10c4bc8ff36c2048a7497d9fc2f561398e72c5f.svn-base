@@ -1,0 +1,77 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.ayuncordoba.eseg.bean.DiagramaProcessView;
+import org.ayuncordoba.eseg.modelo.Metafase;
+import org.ayuncordoba.eseg.modelo.Procedimiento;
+import org.ayuncordoba.eseg.repositorio.MetafaseRepositorio;
+import org.ayuncordoba.eseg.repositorio.ProcedimientoRepositorio;
+import org.primefaces.event.TabChangeEvent;
+
+
+@ManagedBean(name = "mantenimientoProcedimientosBean")
+@ViewScoped
+public class MantenimientoProcedimientosBean extends MantenimientoGenericoBean<Procedimiento, Long>{
+	private static final long serialVersionUID = -3883146810463947258L;
+	
+	@ManagedProperty("#{procedimientoRepositorio}")
+	private ProcedimientoRepositorio procedimientoRepositorio;
+	@ManagedProperty("#{metafaseRepositorio}")
+	private MetafaseRepositorio metafaseRepo;
+	@ManagedProperty("#{diagramaProcessView}")
+	private DiagramaProcessView grafo;
+	
+	private List<Metafase> listadoMetafases;
+	
+	@Override
+	protected void cargarListado(List<Procedimiento> listado) {
+		setTab(-1);
+		listado.addAll(procedimientoRepositorio.findAll());
+		setListadoMetafases(metafaseRepo.findAll());
+	}
+	
+	public void updateAccion( TabChangeEvent event ) {
+		
+		if ( event.getTab().getClientId().equals("formulario:panelAct:grafo") ) grafo.actualizarActuacion(getInstancia());
+		
+	}
+	
+	public void setProcedimientoRepositorio(ProcedimientoRepositorio procedimientoRepositorio) {
+		setRepositorio(procedimientoRepositorio);
+		this.procedimientoRepositorio = procedimientoRepositorio;
+	}
+
+	public List<Metafase> getListadoMetafases() {
+		return listadoMetafases;
+	}
+
+	public void setListadoMetafases(List<Metafase> listadoMetafases) {
+		this.listadoMetafases = listadoMetafases;
+	}
+
+	public MetafaseRepositorio getMetafaseRepo() {
+		return metafaseRepo;
+	}
+
+	public void setMetafaseRepo(MetafaseRepositorio metafaseRepo) {
+		this.metafaseRepo = metafaseRepo;
+	}
+
+	public ProcedimientoRepositorio getProcedimientoRepositorio() {
+		return procedimientoRepositorio;
+	}
+
+	public DiagramaProcessView getGrafo() {
+		return grafo;
+	}
+
+	public void setGrafo(DiagramaProcessView grafo) {
+		this.grafo = grafo;
+	}
+
+}

@@ -1,0 +1,43 @@
+package org.ayuncordoba.eseg.bean.mantenimiento;
+
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.log4j.Logger;
+import org.ayuncordoba.eseg.modelo.TipoDocumento;
+import org.ayuncordoba.eseg.repositorio.TipoDocumentoRepositorio;
+
+@ManagedBean
+@ViewScoped
+public class MantenimientoTiposDocumentosBean extends MantenimientoGenericoBean<TipoDocumento, Long> {
+
+	private static final long serialVersionUID = -2604562030610160837L;
+
+	private static final Logger log = Logger.getLogger(MantenimientoTiposDocumentosBean.class);
+
+	@ManagedProperty("#{tipoDocumentoRepositorio}")
+	private TipoDocumentoRepositorio tipoDocumentoRepo;
+
+	@Override
+	protected void cargarListado(List<TipoDocumento> listado) {
+		listado.addAll(tipoDocumentoRepo.findAll());
+	}
+	
+	public static Logger getLog() {
+		return log;
+	}
+
+	public TipoDocumentoRepositorio getTipoDocumentoRepo() {
+		return tipoDocumentoRepo;
+	}
+
+	public void setTipoDocumentoRepo(TipoDocumentoRepositorio tipoDocumentoRepo) {
+		this.tipoDocumentoRepo = tipoDocumentoRepo;
+	}
+
+	
+	
+}

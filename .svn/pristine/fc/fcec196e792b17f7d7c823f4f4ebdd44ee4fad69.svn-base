@@ -1,0 +1,13 @@
+package org.ayuncordoba.eseg.repositorio.impl;
+
+import org.ayuncordoba.eseg.modelo.Firmante;
+
+public class FirmanteRepositorioImpl extends PaginacionTablaGenericaSeguimientoImpl<Firmante> {
+
+	private static final long serialVersionUID = -8237856245140003863L;
+
+	public FirmanteRepositorioImpl() throws InstantiationException, IllegalAccessException {
+		super();
+	}
+
+}

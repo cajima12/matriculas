@@ -1,0 +1,123 @@
+package org.ayuncordoba.eseg.modelo.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+
+public class UnidadDto implements Serializable {
+
+	private static final long serialVersionUID = -6436817323368316064L;
+
+	//datos de la unidad
+	private Long idUnidad;
+	private String refCodigo;
+	private String nombre;
+	private String codigo;
+	private String codigoPadre;
+	private String nombrePadre;
+	
+	private Dir3Dto unidadPublicadora;
+	private UnidadDto padre;
+	private Dir3Dto principal;
+	private List<Dir3Dto> nivelJerarquico;
+	private List<ProcedimientoDto> procedimientos;
+	
+	
+	public Long getIdUnidad() {
+		return idUnidad;
+	}
+	public void setIdUnidad(Long idUnidad) {
+		this.idUnidad = idUnidad;
+	}
+	public String getRefCodigo() {
+		return refCodigo;
+	}
+	public void setRefCodigo(String refCodigo) {
+		this.refCodigo = refCodigo;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public String getCodigoPadre() {
+		return codigoPadre;
+	}
+	public void setCodigoPadre(String codigoPadre) {
+		this.codigoPadre = codigoPadre;
+	}
+	public String getNombrePadre() {
+		return nombrePadre;
+	}
+	public void setNombrePadre(String nombrePadre) {
+		this.nombrePadre = nombrePadre;
+	}
+
+	public Dir3Dto getUnidadPublicadora() {
+		return unidadPublicadora;
+	}
+	public void setUnidadPublicadora(Dir3Dto unidadPublicadora) {
+		this.unidadPublicadora = unidadPublicadora;
+	}
+	
+	public UnidadDto getPadre() {
+		return padre;
+	}
+	public void setPadre(UnidadDto padre) {
+		this.padre = padre;
+	}
+	public Dir3Dto getPrincipal() {
+		return principal;
+	}
+	public void setPrincipal(Dir3Dto principal) {
+		this.principal = principal;
+	}
+	
+	public List<Dir3Dto> getNivelJerarquico() {
+		return nivelJerarquico;
+	}
+	public void setNivelJerarquico(List<Dir3Dto> nivelJerarquico) {
+		this.nivelJerarquico = nivelJerarquico;
+	}
+	
+	public List<ProcedimientoDto> getProcedimientos() {
+		return procedimientos;
+	}
+	public void setProcedimientos(List<ProcedimientoDto> procedimientos) {
+		this.procedimientos = procedimientos;
+	}
+	public static UnidadDto toDto( Unidad unidad ) {
+		
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setFieldMatchingEnabled(true);		
+	
+	 PropertyMap<Unidad, UnidadDto> map = new PropertyMap<Unidad, UnidadDto>() {
+	 
+		 protected void configure() {
+			map().setIdUnidad(source.getId());
+			map().setCodigoPadre(source.getPadre().getCodigo());
+			map().setNombrePadre(source.getPadre().getNombre());
+			skip().setProcedimientos(null);
+         }
+		 
+	 };
+	 
+	 modelMapper.addMappings(map);
+	 
+	 UnidadDto dto = modelMapper.map(unidad, UnidadDto.class);
+	
+	 return dto;
+	 
+	}
+
+}

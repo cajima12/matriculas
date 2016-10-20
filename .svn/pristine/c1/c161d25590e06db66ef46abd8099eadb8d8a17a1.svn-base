@@ -1,0 +1,58 @@
+package org.ayuncordoba.eseg.repositorio;
+
+import java.util.List;
+
+import org.ayuncordoba.eseg.modelo.Documento;
+import org.ayuncordoba.eseg.modelo.Unidad;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.marcaconsultoria.paginacion.interfaces.PaginacionTabla;
+
+@Repository
+@Transactional
+public interface DocumentoRepositorio extends JpaRepository<Documento, String>, PaginacionTabla<Documento> {
+	
+	@Query("select d "
+			+ "from Documento d "
+			+ "left join d.tipoDocumento d_tipoDocumento "
+			+ "join d.unidades u "
+			+ "where u.id in ?1")
+	public List<Documento> findAllByUnidad(Long unidad);
+	
+	@Query("select distinct(d) "
+			+ "from Documento d "
+			+ "left join fetch d.unidades u "
+			+ "left join d.tipoDocumento d_tipoDocumento "
+			+ "order by d.id")
+	public List<Documento> findAllFetchUnidades();
+
+	@Query("select d from Documento d "
+			+ "left join d.tipoDocumento d_tipoDocumento "
+			+ "where d.documento=?1")
+	public Documento findByDocumento(String nombre);
+	
+	Documento findByDescripcion(String descripcion);
+	
+	@Query("select d from Documento d "
+			+ "left join d.tipoDocumento d_tipoDocumento "
+			+ "left join fetch d.unidades "
+			+ "where d.descripcion=?1")
+	Documento findByDescripcionFetchUnidades(String descripcion);
+
+	@Query("select d from Documento d "
+			+ "left join d.tipoDocumento d_tipoDocumento")
+	public List<Documento> findAllDocumentos();
+	
+	@Query("select d.unidades from Documento d "
+			+ "where d.id=?1")
+	public List<Unidad> findUnidadesById(String id);
+	
+	@Query("select d from Documento d JOIN d.actuaciones d_actuaciones "
+			+ "where d_actuaciones.clave=?1")
+	public List<Documento> findByActuacion(String clave);
+	
+	
+}

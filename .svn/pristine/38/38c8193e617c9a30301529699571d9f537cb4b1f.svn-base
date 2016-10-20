@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:p="http://primefaces.org/ui"
+	xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions">
+	<p:column headerText="Fase" styleClass="" sortBy="#{registro.nombreFase}" filterBy="#{registro.nombreFase}" filterMatchMode="contains" >
+		<h:outputText value="#{registro.nombreFase}" />
+	</p:column>
+	<p:column headerText="Metafase" style="width:125px;" styleClass="centrado" sortBy="#{mantenimiento.bean.getNombreMetafase(registro)}" 
+			filterBy="#{mantenimiento.bean.getNombreMetafase(registro)}" filterMatchMode="contains">
+		<h:outputText value="#{mantenimiento.bean.getNombreMetafase(registro)}" title="#{mantenimiento.bean.getNombreMetafase(registro)}" />
+	</p:column>
+</ui:composition>
